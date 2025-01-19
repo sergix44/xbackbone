@@ -65,7 +65,8 @@
                                 <div class="col-sm-9">
                                     <div class="btn-group">
                                         <a href="{{ route('config.sharex', {'id': user.id}) }}" class="btn btn-lg btn-outline-dark"><i class="fas fa-fw fa-download"></i> ShareX</a>
-                                        <a href="javascript:alert('{{ lang('copied') }}')" data-clipboard-text="{{ route('config.screencloud', {'token': user.token}) }}" class="btn btn-lg btn-outline-info btn-clipboard"><i class="fas fa-fw fa-download"></i> Screencloud</a>
+                                        <a href="javascript:alert('{{ lang('copied') }}')" data-clipboard-text="{{ route('config.screencloud', {'token': user.token}) }}" class="btn btn-lg btn-outline-info btn-clipboard"><i class="fas fa-fw fa-copy"></i> Screencloud</a>
+                                        <a href="{{ route('config.windows', {'id': user.id}) }}" type="button" class="btn btn-lg btn-outline-primary"><i class="fas fa-fw fa-download"></i> Windows</a>
                                         <a href="{{ route('config.script', {'id': user.id}) }}" type="button" class="btn btn-lg btn-outline-danger"><i class="fas fa-fw fa-download"></i> Linux Script</a>
                                         <button type="button" class="btn btn-outline-danger dropdown-toggle dropdown-toggle-split" id="userDropdown" data-toggle="dropdown" aria-expanded="false"></button>
                                         <ul class="dropdown-menu">
