@@ -118,7 +118,6 @@ class UploadController extends Controller
     /**
      * @param  Request  $request
      * @param  Response  $response
-     * @param $code
      * @return UploadedFileInterface
      * @throws ValidationException
      */
@@ -179,11 +178,12 @@ class UploadController extends Controller
      * @param  Response  $response
      * @param  UploadedFileInterface  $file
      * @param $user
+     * @param $code
      * @return Response
      * @throws \League\Flysystem\FileExistsException
      * @throws \League\Flysystem\FileNotFoundException
      */
-    protected function saveMedia(Response $response, UploadedFileInterface $file, $user, $code)
+    protected function saveMedia(Response $response, UploadedFileInterface $file, $user, $code = null)
     {
         if ($code === null) {
             do {
