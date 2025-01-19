@@ -6,3 +6,5 @@ Options -Indexes +SymLinksIfOwnerMatch
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+Header always set X-Frame-Options "DENY"
