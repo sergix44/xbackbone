@@ -63,4 +63,7 @@ return [
     'yes' => 'यस',
     'enforce_language' => 'इनफ़ोर्स लैंग्वेज',
     'lang' => 'हिंदी',
+    'help' => 'मदद',
+    'documentation' => 'प्रलेखन',
+    'report' => 'समस्या की रिपोर्ट करें'
 ];

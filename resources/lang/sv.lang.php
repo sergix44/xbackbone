@@ -162,4 +162,7 @@ return [
     'image_embeds' => 'Inbäddade bilder',
     'vanity_url' => 'Anpassad URL',
     'show_all_tags' => 'Visa alla taggar',
+    'help' => 'Hjälp',
+    'documentation' => 'Dokumentation',
+    'report' => 'Rapportera ett problem'
 ];

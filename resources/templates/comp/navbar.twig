@@ -27,6 +27,16 @@
                             {{ lang('system') }}
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-question-circle"></i> 
+                            {{ lang('help') }}
+                        </a>
+                            <div class="dropdown-menu shadow-sm" aria-labelledby="helpDropdown">
+                                <a class="dropdown-item" href="https://xbackbone.app/" target="_blank" rel="noopener noreferrer"><i class="fas fa-fw fa-solid fa-book"></i> {{ lang('documentation') }}</a>
+                                <a class="dropdown-item" href="https://discord.gg/ksPfXFbhDF" target="_blank" rel="noopener noreferrer"><i class="fab fa-fw fa-discord"></i> Discord</a>
+                                <a class="dropdown-item" href="https://github.com/sergix44/XBackBone/issues" target="_blank" rel="noopener noreferrer"><i class="fas fa-fw fa-solid fa-bug"></i> {{ lang('report') }}</a>
+                            </div>
+                    </li>
                 {% endif %}
             </ul>
             <ul class="navbar-nav ml-auto">

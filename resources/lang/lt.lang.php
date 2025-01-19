@@ -160,4 +160,7 @@ return [
     'maintenance' => 'Palaikymas',
     'name' => 'Vardas',
     'time' => 'Laikas',
+    'help' => 'padėti',
+    'documentation' => 'Dokumentacija',
+    'report' => 'Pranešti apie problemą'
 ];

@@ -161,5 +161,8 @@ return [
     'zip_ext_not_loaded' => 'The required "zip" extension is not loaded',
     'changelog' => 'Changelog',
     'show_changelog' => 'Show changelog',
-    'image_embeds' => 'Embed images'
+    'image_embeds' => 'Embed images',
+    'help' => 'Help',
+    'documentation' => 'Documentation',
+    'report' => 'Report a Issue'
 ];

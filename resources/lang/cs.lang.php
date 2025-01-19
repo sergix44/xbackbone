@@ -160,4 +160,7 @@ return [
     'drop_to_upload' => 'Klikněte nebo sem přetáhněte soubory pro nahrání.',
     'no_upload_token' => 'Nemáte osobní nahrávací token. (Vygenerujte si jej a zkuste to znovu.)',
     'image_embeds' => 'Vložené obrázky',
+    'help' => 'Pomôcť',
+    'documentation' => 'Dokumentácia',
+    'report' => 'Nahlásiť problém'
 ];

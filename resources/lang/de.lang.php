@@ -167,4 +167,7 @@ return [
     'copied' => 'In Zwischenablage kopiert!',
     'image_embeds' => 'Bilder einbetten',
     'vanity_url' => 'Benutzerdefinierte URL',
+    'help' => 'Helfen',
+    'documentation' => 'Dokumentation',
+    'report' => 'Ein Problem melden'
 ];

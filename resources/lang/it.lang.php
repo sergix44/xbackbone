@@ -163,4 +163,7 @@ return [
     'copied' => 'Copiato negli appunti!',
     'image_embeds' => 'Incorpora immagini',
     'vanity_url' => 'URL personalizzato',
+    'help' => 'aiuto',
+    'documentation' => 'Documentazione',
+    'report' => 'Segnala un problema'
 ];

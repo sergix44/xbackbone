@@ -163,4 +163,7 @@ return [
     'image_embeds' => 'Osadź obrazy',
     'copied' => 'Skopiowano!',
     'vanity_url' => 'Niestandardowy adres URL',
+    'help' => 'Pomoc',
+    'documentation' => 'Dokumentacja',
+    'report' => 'Zgłoś problem'
 ];

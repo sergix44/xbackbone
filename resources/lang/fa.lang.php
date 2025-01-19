@@ -26,4 +26,7 @@ return [
     'pager.previous' => 'قبلی',
     'copy_link' => 'رونوشت از پیوند',
     'filename' => 'نام فایل',
+    'help' => 'کمک کند',
+    'documentation' => 'مستندات',
+    'report' => 'گزارش یک مشکل'
 ];

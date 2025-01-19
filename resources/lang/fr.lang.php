@@ -163,4 +163,7 @@ return [
     'copied' => 'Copié dans le presse-papier !',
     'image_embeds' => 'Intégrer des images',
     'vanity_url' => 'URL personnalisée',
+    'help' => 'Aide',
+    'documentation' => 'Documentation',
+    'report' => 'Signaler un problème'
 ];

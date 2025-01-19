@@ -161,4 +161,7 @@ return [
     'mail.activate_text' => 'Zdravo %s!<br>hvala što ste otvorili svoj nalog na %s (<a href="%s">%s</a>), kliknite na sledeću vezu da biste ga aktivirali:<br><br>< a href="%s">%s</a>',
     'mail.recover_text' => 'Zdravo %s,<br>zatraženo je resetovanje lozinke za vaš nalog. Da biste završili proceduru kliknite na sledeću vezu:<br><br><a href="%s">%s</a><br><br>Ako niste vi tražili resetovanje lozinke, jednostavno ignorišite ovu e-poštu.',
     'show_all_tags' => 'Prikaži sve tagove',
+    'help' => 'Pomoć',
+    'documentation' => 'Dokumentacija',
+    'report' => 'Prijavite problem'
 ];

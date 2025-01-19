@@ -160,4 +160,7 @@ return [
     'mail.recover_text' => 'Hola %s,<br>s\'ha sol·licitat un restabliment de la contrasenya per al vostre compte. Per completar el procediment, feu clic a l\'enllaç següent:<br><br><a href="%s">%s</a><br><br>Si no heu estat vosaltres qui heu sol·licitat la restabliment de la contrasenya, simplement ignora aquest correu electrònic.',
     'recaptcha_enabled' => 'reCAPTCHA Habilitat',
     'mail.new_account_text_with_reset' => 'Hola, %s!<br>s\'ha creat un compte nou a %s (<a href="%s">%s</a>), feu clic a l\'enllaç següent per establir una contrasenya i activar-la:<br ><br><a href="%s">%s</a>',
+    'help' => 'Ajuda',
+    'documentation' => 'Documentació',
+    'report' => 'Informar dun problema'
 ];

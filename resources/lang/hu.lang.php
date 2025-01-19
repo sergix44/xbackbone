@@ -161,4 +161,7 @@ return [
     'lang' => 'Magyar',
     'image_embeds' => 'Képek beágyazása',
     'vanity_url' => 'Egyedi URL',
+    'help' => 'Segítség',
+    'documentation' => 'Dokumentáció',
+    'report' => 'Probléma bejelentése'
 ];

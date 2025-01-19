@@ -11,8 +11,9 @@
 {% block meta %}
     <meta name="twitter:card" content="summary_large_image">
     <meta property="og:type" content="website"/>
-    <meta id="embed-title" property="og:title" content="{{ media.filename }} ({{ media.size }})">
-    <meta id="embed-desc" property="og:description" content="{{ lang('date') }}: {{ media.timestamp }}">
+	<meta property="og:site_name" content="{{ config.app_name }}">
+    <meta id="embed-title" property="og:title" content="{{ media.filename }}">
+    <meta id="embed-desc" property="og:description" content="{{ lang('date') }}: {{ media.timestamp }}&#10;File Size: {{ media.size }}">
     {% if type == 'image' %}
         <meta id="embed-image" property="og:image" content="{{ url }}/raw">
         <meta id="discord" name="twitter:image" content="{{ url }}/raw">

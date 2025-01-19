@@ -163,4 +163,7 @@ return [
     'send_notification' => 'Send e-postmerknad',
     'copied' => 'Kopiert til utklippstavle.',
     'image_embeds' => 'Integrer bilder',
+    'help' => 'hjelp',
+    'documentation' => 'dokumentasjon',
+    'report' => 'Rapporter et problem'
 ];

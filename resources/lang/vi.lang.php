@@ -160,4 +160,7 @@ return [
     'mail.new_account_text_with_reset' => 'Xin chào %s!<br>một tài khoản mới đã được tạo cho bạn ở %s (<a href="%s">%s</a>), hãy bấm vào đường link sau để cài mật khẩu và kích hoạt tài khoản nhé:<br><br><a href="%s">%s</a>',
     'mail.new_account_text_with_pw' => 'Xin chào %s!<br>một tài khoản mới đã được tạo cho bạn trên %s (<a href="%s">%s</a>), với thông tin đăng nhập như sau:<br><br>Tên đăng nhập: %s<br>Mật khẩu: %s<br><br>Hãy bấm vào đường link sau đây để truy cập trang đăng nhập tài khoản nhé:<br><a href="%s">%s</a>',
     'ldap_cant_connect' => 'Không thể kết nối với máy chủ xác minh LDAP.',
+    'help' => 'Giúp đỡ',
+    'documentation' => 'Tài liệu',
+    'report' => 'Báo cáo sự cố'
 ];

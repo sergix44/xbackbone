@@ -160,4 +160,7 @@ return [
     'account_media_deleted' => 'Toata media de pe cont a fost eliminata.',
     'changelog' => 'Schimbari',
     'mail.new_account_text_with_pw' => 'Hey %s!<br>un nou cont a fost creat pentru tine pe %s (<a href="%s">%s</a>), cu urmatoarele date:<br><br>Nume de utilizator: %s<br>Parola: %s<br><br>Apasa pe urmatorul link pentru a te autentifica:<br><a href="%s">%s</a>',
+    'help' => 'Ajutor',
+    'documentation' => 'Documentare',
+    'report' => 'Raportați o problemă'
 ];

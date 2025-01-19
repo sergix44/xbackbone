@@ -162,4 +162,7 @@ return [
     'switch_to' => 'Şuna geç',
     'vanity_url' => 'Özel URL',
     'show_all_tags' => 'Tüm etiketleri göster',
+    'help' => 'Yardım',
+    'documentation' => 'Belgeleme',
+    'report' => 'Bir Sorun Bildirin'
 ];

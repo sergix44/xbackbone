@@ -167,4 +167,7 @@ return [
     'custom_head_set' => 'Cabecera HTML personalizada aplicada.',
     'vanity_url' => 'URL personalizada',
     'show_all_tags' => 'Mostrar todas las etiquetas',
+    'help' => 'Ayuda',
+    'documentation' => 'Documentación',
+    'report' => 'Informar un problema'
 ];

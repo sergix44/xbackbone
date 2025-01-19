@@ -163,4 +163,7 @@ return [
     'image_embeds' => 'Embutir imagens',
     'vanity_url' => 'URL personalizado',
     'show_all_tags' => 'Mostrar todas as tags',
+    'help' => 'Ajuda',
+    'documentation' => 'Documentação',
+    'report' => 'Reportar um problema'
 ];

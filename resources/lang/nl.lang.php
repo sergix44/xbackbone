@@ -167,4 +167,7 @@ return [
     'vanity_url' => 'Eigen URL',
     'image_embeds' => 'Afbeeldingen insluiten',
     'show_all_tags' => 'Toon alle tags',
+    'help' => 'hulp',
+    'documentation' => 'Documentatie',
+    'report' => 'Meld een probleem'
 ];

@@ -161,4 +161,7 @@ return [
     'enforce_language' => '언어 설정',
     'lang' => 'Korean',
     'vanity_url' => '사용자 정의 URL',
+    'help' => '돕다',
+    'documentation' => '선적 서류 비치',
+    'report' => '문제 보고'
 ];
