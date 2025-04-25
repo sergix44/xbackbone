@@ -161,4 +161,5 @@ return [
     'recaptcha_secret_key' => 'reCAPTCHA 密钥',
     'prerelease_channel' => '预发布渠道',
     'recaptcha_keys_required' => '所有 reCAPTCHA 密钥都是必需的。',
+    'show_all_tags' => '显示所有标签',
 ];
