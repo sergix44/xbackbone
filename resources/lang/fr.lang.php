@@ -163,4 +163,5 @@ return [
     'copied' => 'Copié dans le presse-papier !',
     'image_embeds' => 'Intégrer des images',
     'vanity_url' => 'URL personnalisée',
+    'show_all_tags' => 'Voir tous les tags',
 ];
