@@ -162,4 +162,5 @@ return [
     'image_embeds' => 'Inbäddade bilder',
     'vanity_url' => 'Anpassad URL',
     'show_all_tags' => 'Visa alla taggar',
+    'paste_to_upload_hint' => 'Tips: Du kan klistra in bilder eller videor för att ladda upp dem.',
 ];
