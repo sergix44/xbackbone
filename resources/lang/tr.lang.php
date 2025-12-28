@@ -162,4 +162,5 @@ return [
     'switch_to' => 'Şuna geç',
     'vanity_url' => 'Özel URL',
     'show_all_tags' => 'Tüm etiketleri göster',
+    'paste_to_upload_hint' => 'İpucu: Yüklemek için görüntüleri veya videoları yapıştırabilirsiniz.',
 ];
