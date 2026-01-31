@@ -52,7 +52,7 @@ return [
     'reg_date' => 'Data de Inregistrare',
     'none' => 'Nimic',
     'open' => 'Deschis',
-    'confirm' => 'Confirmare',
+    'confirm' => 'Confirmă',
     'bad_login' => 'Date gresite.',
     'account_disabled' => 'Contul tau este dezactivat.',
     'welcome' => 'Bine ai venit, %s!',
@@ -160,4 +160,7 @@ return [
     'account_media_deleted' => 'Toata media de pe cont a fost eliminata.',
     'changelog' => 'Schimbari',
     'mail.new_account_text_with_pw' => 'Hey %s!<br>un nou cont a fost creat pentru tine pe %s (<a href="%s">%s</a>), cu urmatoarele date:<br><br>Nume de utilizator: %s<br>Parola: %s<br><br>Apasa pe urmatorul link pentru a te autentifica:<br><a href="%s">%s</a>',
+    'vanity_url' => 'URL personalizat',
+    'paste_to_upload_hint' => 'Sfat: Puteți lipi imagini sau videoclipuri pentru a le încărca.',
+    'show_all_tags' => 'Afișează toate etichetele',
 ];
