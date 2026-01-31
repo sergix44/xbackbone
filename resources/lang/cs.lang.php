@@ -42,7 +42,7 @@ return [
     'bad_login' => 'Špatné údaje.',
     'installed' => 'Instalace úspěšně dokončena!',
     'confirm_string' => 'Jste si jisti?',
-    'confirm' => 'Potvrzení',
+    'confirm' => 'Potvrdit',
     'open' => 'Otevřený',
     'none' => 'Žádný',
     'reg_date' => 'Datum registrace',
@@ -160,4 +160,7 @@ return [
     'drop_to_upload' => 'Klikněte nebo sem přetáhněte soubory pro nahrání.',
     'no_upload_token' => 'Nemáte osobní nahrávací token. (Vygenerujte si jej a zkuste to znovu.)',
     'image_embeds' => 'Vložené obrázky',
+    'vanity_url' => 'Vlastní URL adresa',
+    'paste_to_upload_hint' => 'Tip: Obrázky nebo videa můžete vložit a nahrát.',
+    'show_all_tags' => 'Zobrazit všechny tagy',
 ];
