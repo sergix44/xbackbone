@@ -167,4 +167,5 @@ return [
     'vanity_url' => 'Eigen URL',
     'image_embeds' => 'Afbeeldingen insluiten',
     'show_all_tags' => 'Toon alle tags',
+    'paste_to_upload_hint' => 'Tip: Je kunt afbeeldingen of video\'s plakken om ze te uploaden.',
 ];
