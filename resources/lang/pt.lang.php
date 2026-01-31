@@ -163,4 +163,5 @@ return [
     'image_embeds' => 'Embutir imagens',
     'vanity_url' => 'URL personalizado',
     'show_all_tags' => 'Mostrar todas as tags',
+    'paste_to_upload_hint' => 'Dica: pode colar imagens ou vídeos para os carregar.',
 ];
