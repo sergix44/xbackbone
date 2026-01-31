@@ -162,4 +162,5 @@ return [
     'image_embeds' => 'Intégrer des images',
     'vanity_url' => 'URL personnalisée',
     'show_all_tags' => 'Voir tous les tags',
+    'paste_to_upload_hint' => 'Astuce : vous pouvez coller des images ou des vidéos pour les télécharger.',
 ];
