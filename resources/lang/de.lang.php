@@ -167,4 +167,5 @@ return [
     'copied' => 'In Zwischenablage kopiert!',
     'image_embeds' => 'Bilder einbetten',
     'vanity_url' => 'Benutzerdefinierte URL',
+    'paste_to_upload_hint' => 'Tipp: Sie können Bilder oder Videos einfügen, um sie hochzuladen.',
 ];
