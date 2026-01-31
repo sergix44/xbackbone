@@ -161,4 +161,6 @@ return [
     'enforce_language' => '언어 설정',
     'lang' => 'Korean',
     'vanity_url' => '사용자 정의 URL',
+    'paste_to_upload_hint' => '팁: 이미지나 동영상을 붙여넣어 업로드할 수 있습니다.',
+    'show_all_tags' => '모든 태그 표시',
 ];
