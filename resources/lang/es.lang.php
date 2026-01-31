@@ -167,4 +167,5 @@ return [
     'custom_head_set' => 'Cabecera HTML personalizada aplicada.',
     'vanity_url' => 'URL personalizada',
     'show_all_tags' => 'Mostrar todas las etiquetas',
+    'paste_to_upload_hint' => 'Consejo: Puedes pegar imágenes o vídeos para subirlos.',
 ];
