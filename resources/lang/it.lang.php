@@ -163,4 +163,6 @@ return [
     'copied' => 'Copiato negli appunti!',
     'image_embeds' => 'Incorpora immagini',
     'vanity_url' => 'URL personalizzato',
+    'paste_to_upload_hint' => 'Suggerimento: puoi incollare immagini o video per caricarli.',
+    'show_all_tags' => 'Mostra tutti i tag',
 ];
