@@ -163,4 +163,6 @@ return [
     'image_embeds' => 'Osadź obrazy',
     'copied' => 'Skopiowano!',
     'vanity_url' => 'Niestandardowy adres URL',
+    'paste_to_upload_hint' => 'Wskazówka: Możesz wkleić obrazy lub filmy, aby je przesłać.',
+    'show_all_tags' => 'Pokaż wszystkie tagi',
 ];
