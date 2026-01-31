@@ -162,4 +162,5 @@ return [
     'image_embeds' => 'Sematkan gambar',
     'vanity_url' => 'URL kostum',
     'show_all_tags' => 'Tampilkan semua tag',
+    'paste_to_upload_hint' => 'Tips: Anda dapat menyalin dan menempelkan gambar atau video untuk mengunggahnya.',
 ];
