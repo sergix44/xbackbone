@@ -100,7 +100,7 @@ return [
     'bad_login' => 'Helytelen hitelesítő adatok.',
     'installed' => 'A telepítés sikeresen befejeződött!',
     'confirm_string' => 'Biztos vagy benne?',
-    'confirm' => 'Jóváhagyás',
+    'confirm' => 'Megerősítés',
     'open' => 'Nyitva',
     'none' => 'Senki',
     'reg_date' => 'Regisztráció dátuma',
@@ -161,4 +161,6 @@ return [
     'lang' => 'Magyar',
     'image_embeds' => 'Képek beágyazása',
     'vanity_url' => 'Egyedi URL',
+    'paste_to_upload_hint' => 'Tipp: Képeket vagy videókat beilleszthetsz, hogy feltöltsd őket.',
+    'show_all_tags' => 'Minden címke megjelenítése',
 ];
