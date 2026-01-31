@@ -161,4 +161,6 @@ return [
     'mail.recover_text' => 'Hei %s, <br>tilillesi on pyydetty salasanan palautusta. Suorita toimenpide napsauttamalla seuraavaa linkkiä:<br><br><a href="%s">%s</a><br><br>Jos et ollut sinä, joka pyysit salasanan vaihtamista, ohita tämä sähköposti.',
     'quota_enabled' => 'Käyttäjäkiintiön ottaminen käyttöön',
     'vanity_url' => 'Mukautettu URL',
+    'paste_to_upload_hint' => 'Vinkki: Voit liittää kuvia tai videoita ladataksesi ne.',
+    'show_all_tags' => 'Näytä kaikki tunnisteet',
 ];
