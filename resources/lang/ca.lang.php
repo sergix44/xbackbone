@@ -46,7 +46,7 @@ return [
     'reg_date' => 'Data Registre',
     'none' => 'Cap',
     'open' => 'Obert',
-    'confirm' => 'Confirmació',
+    'confirm' => 'Confirmar',
     'confirm_string' => 'Estàs segur?',
     'installed' => 'Instal·lació satisfactòria!',
     'bad_login' => 'Credencials Errònies.',
@@ -160,4 +160,7 @@ return [
     'mail.recover_text' => 'Hola %s,<br>s\'ha sol·licitat un restabliment de la contrasenya per al vostre compte. Per completar el procediment, feu clic a l\'enllaç següent:<br><br><a href="%s">%s</a><br><br>Si no heu estat vosaltres qui heu sol·licitat la restabliment de la contrasenya, simplement ignora aquest correu electrònic.',
     'recaptcha_enabled' => 'reCAPTCHA Habilitat',
     'mail.new_account_text_with_reset' => 'Hola, %s!<br>s\'ha creat un compte nou a %s (<a href="%s">%s</a>), feu clic a l\'enllaç següent per establir una contrasenya i activar-la:<br ><br><a href="%s">%s</a>',
+    'vanity_url' => 'URL personalitzada',
+    'paste_to_upload_hint' => 'Consell: Pots enganxar imatges o vídeos per pujar-los.',
+    'show_all_tags' => 'Mostra totes les etiquetes',
 ];
