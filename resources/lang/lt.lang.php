@@ -19,7 +19,7 @@ return [
     'bad_login' => 'Neteisingi įgaliojimai.',
     'installed' => 'Diegimas sėkmingai baigtas!',
     'confirm_string' => 'Ar tikrai?',
-    'confirm' => 'Patvirtinimas',
+    'confirm' => 'Patvirtinti',
     'none' => 'Nėra',
     'reg_date' => 'Registracijos data',
     'admin' => 'Administratorius',
@@ -160,4 +160,7 @@ return [
     'maintenance' => 'Palaikymas',
     'name' => 'Vardas',
     'time' => 'Laikas',
+    'vanity_url' => 'Pasirinktinis URL',
+    'paste_to_upload_hint' => 'Patarimas: galite įklijuoti vaizdus ar vaizdo įrašus, kad juos įkeltumėte.',
+    'show_all_tags' => 'Rodyti visas žymes',
 ];
