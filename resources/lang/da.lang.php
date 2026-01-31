@@ -102,7 +102,7 @@ return [
     'bad_login' => 'Forkerte loginoplysninger.',
     'installed' => 'Installationen blev gennemført!',
     'confirm_string' => 'Er du sikker?',
-    'confirm' => 'Bekræftelse',
+    'confirm' => 'Bekræft',
     'open' => 'Åbn',
     'none' => 'Ingen',
     'reg_date' => 'Registreringsdato',
@@ -161,4 +161,7 @@ return [
     'image_embeds' => 'Integrer billeder',
     'mail.new_account_text_with_pw' => 'Hej %s!<br>en ny konto blev oprettet til dig den %s (<a href="%s">%s</a>), med følgende oplysninger:<br><br>Brugernavn: %s<br>Adgangskode: %s<br><br>Klik på følgende link for at gå til login-siden:<br><a href="%s">%s</a>',
     'path_not_writable' => 'Outputstien er ikke skrivbar.',
+    'vanity_url' => 'Brugerdefineret URL',
+    'paste_to_upload_hint' => 'Tip: Du kan indsætte billeder eller videoer for at uploade dem.',
+    'show_all_tags' => 'Vis alle tags',
 ];
