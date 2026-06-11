@@ -7,7 +7,5 @@
         "phpstorm",
         "vscode"
     ],
-    "guidelines": [
-        "laravel/fortify"
-    ]
+    "guidelines": []
 }
