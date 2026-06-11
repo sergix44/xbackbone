@@ -39,7 +39,7 @@
     </div>
 
     {{-- INFO: details below the fold --}}
-    <div class="card @container bg-base-100 w-full max-w-5xl shadow-lg"
+    <div class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] max-w-5xl shadow-lg"
          :style="contentWidth ? `width: ${contentWidth}px` : null">
         <div class="card-body">
             <h2 class="card-title break-all">{{ $resource->filename ?? $resource->code }}</h2>
