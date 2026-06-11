@@ -1,11 +1,19 @@
 {
     "agents": [
-        "copilot",
-        "phpstorm"
+        "claude_code",
+        "junie"
     ],
-    "editors": [
-        "phpstorm",
-        "vscode"
-    ],
-    "guidelines": []
+    "cloud": false,
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch": false,
+    "sail": false,
+    "skills": [
+        "fortify-development",
+        "laravel-best-practices",
+        "pennant-development",
+        "livewire-development",
+        "pest-testing",
+        "tailwindcss-development"
+    ]
 }

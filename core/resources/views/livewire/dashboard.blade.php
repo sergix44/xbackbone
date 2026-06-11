@@ -39,8 +39,8 @@
         $wire.showUploadDrawer = true;
     });
 
-    Livewire.on('clipboard:copied', (text) => {
-        $wire.$call('success', 'Copied to clipboard ', text);
+    Livewire.on('clipboard:copied', ({text}) => {
+        $wire.$call('success', 'Copied to clipboard', text);
     });
 </script>
 @endscript

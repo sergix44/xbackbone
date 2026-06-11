@@ -16,15 +16,22 @@ class Profile extends Component
     protected $listeners = [
         'reload' => '$refresh',
     ];
+
     public string $tab;
+
     public User $user;
 
     /* PROFILE */
     public string $name = '';
+
     public string $email = '';
+
     public ?string $currentPassword = null;
+
     public ?string $newPassword = null;
+
     public ?string $theme = null;
+
     public array $themes = [];
 
     /* TOKENS */
@@ -41,7 +48,7 @@ class Profile extends Component
             $this->theme = $this->user->theme ?? Feature::value('default-theme');
 
             $this->themes = collect(config('themes'))
-                ->map(fn($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
+                ->map(fn ($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
                 ->sortBy('name')
                 ->prepend(['id' => null, 'name' => '(default)'])
                 ->toArray();
@@ -67,7 +74,11 @@ class Profile extends Component
         if ($this->currentPassword) {
             app(UpdateUserPassword::class)->update(
                 auth()->user(),
-                ['current_password' => $this->currentPassword, 'password' => $this->newPassword]
+                [
+                    'current_password' => $this->currentPassword,
+                    'password' => $this->newPassword,
+                    'password_confirmation' => $this->newPassword,
+                ]
             );
         }
 
@@ -78,6 +89,7 @@ class Profile extends Component
     {
         if (empty($this->selectedTokens)) {
             $this->warning(__('No tokens selected.'));
+
             return;
         }
 

@@ -9,6 +9,7 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Livewire\Auth\ConfirmPassword;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -50,6 +51,10 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginView(static function () {
             return app()->call(Login::class);
+        });
+
+        Fortify::registerView(static function () {
+            return app()->call(Register::class);
         });
 
         Fortify::requestPasswordResetLinkView(static function () {

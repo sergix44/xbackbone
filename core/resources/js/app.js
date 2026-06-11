@@ -19,7 +19,7 @@ function clipboard(subject) {
 
 Alpine.magic('clipboard', () => async subject => {
     await clipboard(subject)
-    Livewire.dispatch('clipboard:copied', subject)
+    Livewire.dispatch('clipboard:copied', {text: subject})
 })
 
 Livewire.start()

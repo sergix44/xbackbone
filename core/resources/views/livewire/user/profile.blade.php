@@ -48,8 +48,8 @@
                         <x-input placeholder="Username" label="Username" type="text" wire:model="name" inline/>
                         <x-input placeholder="E-mail" label="E-mail" type="email" wire:model="email" inline/>
 
-                        <x-input placeholder="Current password" label="Current password" type="password" inline/>
-                        <x-input placeholder="New password" label="New password" type="password" inline/>
+                        <x-input placeholder="Current password" label="Current password" type="password" wire:model="currentPassword" inline/>
+                        <x-input placeholder="New password" label="New password" type="password" wire:model="newPassword" inline/>
 
                         <div>
                             <x-button label="Save" icon="o-check-circle" class="btn-primary" wire:click="updateProfile()" spinner/>

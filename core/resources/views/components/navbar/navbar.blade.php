@@ -20,9 +20,9 @@
     </div>
     <div class="navbar-center hidden lg:flex">
         @hasSection('menu-items')
-            <x-menu class="menu-horizontal z-50 flex items-center gap-1">
+            <div class="z-50 flex items-center gap-2">
                 @yield('menu-items')
-            </x-menu>
+            </div>
         @elseif(auth()->check())
             <x-menu activate-by-route class="menu-horizontal z-50 flex items-center gap-1">
                 @include('components.navbar.menu-items')
