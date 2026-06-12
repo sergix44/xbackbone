@@ -21,6 +21,7 @@ class ResourceFactory extends Factory
             'extension' => 'bin',
             'size' => fake()->numberBetween(1, 10 * 1024 * 1024),
             'mime' => 'application/octet-stream',
+            'fingerprint' => fake()->unique()->sha1(),
         ];
     }
 

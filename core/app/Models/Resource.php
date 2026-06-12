@@ -93,6 +93,23 @@ class Resource extends Model
         return Attribute::make(get: fn () => route('thumbnail', $this->code));
     }
 
+    /**
+     * The physical storage key of the file, content-addressed by fingerprint so that
+     * duplicate uploads share a single stored file.
+     */
+    public function storagePath(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->fingerprint);
+    }
+
+    /**
+     * The physical storage key of the generated preview, shared across duplicates.
+     */
+    public function previewPath(): Attribute
+    {
+        return Attribute::make(get: fn () => "{$this->fingerprint}.preview.{$this->preview_extension}");
+    }
+
     public function isDir(): Attribute
     {
         return Attribute::make(get: fn () => $this->type === ResourceType::DIRECTORY);

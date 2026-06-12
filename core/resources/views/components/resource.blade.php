@@ -8,7 +8,8 @@
                 <x-button icon="m-link" class="btn-success btn-xs btn-square btn-soft" @click="$clipboard('{{$resource?->preview_ext_url}}')"/>
                 <x-button icon="m-cloud-arrow-down" class="btn-info btn-xs btn-square btn-soft" :link="route('download', ['resource' => $resource->code])" no-wire-navigate external/>
                 <x-button icon="m-eye-slash" class="btn-warning btn-xs btn-square btn-soft"/>
-                <x-button icon="m-x-mark" class="btn-error btn-xs btn-square btn-soft"/>
+                <x-button icon="m-x-mark" class="btn-error btn-xs btn-square btn-soft"
+                          wire:click="confirmDelete({{ $resource->id }})"/>
             </div>
         </div>
     </div>

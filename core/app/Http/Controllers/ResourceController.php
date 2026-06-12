@@ -11,7 +11,7 @@ class ResourceController extends Controller
 {
     public function raw(Resource $resource): StreamedResponse
     {
-        return Storage::response($resource->code, $resource->filename);
+        return Storage::response($resource->storage_path, $resource->filename);
     }
 
     public function preview(Resource $resource, GetResourcePreview $getResourcePreview)
@@ -21,6 +21,6 @@ class ResourceController extends Controller
 
     public function download(Resource $resource): StreamedResponse
     {
-        return Storage::response($resource->code, $resource->filename, disposition: 'attachment');
+        return Storage::response($resource->storage_path, $resource->filename, disposition: 'attachment');
     }
 }

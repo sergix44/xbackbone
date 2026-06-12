@@ -12,12 +12,12 @@ class GetResourcePreview
     public function __invoke(Resource $resource): StreamedResponse
     {
         if ($resource->has_preview) {
-            return Storage::response("{$resource->code}.preview.{$resource->preview_extension}");
+            return Storage::response($resource->preview_path);
         }
 
         // Small displayable images never get a generated preview: serve the original file
         if ($resource->type === ResourceType::IMAGE && $resource->is_displayable) {
-            return Storage::response($resource->code, $resource->filename);
+            return Storage::response($resource->storage_path, $resource->filename);
         }
 
         abort(404);

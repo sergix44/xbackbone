@@ -50,8 +50,11 @@ function pngFixture(int $width, int $height): string
 
 function storedResource(string $factoryState, string $contents): Resource
 {
-    $resource = Resource::factory()->{$factoryState}()->create(['size' => strlen($contents)]);
-    Storage::put($resource->code, $contents);
+    $resource = Resource::factory()->{$factoryState}()->create([
+        'size' => strlen($contents),
+        'fingerprint' => sha1($contents),
+    ]);
+    Storage::put($resource->storage_path, $contents);
 
     return $resource;
 }
@@ -87,7 +90,7 @@ test('generates a webp preview for an svg resource', function () {
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertExists("{$resource->code}.preview.webp");
+    Storage::assertExists("{$resource->fingerprint}.preview.webp");
     $resource->refresh();
     expect($resource->preview_type)->toBe(ResourceType::IMAGE)
         ->and($resource->preview_extension)->toBe('webp');
@@ -99,8 +102,8 @@ test('generates a downscaled webp preview for a large raster image', function ()
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertExists("{$resource->code}.preview.webp");
-    [$width, $height] = getimagesizefromstring(Storage::get("{$resource->code}.preview.webp"));
+    Storage::assertExists("{$resource->fingerprint}.preview.webp");
+    [$width, $height] = getimagesizefromstring(Storage::get("{$resource->fingerprint}.preview.webp"));
     expect($width)->toBeLessThanOrEqual(config('previews.max_dimension'))
         ->and($height)->toBeLessThanOrEqual(config('previews.max_dimension'))
         ->and($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
@@ -111,7 +114,7 @@ test('generates a preview from the first pdf page', function () {
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertExists("{$resource->code}.preview.webp");
+    Storage::assertExists("{$resource->fingerprint}.preview.webp");
     expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
 })->skip(fn () => ! extension_loaded('imagick') || empty(Imagick::queryFormats('PDF')), 'imagick PDF support not available');
 
@@ -124,7 +127,7 @@ test('generates a frame preview for a video', function () {
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertExists("{$resource->code}.preview.webp");
+    Storage::assertExists("{$resource->fingerprint}.preview.webp");
     expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
 })->skip(fn () => app(VideoFramePreviewGenerator::class)->createFfmpeg() === null, 'ffmpeg not available');
 
@@ -134,7 +137,7 @@ test('leaves preview fields null when generation fails', function () {
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertMissing("{$resource->code}.preview.webp");
+    Storage::assertMissing("{$resource->fingerprint}.preview.webp");
     $resource->refresh();
     expect($resource->preview_type)->toBeNull()
         ->and($resource->preview_extension)->toBeNull();
@@ -145,7 +148,7 @@ test('does nothing for resources that do not need a preview', function () {
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertMissing("{$resource->code}.preview.webp");
+    Storage::assertMissing("{$resource->fingerprint}.preview.webp");
     expect($resource->refresh()->preview_type)->toBeNull();
 });
 
@@ -154,11 +157,22 @@ test('does nothing and does not crash for a resource without a stored file', fun
 
     (new GenerateResourcePreview($resource))->handle();
 
-    Storage::assertMissing("{$resource->code}.preview.webp");
+    Storage::assertMissing("{$resource->fingerprint}.preview.webp");
     expect($resource->refresh()->preview_type)->toBeNull();
 });
 
-test('regenerating a preview overwrites the previous one', function () {
+test('skips gracefully when a matching generator has no stored file to read', function () {
+    config()->set('previews.raster_size_threshold', 1);
+    // Large image: RasterImagePreviewGenerator matches, but no file was ever stored.
+    $resource = Resource::factory()->image()->create(['size' => 5_000_000]);
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertMissing("{$resource->fingerprint}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBeNull();
+});
+
+test('is idempotent when the job runs twice', function () {
     config()->set('previews.raster_size_threshold', 1);
     $resource = storedResource('image', pngFixture(800, 600));
 
@@ -166,7 +180,7 @@ test('regenerating a preview overwrites the previous one', function () {
     $job->handle();
     $job->handle();
 
-    Storage::assertExists("{$resource->code}.preview.webp");
+    Storage::assertExists("{$resource->fingerprint}.preview.webp");
     expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE)
         ->and($resource->preview_extension)->toBe('webp');
 });

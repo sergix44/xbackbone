@@ -30,6 +30,15 @@
     <div class="flex justify-center mt-4">
         {{ $this->resources->links() }}
     </div>
+
+    <x-modal wire:model="confirmingDelete" title="Delete resource"
+             subtitle="This action cannot be undone." separator>
+        <p>Are you sure you want to delete this resource?</p>
+        <x-slot:actions>
+            <x-button label="Cancel" @click="$wire.confirmingDelete = false"/>
+            <x-button label="Delete" class="btn-error" wire:click="deleteResource" spinner="deleteResource"/>
+        </x-slot:actions>
+    </x-modal>
 </div>
 
 @script

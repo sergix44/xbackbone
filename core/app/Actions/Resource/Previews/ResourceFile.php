@@ -32,10 +32,10 @@ class ResourceFile
      */
     public function stream()
     {
-        $stream = Storage::readStream($this->resource->code);
+        $stream = Storage::readStream($this->resource->storage_path);
 
         if (! is_resource($stream)) {
-            throw new RuntimeException("Unable to read resource file [{$this->resource->code}].");
+            throw new RuntimeException("Unable to read resource file [{$this->resource->storage_path}].");
         }
 
         return $this->streams[] = $stream;
@@ -50,7 +50,7 @@ class ResourceFile
         $disk = Storage::disk();
 
         if ($disk->getAdapter() instanceof LocalFilesystemAdapter) {
-            return $disk->path($this->resource->code);
+            return $disk->path($this->resource->storage_path);
         }
 
         $path = sys_get_temp_dir().'/xbb-preview-'.bin2hex(random_bytes(8)).'.'.$this->resource->extension;

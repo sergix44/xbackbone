@@ -31,8 +31,13 @@ class StoreResource
             $name = $file?->getClientOriginalName() ?? $file?->hashName();
         }
 
-        /** @var resource $resource */
-        return DB::transaction(function () use ($user, $file, $name, $data) {
+        $fingerprint = $file ? sha1_file($file->getRealPath()) : sha1($data);
+
+        return DB::transaction(function () use ($user, $file, $name, $data, $fingerprint) {
+            // Content-addressed deduplication: an existing resource with the same fingerprint
+            // already has the physical file (and possibly a preview) stored.
+            $existing = Resource::query()->where('fingerprint', $fingerprint)->first();
+
             $resource = Resource::query()->create([
                 'type' => $this->findType($file, $data),
                 'user_id' => $user->id,
@@ -42,6 +47,10 @@ class StoreResource
                 'extension' => $this->fromFilename($file) ?? $file?->extension() ?? 'txt',
                 'name' => $name,
                 'data' => $data,
+                'fingerprint' => $fingerprint,
+                // Inherit the preview from a duplicate so the UI has one immediately.
+                'preview_type' => $existing?->preview_type,
+                'preview_extension' => $existing?->preview_extension,
             ]);
 
             if (! $resource) {
@@ -50,16 +59,16 @@ class StoreResource
 
             $code = $this->genId->encode([$user->id, $resource->id]);
 
-            if ($file) {
+            // Only write the file when this content isn't already stored.
+            if ($file && ! $existing) {
                 $stream = fopen($file->getRealPath(), 'rb');
-                if (! Storage::put($code, $stream)) {
+                if (! Storage::put($fingerprint, $stream)) {
                     throw new RuntimeException('Failed to store the file.');
                 }
             }
 
             $resource->update([
                 'code' => $code,
-                'fingerprint' => $file ? sha1_file($file->getRealPath()) : sha1($data),
                 'published_at' => now(),
             ]);
 
