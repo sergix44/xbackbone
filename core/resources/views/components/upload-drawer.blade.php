@@ -1,3 +1,13 @@
+@php
+    $uploadLimits = array_filter([
+        \App\Support\Helpers::iniSizeToBytes((string) ini_get('upload_max_filesize')),
+        \App\Support\Helpers::iniSizeToBytes((string) ini_get('post_max_size')),
+    ]);
+
+    $maxUploadSize = $uploadLimits === [] ? 0 : min($uploadLimits);
+    $maxUploadSizeHuman = $maxUploadSize > 0 ? \App\Support\Helpers::humanizeBytes($maxUploadSize) : null;
+@endphp
+
 <x-drawer
     wire:model="showUploadDrawer"
     class="w-11/12 lg:w-1/3"
@@ -12,6 +22,9 @@
             <x-icon name="o-cloud-arrow-up" class="text-base-content/70 w-20 h-20"/>
             <div class="flex flex-col items-center">
                 <span class="text-base-content/70">Drop files here or click to upload</span>
+                @if ($maxUploadSizeHuman)
+                    <span class="text-base-content/50 text-xs mt-1">Maximum upload size: {{ $maxUploadSizeHuman }}</span>
+                @endif
             </div>
         </div>
     </div>
@@ -22,13 +35,15 @@
                     <div class="flex items-center justify-between mb-2 gap-2">
                         <h2 class="card-title truncate block" x-text="file.name"></h2>
                         <div class="card-actions justify-end">
-                            <x-button x-show="!file.completed && !file.canceled" icon="o-x-mark" class="btn-circle btn-xs btn-error" x-on:click="cancelFile(file.id)"/>
+                            <x-button x-show="!file.completed && !file.canceled && !file.failed" icon="o-x-mark" class="btn-circle btn-xs btn-error" x-on:click="cancelFile(file.id)"/>
                             <x-button x-show="file.completed" icon="o-check" class="btn-circle btn-xs btn-success" x-on:click="removeFile(file.id)"/>
                             <x-button x-show="file.canceled" icon="o-x-mark" class="btn-circle btn-xs btn-neutral" x-on:click="removeFile(file.id)"/>
+                            <x-button x-show="file.failed" icon="o-exclamation-triangle" class="btn-circle btn-xs btn-error" x-on:click="removeFile(file.id)"/>
                         </div>
                     </div>
-                    <progress x-show="!file.completed && !file.canceled" class="progress progress-primary w-full" max="100" x-bind:value="file.progress"></progress>
+                    <progress x-show="!file.completed && !file.canceled && !file.failed" class="progress progress-primary w-full" max="100" x-bind:value="file.progress"></progress>
                     <progress x-show="file.completed" class="progress progress-success w-full" max="100" value="100"></progress>
+                    <span x-show="file.failed" class="text-error text-xs break-words" x-text="file.error"></span>
                 </div>
             </div>
         </template>
@@ -39,6 +54,8 @@
 <script>
     Alpine.data('uploads', () => ({
         counter: 0,
+        maxUploadSize: {{ $maxUploadSize }},
+        maxUploadSizeHuman: @js($maxUploadSizeHuman),
         list: {
             // // Example file list
             // 0: {id: 0, name: 'file1.txt', completed: false, canceled: false, progress: 20},
@@ -85,8 +102,17 @@
                     name: file.name,
                     completed: false,
                     canceled: false,
+                    failed: false,
+                    error: '',
                     progress: 0,
                 };
+
+                if (this.maxUploadSize > 0 && file.size > this.maxUploadSize) {
+                    console.log(`File too large: ${file.name}`);
+                    this.list[id].failed = true;
+                    this.list[id].error = `File is too large. The maximum upload size is ${this.maxUploadSizeHuman}.`;
+                    continue;
+                }
 
                 console.log(`Uploading file: ${file.name}`);
                 $wire.upload('files.' + id, file, (uploadedFilename) => {
@@ -98,7 +124,10 @@
                     this.checkAllCompleted()
                 }, () => {
                     console.log(`File upload failed: ${file.name}`);
-                    delete this.list[id];
+                    this.list[id].failed = true;
+                    this.list[id].error = this.maxUploadSizeHuman
+                        ? `Upload failed. The file may exceed the server upload limit of ${this.maxUploadSizeHuman}.`
+                        : 'Upload failed. The file may exceed the server upload limits.';
                 }, (event) => {
                     console.log(`File upload progress: ${event.detail.progress}`);
                     this.list[id].progress = event.detail.progress;

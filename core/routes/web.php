@@ -35,6 +35,6 @@ Route::get('raw/{resource:code}.{ext}', [ResourceController::class, 'raw'])->nam
 Route::get('raw/{resource:code}', [ResourceController::class, 'raw'])->name('raw');
 Route::get('download/{resource:code}.{ext}', [ResourceController::class, 'download'])->name('download.ext');
 Route::get('download/{resource:code}', [ResourceController::class, 'download'])->name('download');
-Route::get('thumbnail/{resource:code}', [ResourceController::class, 'preview'])->name('thumbnail');
+Route::get('thumbnail/{resource:code}', [ResourceController::class, 'thumbnail'])->name('thumbnail');
 Route::livewire('{resource:code}.{ext}', Preview::class)->name('preview.ext');
 Route::livewire('{resource:code}', Preview::class)->name('preview');

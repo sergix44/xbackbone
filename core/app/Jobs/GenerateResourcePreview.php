@@ -80,6 +80,7 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
+            $image->resizeCanvas($maxDimension, $maxDimension);
 
             Storage::put(
                 $previewKey,
