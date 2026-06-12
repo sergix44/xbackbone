@@ -33,4 +33,42 @@ class ResourceFactory extends Factory
             'mime' => 'image/png',
         ]);
     }
+
+    public function svg(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => ResourceType::IMAGE,
+            'filename' => fake()->word().'.svg',
+            'extension' => 'svg',
+            'mime' => 'image/svg+xml',
+        ]);
+    }
+
+    public function pdf(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => ResourceType::PDF,
+            'filename' => fake()->word().'.pdf',
+            'extension' => 'pdf',
+            'mime' => 'application/pdf',
+        ]);
+    }
+
+    public function video(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => ResourceType::VIDEO,
+            'filename' => fake()->word().'.mp4',
+            'extension' => 'mp4',
+            'mime' => 'video/mp4',
+        ]);
+    }
+
+    public function withPreview(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'preview_type' => ResourceType::IMAGE,
+            'preview_extension' => 'webp',
+        ]);
+    }
 }

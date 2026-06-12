@@ -33,6 +33,7 @@ class Resource extends Model
         'password',
         'published_at',
         'expires_at',
+        'name',
     ];
 
     protected $hidden = [
@@ -43,6 +44,7 @@ class Resource extends Model
     {
         return [
             'type' => ResourceType::class,
+            'preview_type' => ResourceType::class,
             'hidden' => 'boolean',
             'published_at' => 'datetime',
             'expires_at' => 'datetime',
@@ -68,41 +70,46 @@ class Resource extends Model
 
     public function rawUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->extension ? route('raw.ext', ['resource' => $this->code, 'ext' => $this->extension]) : route('raw', $this->code));
+        return Attribute::make(get: fn () => $this->extension ? route('raw.ext', ['resource' => $this->code, 'ext' => $this->extension]) : route('raw', $this->code));
     }
 
     public function downloadUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->extension ? route('download.ext', ['resource' => $this->code, 'ext' => $this->extension]) : route('download', $this->code));
+        return Attribute::make(get: fn () => $this->extension ? route('download.ext', ['resource' => $this->code, 'ext' => $this->extension]) : route('download', $this->code));
     }
 
     public function previewUrl(): Attribute
     {
-        return Attribute::make(get: fn() => route('preview', $this->code));
+        return Attribute::make(get: fn () => route('preview', $this->code));
     }
 
     public function previewExtUrl(): Attribute
     {
-        return Attribute::make(get: fn() => route('preview.ext', ['resource' => $this->code, 'ext' => $this->extension]));
+        return Attribute::make(get: fn () => route('preview.ext', ['resource' => $this->code, 'ext' => $this->extension]));
+    }
+
+    public function thumbnailUrl(): Attribute
+    {
+        return Attribute::make(get: fn () => route('thumbnail', $this->code));
     }
 
     public function isDir(): Attribute
     {
-        return Attribute::make(get: fn() => $this->type === ResourceType::DIRECTORY);
+        return Attribute::make(get: fn () => $this->type === ResourceType::DIRECTORY);
     }
 
     public function sizeHumanReadable(): Attribute
     {
-        return Attribute::make(get: fn() => $this->size ? Helpers::humanizeBytes($this->size) : null);
+        return Attribute::make(get: fn () => $this->size ? Helpers::humanizeBytes($this->size) : null);
     }
 
     public function hasPreview(): Attribute
     {
-        return Attribute::make(get: fn() => $this->preview_type !== null);
+        return Attribute::make(get: fn () => $this->preview_type !== null);
     }
 
     public function isDisplayable(): Attribute
     {
-        return Attribute::make(get: fn() => $this->type->isDisplayable($this->mime));
+        return Attribute::make(get: fn () => $this->type->isDisplayable($this->mime));
     }
 }

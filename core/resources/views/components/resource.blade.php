@@ -16,11 +16,15 @@
         @if($resource->is_dir ?? false)
             <x-icon name="o-folder" class="w-full h-32"></x-icon>
         @elseif($resource->has_preview)
-
+            <img src="{{ $resource->thumbnail_url }}" alt="{{ $resource->filename }}" class="h-32 w-full object-cover" loading="lazy"/>
         @else
             @switch($resource->type)
                 @case(\App\Models\Properties\ResourceType::IMAGE)
-                    img
+                    @if($resource->is_displayable)
+                        <img src="{{ $resource->thumbnail_url }}" alt="{{ $resource->filename }}" class="h-32 w-full object-cover" loading="lazy"/>
+                    @else
+                        <x-icon name="o-photo" class="w-full h-32"></x-icon>
+                    @endif
                     @break
                 @default
                     <x-icon name="o-document" class="w-full h-32"></x-icon>

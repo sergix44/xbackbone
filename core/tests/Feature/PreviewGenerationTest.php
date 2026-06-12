@@ -1,0 +1,172 @@
+<?php
+
+use App\Actions\Resource\Previews\VideoFramePreviewGenerator;
+use App\Jobs\GenerateResourcePreview;
+use App\Models\Properties\ResourceType;
+use App\Models\Resource;
+use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+
+beforeEach(function () {
+    Storage::fake();
+});
+
+function svgFixture(): string
+{
+    return <<<'SVG'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+            <rect width="100" height="100" fill="red"/>
+        </svg>
+        SVG;
+}
+
+function pdfFixture(): string
+{
+    return <<<'PDF'
+        %PDF-1.4
+        1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+        2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+        3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 200 200] >> endobj
+        trailer << /Root 1 0 R >>
+        %%EOF
+        PDF;
+}
+
+function pngFixture(int $width, int $height): string
+{
+    $image = imagecreatetruecolor($width, $height);
+    imagefilledrectangle($image, 0, 0, $width - 1, $height - 1, imagecolorallocate($image, 0, 128, 255));
+
+    ob_start();
+    imagepng($image);
+    imagedestroy($image);
+
+    return ob_get_clean();
+}
+
+function storedResource(string $factoryState, string $contents): Resource
+{
+    $resource = Resource::factory()->{$factoryState}()->create(['size' => strlen($contents)]);
+    Storage::put($resource->code, $contents);
+
+    return $resource;
+}
+
+test('always queues preview generation when a file is uploaded', function () {
+    Queue::fake();
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->postJson(route('api.v1.upload'), [
+            'file' => UploadedFile::fake()->image('screen.jpg'),
+        ])
+        ->assertCreated();
+
+    Queue::assertPushed(GenerateResourcePreview::class);
+});
+
+test('always queues preview generation for data resources', function () {
+    Queue::fake();
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->postJson(route('api.v1.upload'), [
+            'data' => 'just some plain text',
+        ])
+        ->assertCreated();
+
+    Queue::assertPushed(GenerateResourcePreview::class);
+});
+
+test('generates a webp preview for an svg resource', function () {
+    $resource = storedResource('svg', svgFixture());
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertExists("{$resource->code}.preview.webp");
+    $resource->refresh();
+    expect($resource->preview_type)->toBe(ResourceType::IMAGE)
+        ->and($resource->preview_extension)->toBe('webp');
+})->skip(fn () => ! extension_loaded('imagick') || empty(Imagick::queryFormats('SVG')), 'imagick SVG support not available');
+
+test('generates a downscaled webp preview for a large raster image', function () {
+    config()->set('previews.raster_size_threshold', 1);
+    $resource = storedResource('image', pngFixture(2000, 1200));
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertExists("{$resource->code}.preview.webp");
+    [$width, $height] = getimagesizefromstring(Storage::get("{$resource->code}.preview.webp"));
+    expect($width)->toBeLessThanOrEqual(config('previews.max_dimension'))
+        ->and($height)->toBeLessThanOrEqual(config('previews.max_dimension'))
+        ->and($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
+});
+
+test('generates a preview from the first pdf page', function () {
+    $resource = storedResource('pdf', pdfFixture());
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertExists("{$resource->code}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
+})->skip(fn () => ! extension_loaded('imagick') || empty(Imagick::queryFormats('PDF')), 'imagick PDF support not available');
+
+test('generates a frame preview for a video', function () {
+    $videoPath = sys_get_temp_dir().'/xbb-test-video.mp4';
+    Process::run("ffmpeg -y -f lavfi -i color=red:s=320x240:d=1 -pix_fmt yuv420p {$videoPath}")->throw();
+
+    $resource = storedResource('video', file_get_contents($videoPath));
+    @unlink($videoPath);
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertExists("{$resource->code}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
+})->skip(fn () => app(VideoFramePreviewGenerator::class)->createFfmpeg() === null, 'ffmpeg not available');
+
+test('leaves preview fields null when generation fails', function () {
+    config()->set('previews.raster_size_threshold', 1);
+    $resource = storedResource('image', 'not really a png {{{');
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertMissing("{$resource->code}.preview.webp");
+    $resource->refresh();
+    expect($resource->preview_type)->toBeNull()
+        ->and($resource->preview_extension)->toBeNull();
+});
+
+test('does nothing for resources that do not need a preview', function () {
+    $resource = storedResource('image', pngFixture(10, 10));
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertMissing("{$resource->code}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBeNull();
+});
+
+test('does nothing and does not crash for a resource without a stored file', function () {
+    $resource = Resource::factory()->create(); // FILE type, no file stored
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertMissing("{$resource->code}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBeNull();
+});
+
+test('regenerating a preview overwrites the previous one', function () {
+    config()->set('previews.raster_size_threshold', 1);
+    $resource = storedResource('image', pngFixture(800, 600));
+
+    $job = new GenerateResourcePreview($resource);
+    $job->handle();
+    $job->handle();
+
+    Storage::assertExists("{$resource->code}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE)
+        ->and($resource->preview_extension)->toBe('webp');
+});

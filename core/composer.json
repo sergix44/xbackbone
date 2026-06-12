@@ -15,6 +15,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4",
+        "php-ffmpeg/php-ffmpeg": "^1.4",
         "robsontenorio/mary": "^2.6",
         "sergix44/imagezen": "^0.2.2",
         "spatie/laravel-activitylog": "^4.10",
@@ -28,7 +29,7 @@
         "laravel/pint": "^1.13",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
-        "pestphp/pest": "^v4.3.1",
+        "pestphp/pest": "4.6.*",
         "pestphp/pest-plugin-laravel": "^4",
         "pestphp/pest-plugin-livewire": "^4",
         "predis/predis": "^2.2"
