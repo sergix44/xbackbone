@@ -17,3 +17,15 @@
 @source "../**/*.js";
 
 /* Custom Styles */
+
+[x-cloak] { display: none !important; }
+
+.plyr {
+    --plyr-color-main: var(--color-primary, #3b82f6);
+    --plyr-video-background: transparent;
+    --plyr-range-fill-background: var(--color-primary, #3b82f6);
+}
+
+.plyr--video {
+    max-height: calc(100dvh - 8rem);
+}

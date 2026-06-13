@@ -29,6 +29,47 @@
                              class="block max-h-[calc(100dvh-8rem)] max-w-full rounded-box shadow-lg"/>
                     </a>
                     @break
+
+                @case(\App\Models\Properties\ResourceType::VIDEO)
+                    <div x-ref="media"
+                         class="rounded-box overflow-hidden shadow-lg bg-black">
+                        <div x-data="plyrPlayer()">
+                            <video x-ref="video" playsinline class="w-full">
+                                <source src="{{ $resource->raw_url }}" type="{{ $resource->mime }}">
+                            </video>
+                        </div>
+                    </div>
+                    @break
+
+                @case(\App\Models\Properties\ResourceType::AUDIO)
+                    <div x-ref="media" class="w-full max-w-7xl">
+                        <div x-data="wavesurferPlayer('{{ $resource->raw_url }}')"
+                             class="card bg-base-100 shadow-xl">
+                            <div class="card-body gap-6">
+                                <div x-ref="waveform" class="text-primary w-full"></div>
+                                <div class="flex items-center gap-4">
+                                    <button @click="toggle()" :disabled="loading"
+                                            class="btn btn-circle btn-primary">
+                                        <span x-show="loading" class="loading loading-spinner loading-sm"></span>
+                                        <span x-show="!loading && !playing"><x-icon name="o-play" class="w-5 h-5"/></span>
+                                        <span x-show="!loading && playing" x-cloak><x-icon name="o-pause" class="w-5 h-5"/></span>
+                                    </button>
+                                    <span class="font-mono text-sm opacity-70"
+                                          x-text="`${currentTime} / ${duration}`">—</span>
+                                    <div class="ml-auto flex items-center gap-2 opacity-70">
+                                        <button @click="toggleMute()" class="btn btn-ghost btn-sm btn-circle">
+                                            <span x-show="volume > 0"><x-icon name="o-speaker-wave" class="w-4 h-4"/></span>
+                                            <span x-show="volume === 0" x-cloak><x-icon name="o-speaker-x-mark" class="w-4 h-4"/></span>
+                                        </button>
+                                        <input type="range" min="0" max="1" step="0.05"
+                                               x-model.number="volume"
+                                               class="range range-xs range-primary w-24"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @break
             @endswitch
         @else
             <div x-ref="media" class="flex flex-col items-center gap-2 opacity-60">
