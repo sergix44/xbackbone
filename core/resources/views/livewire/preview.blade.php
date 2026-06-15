@@ -41,6 +41,20 @@
                     </div>
                     @break
 
+                @case(\App\Models\Properties\ResourceType::PDF)
+                    <object x-ref="media"
+                            type="{{ $resource->mime }}"
+                            data="{{ $resource->raw_url }}"
+                            class="w-full max-w-7xl h-[calc(100dvh-8rem)] rounded-box shadow-lg bg-base-100">
+                        <div class="flex flex-col items-center gap-4 p-8 opacity-70">
+                            <x-icon name="o-document" class="w-24 h-24"/>
+                            <p>{{ __('Your browser does not support PDF previews.') }}</p>
+                            <x-button label="Download" icon="o-cloud-arrow-down" class="btn-soft btn-info"
+                                      link="{{ $resource->download_url }}" external no-wire-navigate/>
+                        </div>
+                    </object>
+                    @break
+
                 @case(\App\Models\Properties\ResourceType::AUDIO)
                     <div x-ref="media" class="w-full max-w-7xl">
                         <div x-data="wavesurferPlayer('{{ $resource->raw_url }}')"
@@ -80,7 +94,7 @@
     </div>
 
     {{-- INFO: details below the fold --}}
-    <div class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] max-w-5xl shadow-lg"
+    <div class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] max-w-7xl shadow-lg"
          :style="contentWidth ? `width: ${contentWidth}px` : null">
         <div class="card-body">
             <h2 class="card-title break-all">{{ $resource->filename ?? $resource->code }}</h2>

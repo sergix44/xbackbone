@@ -15,6 +15,17 @@ test('preview page displays an image resource with its metadata', function () {
         ->assertSee('Dimensions');
 });
 
+test('preview page embeds a pdf viewer for pdf resources', function () {
+    $resource = Resource::factory()->pdf()->create();
+
+    $this->get(route('preview.ext', ['resource' => $resource->code, 'ext' => $resource->extension]))
+        ->assertOk()
+        ->assertSee('<object', false)
+        ->assertSee('type="'.$resource->mime.'"', false)
+        ->assertSee($resource->raw_url, false)
+        ->assertDontSee('No preview available');
+});
+
 test('preview page shows a placeholder for non displayable resources', function () {
     $resource = Resource::factory()->create();
 
