@@ -9,15 +9,24 @@
          contentWidth: null,
          naturalWidth: null,
          naturalHeight: null,
+         observer: null,
          measure() { this.contentWidth = this.$refs.media?.offsetWidth ?? null },
          onLoad() {
              this.naturalWidth = this.$refs.media?.naturalWidth ?? null;
              this.naturalHeight = this.$refs.media?.naturalHeight ?? null;
              this.measure();
          },
-     }"
-     x-init="$nextTick(() => measure())"
-     @resize.window.debounce="measure()">
+         init() {
+             this.$nextTick(() => {
+                 this.measure();
+                 if (this.$refs.media) {
+                     this.observer = new ResizeObserver(() => this.measure());
+                     this.observer.observe(this.$refs.media);
+                 }
+             });
+         },
+         destroy() { this.observer?.disconnect(); },
+     }">
     {{-- MEDIA: fills the available space above the fold --}}
     <div class="flex items-center justify-center w-full min-h-[calc(100dvh-8rem)]">
         @if($resource->is_displayable)
@@ -26,13 +35,13 @@
                     <a href="{{ $resource->raw_url }}" target="_blank">
                         <img x-ref="media" @load="onLoad()" src="{{ $resource->raw_url }}"
                              alt="{{ $resource->filename ?? $resource->code }}"
-                             class="block max-h-[calc(100dvh-8rem)] max-w-full rounded-box shadow-lg"/>
+                             class="block max-h-[calc(100dvh-8rem)] max-w-full rounded-box shadow-sm"/>
                     </a>
                     @break
 
                 @case(\App\Models\Properties\ResourceType::VIDEO)
                     <div x-ref="media"
-                         class="rounded-box overflow-hidden shadow-lg bg-black">
+                         class="rounded-box overflow-hidden shadow-sm bg-black">
                         <div x-data="plyrPlayer()">
                             <video x-ref="video" playsinline class="w-full">
                                 <source src="{{ $resource->raw_url }}" type="{{ $resource->mime }}">
@@ -45,7 +54,7 @@
                     <object x-ref="media"
                             type="{{ $resource->mime }}"
                             data="{{ $resource->raw_url }}"
-                            class="w-full max-w-7xl h-[calc(100dvh-8rem)] rounded-box shadow-lg bg-base-100">
+                            class="w-full max-w-7xl h-[calc(100dvh-8rem)] rounded-box shadow-sm bg-base-100">
                         <div class="flex flex-col items-center gap-4 p-8 opacity-70">
                             <x-icon name="o-document" class="w-24 h-24"/>
                             <p>{{ __('Your browser does not support PDF previews.') }}</p>
@@ -53,6 +62,32 @@
                                       link="{{ $resource->download_url }}" external no-wire-navigate/>
                         </div>
                     </object>
+                    @break
+
+                @case(\App\Models\Properties\ResourceType::TEXT)
+                    @if($this->textTooLarge)
+                        <div x-ref="media" class="flex flex-col items-center gap-4 p-8 opacity-70">
+                            <x-icon name="o-document-text" class="w-24 h-24"/>
+                            <p>{{ __('This file is too large to preview.') }}</p>
+                            <x-button label="Download" icon="o-cloud-arrow-down" class="btn-soft btn-info"
+                                      link="{{ $resource->download_url }}" external no-wire-navigate/>
+                        </div>
+                    @else
+                        @php($text = $this->textContent)
+                        @php($lineCount = max(1, substr_count($text, "\n") + (str_ends_with($text, "\n") ? 0 : 1)))
+                        <div x-ref="media" x-data="codeHighlighter('{{ $resource->extension }}')"
+                             class="w-full rounded-box shadow-sm overflow-hidden bg-base-100">
+                            <div class="flex items-start overflow-y-auto max-h-[calc(100dvh-8rem)] font-mono text-sm leading-relaxed">
+                                <div aria-hidden="true"
+                                     class="shrink-0 select-none py-4 pl-4 pr-3 text-right tabular-nums opacity-40 border-r border-base-content/10">
+                                    @for($i = 1; $i <= $lineCount; $i++)
+                                        <div>{{ $i }}</div>
+                                    @endfor
+                                </div>
+                                <pre class="flex-1 min-w-0 overflow-x-auto py-4 px-4"><code x-ref="code">{{ $text }}</code></pre>
+                            </div>
+                        </div>
+                    @endif
                     @break
 
                 @case(\App\Models\Properties\ResourceType::AUDIO)
@@ -94,7 +129,7 @@
     </div>
 
     {{-- INFO: details below the fold --}}
-    <div class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] max-w-7xl shadow-lg"
+    <div class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] shadow-sm"
          :style="contentWidth ? `width: ${contentWidth}px` : null">
         <div class="card-body">
             <h2 class="card-title break-all">{{ $resource->filename ?? $resource->code }}</h2>

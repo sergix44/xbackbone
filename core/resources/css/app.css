@@ -29,3 +29,73 @@
 .plyr--video {
     max-height: calc(100dvh - 8rem);
 }
+
+/*
+ * highlight.js tokens mapped to daisyUI's semantic colors so syntax
+ * highlighting follows the active theme (light, dark, or any other).
+ */
+.hljs {
+    display: block;
+    background: var(--color-base-100);
+    color: var(--color-base-content);
+}
+
+.hljs-comment,
+.hljs-quote {
+    color: color-mix(in oklch, var(--color-base-content) 50%, transparent);
+    font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag,
+.hljs-meta-keyword {
+    color: var(--color-primary);
+}
+
+.hljs-string,
+.hljs-attr,
+.hljs-regexp,
+.hljs-addition,
+.hljs-template-tag {
+    color: var(--color-success);
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-params,
+.hljs-bullet {
+    color: var(--color-accent);
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-link,
+.hljs-selector-id,
+.hljs-selector-class {
+    color: var(--color-secondary);
+}
+
+.hljs-meta,
+.hljs-comment .hljs-doctag {
+    color: var(--color-info);
+}
+
+.hljs-deletion {
+    color: var(--color-error);
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}

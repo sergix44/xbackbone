@@ -45,6 +45,16 @@ class ResourceFactory extends Factory
         ]);
     }
 
+    public function text(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => ResourceType::TEXT,
+            'filename' => fake()->word().'.json',
+            'extension' => 'json',
+            'mime' => 'application/json',
+        ]);
+    }
+
     public function pdf(): static
     {
         return $this->state(fn (array $attributes) => [

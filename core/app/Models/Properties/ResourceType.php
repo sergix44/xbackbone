@@ -15,8 +15,40 @@ enum ResourceType: string
     case LINK = 'LINK';
     case DIRECTORY = 'DIRECTORY';
 
+    /**
+     * Non-"text/*" mime types whose content is still plain text and can be
+     * rendered directly in the browser (json, js, xml, yaml, shell scripts, ...).
+     *
+     * @var list<string>
+     */
+    private const TEXTUAL_MIMES = [
+        'application/json',
+        'application/json5',
+        'application/javascript',
+        'application/x-javascript',
+        'application/ecmascript',
+        'application/typescript',
+        'application/x-typescript',
+        'application/xml',
+        'application/xhtml+xml',
+        'application/yaml',
+        'application/x-yaml',
+        'application/toml',
+        'application/csv',
+        'application/sql',
+        'application/graphql',
+        'application/x-sh',
+        'application/x-shellscript',
+        'application/x-httpd-php',
+        'application/x-php',
+        'application/x-latex',
+        'application/x-tex',
+    ];
+
     public static function fromMime(string $mime): self
     {
+        $mime = self::normalizeMime($mime);
+
         $data = explode('/', $mime);
         $type = $data[0];
         $subtype = $data[1] ?? '';
@@ -26,9 +58,30 @@ enum ResourceType: string
             $type === 'video' => self::VIDEO,
             $type === 'audio' => self::AUDIO,
             Str::contains($subtype, ['pdf', 'x-pdf']) => self::PDF,
-            $type === 'text' => self::TEXT,
+            self::isTextualMime($mime) => self::TEXT,
             default => self::FILE,
         };
+    }
+
+    /**
+     * Normalize a mime type by lowercasing it and stripping any parameters
+     * such as "; charset=utf-8".
+     */
+    private static function normalizeMime(string $mime): string
+    {
+        return strtolower(trim(explode(';', $mime, 2)[0]));
+    }
+
+    /**
+     * Whether the given (already normalized) mime represents textual content,
+     * including "text/*", known textual "application/*" types, and structured
+     * syntax suffixes like "+json" or "+xml".
+     */
+    private static function isTextualMime(string $mime): bool
+    {
+        return str_starts_with($mime, 'text/')
+            || in_array($mime, self::TEXTUAL_MIMES, true)
+            || Str::endsWith($mime, ['+json', '+xml', '+yaml']);
     }
 
     public static function fromValue(string $value): self
@@ -41,7 +94,7 @@ enum ResourceType: string
 
     public function isDisplayable(string $mime): bool
     {
-        $mime = strtolower(trim(explode(';', $mime, 2)[0])); // strips "; charset=..."
+        $mime = self::normalizeMime($mime); // strips "; charset=..."
 
         // only types that can be displayed directly by the browser (commonly)
         return match ($this) {
@@ -80,10 +133,9 @@ enum ResourceType: string
             ]),
 
             // Many text/* are displayable, but this is "renderable", not necessarily "safe to inline"
-            self::TEXT => str_starts_with($mime, 'text/'),
+            self::TEXT => self::isTextualMime($mime),
 
             default => false,
         };
     }
-
 }

@@ -2,6 +2,7 @@ import {Alpine, Livewire} from '../../vendor/livewire/livewire/dist/livewire.esm
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
 import WaveSurfer from 'wavesurfer.js';
+import hljs from 'highlight.js/lib/common';
 
 function clipboard(subject) {
     return new Promise(function (resolve, reject) {
@@ -83,6 +84,21 @@ Alpine.data('wavesurferPlayer', (src) => ({
     },
     destroy() {
         this.ws?.destroy();
+    },
+}));
+
+Alpine.data('codeHighlighter', (language = null) => ({
+    init() {
+        const code = this.$refs.code;
+        if (!code) {
+            return;
+        }
+        const lang = language && hljs.getLanguage(language) ? language : null;
+        const { value } = lang
+            ? hljs.highlight(code.textContent, { language: lang })
+            : hljs.highlightAuto(code.textContent);
+        code.innerHTML = value;
+        code.classList.add('hljs');
     },
 }));
 

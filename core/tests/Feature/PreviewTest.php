@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Resource;
+use Illuminate\Support\Facades\Storage;
 
 test('preview page displays an image resource with its metadata', function () {
     $resource = Resource::factory()->image()->create();
@@ -33,6 +34,33 @@ test('preview page shows a placeholder for non displayable resources', function 
         ->assertOk()
         ->assertSee($resource->filename)
         ->assertSee('No preview available');
+});
+
+test('preview page renders highlighted text for textual resources', function () {
+    Storage::fake();
+
+    $content = "{\n  \"hello\": \"world\"\n}";
+    $resource = Resource::factory()->text()->create(['size' => strlen($content)]);
+    Storage::put($resource->storage_path, $content);
+
+    $this->get(route('preview.ext', ['resource' => $resource->code, 'ext' => $resource->extension]))
+        ->assertOk()
+        ->assertSee("codeHighlighter('{$resource->extension}')", false)
+        ->assertSee(e($content), false)
+        ->assertSeeInOrder(['<div>1</div>', '<div>2</div>', '<div>3</div>'], false)
+        ->assertDontSee('No preview available');
+});
+
+test('preview page offers a download instead of inlining oversized text', function () {
+    Storage::fake();
+
+    $resource = Resource::factory()->text()->create(['size' => 5 * 1024 * 1024]);
+    Storage::put($resource->storage_path, 'should not be rendered');
+
+    $this->get(route('preview.ext', ['resource' => $resource->code, 'ext' => $resource->extension]))
+        ->assertOk()
+        ->assertSee('too large to preview')
+        ->assertDontSee('should not be rendered');
 });
 
 test('preview page shows publish and expiry dates when present', function () {
