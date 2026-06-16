@@ -38,12 +38,18 @@ test('preview page embeds a pdf viewer for pdf resources', function () {
 });
 
 test('preview page offers a download for non displayable resources', function () {
-    $resource = Resource::factory()->create();
+    $resource = Resource::factory()->create([
+        'extension' => 'zip',
+        'mime' => 'application/zip',
+    ]);
 
     $this->get(route('preview', ['resource' => $resource->code]))
         ->assertOk()
         ->assertSee($resource->filename)
-        ->assertSee($resource->download_url, false);
+        ->assertSee($resource->download_url, false)
+        ->assertSee('w-32 h-32 '.$resource->icon_color, false);
+
+    expect($resource->icon_color)->toBe('text-warning');
 });
 
 test('preview page renders highlighted text for textual resources', function () {

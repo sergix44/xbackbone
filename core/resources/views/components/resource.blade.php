@@ -16,31 +16,14 @@
     </div>
     <figure>
         <a href="{{ $resource?->preview_ext_url }}" wire:navigate class="block w-full aspect-video bg-base-200 overflow-hidden">
-            @if($resource->is_dir ?? false)
-                <div class="w-full h-full flex items-center justify-center">
-                    <x-icon name="o-folder" class="w-16 h-16 opacity-40"/>
-                </div>
-            @elseif($resource->has_preview || ($resource->type === \App\Models\Properties\ResourceType::IMAGE && $resource->is_displayable))
+            @if($resource->has_preview || ($resource->type === \App\Models\Properties\ResourceType::IMAGE && $resource->is_displayable))
                 <img src="{{ $resource->thumbnail_url }}?w=400" alt="{{ $resource->filename }}"
                      class="w-full h-full object-cover" loading="lazy"/>
             @else
-                <div class="w-full h-full flex items-center justify-center">
-                    @switch($resource->type)
-                        @case(\App\Models\Properties\ResourceType::VIDEO)
-                            <x-icon name="o-video-camera" class="w-16 h-16 opacity-40"/>
-                            @break
-                        @case(\App\Models\Properties\ResourceType::AUDIO)
-                            <x-icon name="o-musical-note" class="w-16 h-16 opacity-40"/>
-                            @break
-                        @case(\App\Models\Properties\ResourceType::PDF)
-                            <x-icon name="o-document-text" class="w-16 h-16 opacity-40"/>
-                            @break
-                        @case(\App\Models\Properties\ResourceType::LINK)
-                            <x-icon name="o-link" class="w-16 h-16 opacity-40"/>
-                            @break
-                        @default
-                            <x-icon name="o-document" class="w-16 h-16 opacity-40"/>
-                    @endswitch
+                <div class="group w-full h-full flex items-center justify-center bg-gradient-to-br from-base-200 to-base-300">
+                    <div class="flex items-center justify-center w-24 h-24 rounded-2xl bg-base-100/60 shadow-sm ring-1 ring-base-content/5 transition-transform duration-200 group-hover:scale-105">
+                        <x-icon name="{{ $resource->icon }}" class="w-14 h-14 {{ $resource->icon_color }}"/>
+                    </div>
                 </div>
             @endif
         </a>

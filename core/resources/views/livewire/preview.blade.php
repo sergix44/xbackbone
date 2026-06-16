@@ -117,7 +117,7 @@
     <div class="flex justify-center items-center min-h-[calc(100dvh-8rem)]">
         <div class="card @container bg-base-100 w-full max-w-2xl shadow-sm">
             <div class="card-body items-center text-center gap-4">
-                <x-icon name="o-document" class="w-24 h-24 opacity-50"/>
+                <x-icon name="{{ $resource->icon }}" class="w-32 h-32 {{ $resource->icon_color }}"/>
                 <h2 class="card-title break-all justify-center">{{ $resource->filename ?? $resource->code }}</h2>
                 <x-button label="Download" icon="o-cloud-arrow-down" class="btn-soft btn-info"
                           link="{{ $resource->download_url }}" external no-wire-navigate/>

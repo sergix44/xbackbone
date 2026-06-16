@@ -129,4 +129,14 @@ class Resource extends Model
     {
         return Attribute::make(get: fn () => $this->type->isDisplayable($this->mime));
     }
+
+    public function icon(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->type->icon($this->extension));
+    }
+
+    public function iconColor(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->type->iconColor($this->extension));
+    }
 }

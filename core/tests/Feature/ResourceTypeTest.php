@@ -44,3 +44,44 @@ it('classifies primary media types correctly', function () {
         ->and(ResourceType::fromMime('audio/mpeg'))->toBe(ResourceType::AUDIO)
         ->and(ResourceType::fromMime('application/pdf'))->toBe(ResourceType::PDF);
 });
+
+it('resolves a per-type icon when no extension is given', function () {
+    expect(ResourceType::IMAGE->icon())->toBe('o-photo')
+        ->and(ResourceType::VIDEO->icon())->toBe('o-video-camera')
+        ->and(ResourceType::AUDIO->icon())->toBe('o-musical-note')
+        ->and(ResourceType::PDF->icon())->toBe('o-document-text')
+        ->and(ResourceType::TEXT->icon())->toBe('o-document-text')
+        ->and(ResourceType::LINK->icon())->toBe('o-link')
+        ->and(ResourceType::DIRECTORY->icon())->toBe('o-folder')
+        ->and(ResourceType::FILE->icon())->toBe('o-document');
+});
+
+it('prefers an extension-specific icon when available', function (string $extension, string $icon) {
+    expect(ResourceType::FILE->icon($extension))->toBe($icon);
+})->with([
+    'excel' => ['xlsx', 'o-table-cells'],
+    'csv' => ['CSV', 'o-table-cells'],
+    'word' => ['docx', 'o-document-text'],
+    'powerpoint' => ['pptx', 'o-presentation-chart-bar'],
+    'zip archive' => ['zip', 'o-archive-box'],
+    'tarball' => ['tar', 'o-archive-box'],
+    'php source' => ['php', 'o-code-bracket'],
+    'json source' => ['json', 'o-code-bracket'],
+]);
+
+it('falls back to the per-type icon for unknown extensions', function () {
+    expect(ResourceType::FILE->icon('bin'))->toBe('o-document')
+        ->and(ResourceType::IMAGE->icon('png'))->toBe('o-photo');
+});
+
+it('resolves an accent color per type', function () {
+    expect(ResourceType::VIDEO->iconColor())->toBe('text-secondary')
+        ->and(ResourceType::PDF->iconColor())->toBe('text-error')
+        ->and(ResourceType::DIRECTORY->iconColor())->toBe('text-warning');
+});
+
+it('keeps icon and color extension overrides in sync', function () {
+    expect(ResourceType::FILE->iconColor('xlsx'))->toBe('text-success')
+        ->and(ResourceType::FILE->iconColor('zip'))->toBe('text-warning')
+        ->and(ResourceType::FILE->iconColor('php'))->toBe('text-secondary');
+});

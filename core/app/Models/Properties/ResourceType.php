@@ -92,6 +92,74 @@ enum ResourceType: string
         };
     }
 
+    /**
+     * Resolve the icon that best represents this resource. When an extension is
+     * provided, a more specific icon (spreadsheet, archive, code, ...) is
+     * preferred over the generic per-type icon.
+     */
+    public function icon(?string $extension = null): string
+    {
+        return $this->descriptor($extension)['icon'];
+    }
+
+    /**
+     * Resolve the accent color (a daisyUI text-* utility class) used to tint
+     * this resource's icon, kept in sync with {@see icon()}.
+     */
+    public function iconColor(?string $extension = null): string
+    {
+        return $this->descriptor($extension)['color'];
+    }
+
+    /**
+     * Resolve the icon + accent color pair for this resource, preferring an
+     * extension-specific descriptor over the generic per-type one.
+     *
+     * @return array{icon: string, color: string}
+     */
+    private function descriptor(?string $extension): array
+    {
+        if ($extension !== null) {
+            $specific = self::descriptorForExtension(strtolower($extension));
+
+            if ($specific !== null) {
+                return $specific;
+            }
+        }
+
+        return match ($this) {
+            self::IMAGE => ['icon' => 'o-photo', 'color' => 'text-success'],
+            self::VIDEO => ['icon' => 'o-video-camera', 'color' => 'text-secondary'],
+            self::AUDIO => ['icon' => 'o-musical-note', 'color' => 'text-accent'],
+            self::PDF => ['icon' => 'o-document-text', 'color' => 'text-error'],
+            self::TEXT => ['icon' => 'o-document-text', 'color' => 'text-info'],
+            self::LINK => ['icon' => 'o-link', 'color' => 'text-primary'],
+            self::DIRECTORY => ['icon' => 'o-folder', 'color' => 'text-warning'],
+            self::FILE => ['icon' => 'o-document', 'color' => 'text-base-content'],
+        };
+    }
+
+    /**
+     * Map well-known file extensions to a specific icon + accent color pair,
+     * regardless of the resolved resource type. Returns null when none applies.
+     *
+     * @return array{icon: string, color: string}|null
+     */
+    private static function descriptorForExtension(string $extension): ?array
+    {
+        return match ($extension) {
+            'xls', 'xlsx', 'xlsm', 'ods', 'csv', 'tsv' => ['icon' => 'o-table-cells', 'color' => 'text-success'],
+            'doc', 'docx', 'odt', 'rtf' => ['icon' => 'o-document-text', 'color' => 'text-info'],
+            'ppt', 'pptx', 'odp', 'key' => ['icon' => 'o-presentation-chart-bar', 'color' => 'text-warning'],
+            'zip', 'rar', '7z', 'tar', 'gz', 'bz2', 'xz', 'tgz' => ['icon' => 'o-archive-box', 'color' => 'text-warning'],
+            'php', 'js', 'jsx', 'ts', 'tsx', 'json', 'json5', 'xml', 'yaml', 'yml',
+            'html', 'htm', 'css', 'scss', 'sass', 'less', 'sql', 'sh', 'bash',
+            'py', 'rb', 'go', 'rs', 'java', 'c', 'cpp', 'h', 'cs', 'swift',
+            'kt', 'vue', 'toml', 'ini' => ['icon' => 'o-code-bracket', 'color' => 'text-secondary'],
+            default => null,
+        };
+    }
+
     public function isDisplayable(string $mime): bool
     {
         $mime = self::normalizeMime($mime); // strips "; charset=..."
