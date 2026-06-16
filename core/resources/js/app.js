@@ -26,16 +26,31 @@ Alpine.magic('clipboard', () => async subject => {
     Livewire.dispatch('clipboard:copied', {text: subject})
 })
 
+/**
+ * Keeps the "below the fold" info card the same width as the media shown
+ * "above the fold". A single ResizeObserver on the media element is the only
+ * source of truth: it reports the media's rendered width for every resource
+ * type (image, video, pdf, text, audio) and, for replaced elements that expose
+ * an intrinsic size (e.g. <img>), the natural dimensions used by the metadata.
+ */
+Alpine.data('aboveBelowFoldSync', () => ({
+    // TODO: implement
+}));
+
 Alpine.data('plyrPlayer', () => ({
     player: null,
     init() {
-        this.$refs.video.addEventListener('loadedmetadata', () => {
+        const video = this.$refs.video;
+        if (!video) {
+            return;
+        }
+        video.addEventListener('loadedmetadata', () => {
             this.$dispatch('video:meta', {
-                width: this.$refs.video.videoWidth,
-                height: this.$refs.video.videoHeight,
+                width: video.videoWidth,
+                height: video.videoHeight,
             });
         });
-        this.player = new Plyr(this.$refs.video, { resetOnEnd: true });
+        this.player = new Plyr(video, { resetOnEnd: true });
     },
     destroy() {
         this.player?.destroy();

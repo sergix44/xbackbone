@@ -9,7 +9,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListResources
 {
-    public function __invoke(?User $user = null, int $perPage = 16): AbstractPaginator
+    public function __invoke(?User $user = null, int $perPage = 20): AbstractPaginator
     {
         return QueryBuilder::for(Resource::class)
             ->when($user, function ($query) use ($user) {

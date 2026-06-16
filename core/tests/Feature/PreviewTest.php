@@ -27,13 +27,13 @@ test('preview page embeds a pdf viewer for pdf resources', function () {
         ->assertDontSee('No preview available');
 });
 
-test('preview page shows a placeholder for non displayable resources', function () {
+test('preview page offers a download for non displayable resources', function () {
     $resource = Resource::factory()->create();
 
     $this->get(route('preview', ['resource' => $resource->code]))
         ->assertOk()
         ->assertSee($resource->filename)
-        ->assertSee('No preview available');
+        ->assertSee($resource->download_url, false);
 });
 
 test('preview page renders highlighted text for textual resources', function () {
