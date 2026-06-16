@@ -5,7 +5,7 @@
 @endsection
 
 @if($resource->is_displayable)
-    <div class="flex flex-col items-center gap-6">
+    <div x-data="aboveBelowFoldSync()" class="flex flex-col items-center gap-6">
         {{-- MEDIA: fills the available space above the fold --}}
         <div class="flex items-center justify-center w-full min-h-[calc(100dvh-8rem)]">
             @switch($resource->type)
@@ -101,7 +101,7 @@
         </div>
 
         {{-- INFO: details below the fold --}}
-        <div class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] shadow-sm">
+        <div x-ref="card" class="card @container bg-base-100 w-full min-w-[min(100%,28rem)] shadow-sm">
             <div class="card-body">
                 <h2 class="card-title break-all">{{ $resource->filename ?? $resource->code }}</h2>
                 <div class="mt-2">

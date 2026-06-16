@@ -16,6 +16,16 @@ test('preview page displays an image resource with its metadata', function () {
         ->assertSee('Dimensions');
 });
 
+test('preview page wires the above/below fold width sync', function () {
+    $resource = Resource::factory()->image()->create();
+
+    $this->get(route('preview.ext', ['resource' => $resource->code, 'ext' => $resource->extension]))
+        ->assertOk()
+        ->assertSee('aboveBelowFoldSync()', false)
+        ->assertSee('x-ref="card"', false)
+        ->assertSee('x-ref="media"', false);
+});
+
 test('preview page embeds a pdf viewer for pdf resources', function () {
     $resource = Resource::factory()->pdf()->create();
 

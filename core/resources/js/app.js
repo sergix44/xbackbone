@@ -34,7 +34,50 @@ Alpine.magic('clipboard', () => async subject => {
  * an intrinsic size (e.g. <img>), the natural dimensions used by the metadata.
  */
 Alpine.data('aboveBelowFoldSync', () => ({
-    // TODO: implement
+    naturalWidth: null,
+    naturalHeight: null,
+    observer: null,
+    init() {
+        // This component sits on the Livewire root element, where Alpine's
+        // $refs do not reliably resolve nested descendants, so the media and
+        // card elements are queried directly from this subtree instead.
+        const media = this.$el.querySelector('[x-ref="media"]');
+        const card = this.$el.querySelector('[x-ref="card"]');
+        if (!media) {
+            return;
+        }
+
+        // Intrinsic size from replaced elements (e.g. <img>).
+        if (media.tagName === 'IMG') {
+            const capture = () => {
+                this.naturalWidth = media.naturalWidth;
+                this.naturalHeight = media.naturalHeight;
+            };
+            if (media.complete) {
+                capture();
+            } else {
+                media.addEventListener('load', capture, { once: true });
+            }
+        }
+
+        // Intrinsic size reported by the video player (see plyrPlayer).
+        this.$root.addEventListener('video:meta', (e) => {
+            this.naturalWidth = e.detail.width;
+            this.naturalHeight = e.detail.height;
+        });
+
+        // Mirror the media's rendered width onto the info card below the fold.
+        this.observer = new ResizeObserver((entries) => {
+            const width = Math.round(entries[0].contentRect.width);
+            if (card) {
+                card.style.maxWidth = `${width}px`;
+            }
+        });
+        this.observer.observe(media);
+    },
+    destroy() {
+        this.observer?.disconnect();
+    },
 }));
 
 Alpine.data('plyrPlayer', () => ({
