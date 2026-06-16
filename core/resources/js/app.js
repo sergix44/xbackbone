@@ -38,11 +38,8 @@ Alpine.data('aboveBelowFoldSync', () => ({
     naturalHeight: null,
     observer: null,
     init() {
-        // This component sits on the Livewire root element, where Alpine's
-        // $refs do not reliably resolve nested descendants, so the media and
-        // card elements are queried directly from this subtree instead.
-        const media = this.$el.querySelector('[x-ref="media"]');
-        const card = this.$el.querySelector('[x-ref="card"]');
+        const media = this.$refs.media;
+        const card = this.$refs.card;
         if (!media) {
             return;
         }
@@ -69,9 +66,7 @@ Alpine.data('aboveBelowFoldSync', () => ({
         // Mirror the media's rendered width onto the info card below the fold.
         this.observer = new ResizeObserver((entries) => {
             const width = Math.round(entries[0].contentRect.width);
-            if (card) {
-                card.style.maxWidth = `${width}px`;
-            }
+            card.style.maxWidth = `${width}px`;
         });
         this.observer.observe(media);
     },

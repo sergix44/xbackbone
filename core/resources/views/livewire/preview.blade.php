@@ -4,6 +4,7 @@
     <x-button label="Original" icon="o-eye" class="btn-sm btn-soft" link="{{ $resource->raw_url }}" external no-wire-navigate/>
 @endsection
 
+<div>
 @if($resource->is_displayable)
     <div x-data="aboveBelowFoldSync()" class="flex flex-col items-center gap-6">
         {{-- MEDIA: fills the available space above the fold --}}
@@ -53,9 +54,10 @@
                     @else
                         @php($text = $this->textContent)
                         @php($lineCount = max(1, substr_count($text, "\n") + (str_ends_with($text, "\n") ? 0 : 1)))
-                        <div x-ref="media" x-data="codeHighlighter('{{ $resource->extension }}')"
+                        <div x-ref="media"
                              class="w-full rounded-box shadow-sm overflow-hidden bg-base-100">
-                            <div class="flex items-start overflow-y-auto max-h-[calc(100dvh-8rem)] font-mono text-sm leading-relaxed">
+                            <div x-data="codeHighlighter('{{ $resource->extension }}')"
+                                 class="flex items-start overflow-y-auto max-h-[calc(100dvh-8rem)] font-mono text-sm leading-relaxed">
                                 <div aria-hidden="true"
                                      class="shrink-0 select-none py-4 pl-4 pr-3 text-right tabular-nums opacity-40 border-r border-base-content/10">
                                     @for($i = 1; $i <= $lineCount; $i++)
@@ -126,6 +128,7 @@
         </div>
     </div>
 @endif
+</div>
 
 @script
 <script>
