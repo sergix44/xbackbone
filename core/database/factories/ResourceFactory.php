@@ -82,4 +82,12 @@ class ResourceFactory extends Factory
             'preview_extension' => 'webp',
         ]);
     }
+
+    public function pending(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'preview_type' => ResourceType::FUTURE,
+            'preview_extension' => null,
+        ]);
+    }
 }

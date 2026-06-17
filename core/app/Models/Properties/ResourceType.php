@@ -14,6 +14,7 @@ enum ResourceType: string
     case FILE = 'FILE';
     case LINK = 'LINK';
     case DIRECTORY = 'DIRECTORY';
+    case FUTURE = '-';
 
     /**
      * Non-"text/*" mime types whose content is still plain text and can be

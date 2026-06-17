@@ -155,4 +155,43 @@ Alpine.data('codeHighlighter', (language = null) => ({
     },
 }));
 
+/**
+ * Polls the thumbnail endpoint for a resource whose preview is still being
+ * generated in the background (preview_type === FUTURE). The endpoint returns
+ * 404 until the preview exists, so we probe by loading the image: the first
+ * successful load swaps the placeholder icon for the thumbnail. Polling stops
+ * once ready, while the tab is hidden it pauses, and a hard cap prevents an
+ * endless loop when the job resolves to "no preview" (e.g. ffmpeg missing).
+ */
+Alpine.data('pendingPreview', (url) => ({
+    ready: false,
+    src: url,
+    timer: null,
+    init() {
+        this.probe(0);
+    },
+    probe(attempt) {
+        if (attempt >= 40) {
+            return;
+        }
+        if (document.hidden) {
+            this.timer = setTimeout(() => this.probe(attempt), 3000);
+            return;
+        }
+        const probeUrl = url + (url.includes('?') ? '&' : '?') + 'probe=' + attempt;
+        const img = new Image();
+        img.onload = () => {
+            this.src = probeUrl;
+            this.ready = true;
+        };
+        img.onerror = () => {
+            this.timer = setTimeout(() => this.probe(attempt + 1), 3000);
+        };
+        img.src = probeUrl;
+    },
+    destroy() {
+        clearTimeout(this.timer);
+    },
+}));
+
 Livewire.start()

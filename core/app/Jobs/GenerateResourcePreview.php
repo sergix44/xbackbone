@@ -26,7 +26,7 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
 
     public int $tries = 2;
 
-    public int $backoff = 30;
+    public int $backoff = 5;
 
     public bool $deleteWhenMissingModels = true;
 
@@ -56,12 +56,16 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
         $generator = $this->resolveGenerator();
 
         if ($generator === null) {
+            $this->clearPreviewColumns();
+
             return;
         }
 
         // Nothing to generate from: the resource has no stored file (e.g. a data-only
         // resource, or one whose file is missing). Skip instead of failing on a null key.
         if ($fingerprint === null || Storage::missing($this->resource->storage_path)) {
+            $this->clearPreviewColumns();
+
             return;
         }
 
@@ -72,6 +76,8 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
             $image = $generator->generate($this->resource, $file);
 
             if ($image === null) {
+                $this->clearPreviewColumns();
+
                 return;
             }
 
@@ -95,6 +101,8 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
                 'generator' => $generator::class,
                 'exception' => $e,
             ]);
+
+            $this->clearPreviewColumns();
         } finally {
             $image?->destroy();
             $file->cleanup();
@@ -125,5 +133,21 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
                 'preview_type' => ResourceType::IMAGE,
                 'preview_extension' => 'webp',
             ]);
+    }
+
+    /**
+     * Resolve the pending ({@see ResourceType::FUTURE}) preview state to "no preview"
+     * when nothing can be generated, so the UI stops waiting on it.
+     */
+    private function clearPreviewColumns(): void
+    {
+        $query = $this->resource->fingerprint !== null
+            ? Resource::query()->where('fingerprint', $this->resource->fingerprint)
+            : Resource::query()->whereKey($this->resource->id);
+
+        $query->update([
+            'preview_type' => null,
+            'preview_extension' => null,
+        ]);
     }
 }

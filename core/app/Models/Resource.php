@@ -122,7 +122,13 @@ class Resource extends Model
 
     public function hasPreview(): Attribute
     {
-        return Attribute::make(get: fn () => $this->preview_type !== null);
+        return Attribute::make(get: fn () => $this->preview_type !== null
+            && $this->preview_type !== ResourceType::FUTURE);
+    }
+
+    public function previewIsPending(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->preview_type === ResourceType::FUTURE);
     }
 
     public function isDisplayable(): Attribute

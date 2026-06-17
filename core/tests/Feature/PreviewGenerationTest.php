@@ -172,6 +172,18 @@ test('skips gracefully when a matching generator has no stored file to read', fu
     expect($resource->refresh()->preview_type)->toBeNull();
 });
 
+test('resolves a pending (FUTURE) resource to null when there is nothing to generate', function () {
+    $resource = Resource::factory()->pending()->create(); // FILE type, no stored file
+
+    expect($resource->preview_type)->toBe(ResourceType::FUTURE);
+
+    (new GenerateResourcePreview($resource))->handle();
+
+    Storage::assertMissing("{$resource->fingerprint}.preview.webp");
+    expect($resource->refresh()->preview_type)->toBeNull()
+        ->and($resource->preview_extension)->toBeNull();
+});
+
 test('is idempotent when the job runs twice', function () {
     config()->set('previews.raster_size_threshold', 1);
     $resource = storedResource('image', pngFixture(800, 600));

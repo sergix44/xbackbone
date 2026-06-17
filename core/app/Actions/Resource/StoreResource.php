@@ -49,7 +49,7 @@ class StoreResource
                 'data' => $data,
                 'fingerprint' => $fingerprint,
                 // Inherit the preview from a duplicate so the UI has one immediately.
-                'preview_type' => $existing?->preview_type,
+                'preview_type' => $existing?->preview_type ?? ResourceType::FUTURE,
                 'preview_extension' => $existing?->preview_extension,
             ]);
 
