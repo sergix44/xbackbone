@@ -53,9 +53,16 @@ test('a resource that will never get a preview does not poll', function () {
         ->assertDontSeeHtml('pendingPreview(');
 });
 
-test('the thumbnail endpoint returns 404 while a video preview is pending', function () {
+test('the thumbnail endpoint 404s a plain request while a video preview is pending', function () {
     $resource = Resource::factory()->video()->pending()->create();
 
     $this->get(route('thumbnail', $resource->code))
         ->assertNotFound();
+});
+
+test('the thumbnail endpoint returns 425 to a probe while a video preview is pending', function () {
+    $resource = Resource::factory()->video()->pending()->create();
+
+    $this->get(route('thumbnail', ['resource' => $resource->code, 'probe' => 1]))
+        ->assertStatus(425);
 });

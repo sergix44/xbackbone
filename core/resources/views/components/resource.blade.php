@@ -23,8 +23,9 @@
                 <div x-data="pendingPreview('{{ $resource->thumbnail_url }}?w=400')" class="w-full h-full">
                     <div x-show="!ready"
                          class="group w-full h-full flex items-center justify-center bg-gradient-to-br from-base-200 to-base-300">
-                        <div class="flex items-center justify-center w-24 h-24 rounded-2xl bg-base-100/60 shadow-sm ring-1 ring-base-content/5">
-                            <x-icon name="{{ $resource->icon }}" class="w-14 h-14 {{ $resource->icon_color }} animate-pulse"/>
+                        <div class="flex items-center justify-center w-24 h-24 rounded-2xl bg-base-100/60 shadow-sm ring-1 ring-base-content/5"
+                             :class="{ 'animate-pulse': !settled }">
+                            <x-icon name="{{ $resource->icon }}" class="w-14 h-14 {{ $resource->icon_color }}"/>
                         </div>
                     </div>
                     <img x-show="ready" x-cloak :src="src" alt="{{ $resource->filename }}"

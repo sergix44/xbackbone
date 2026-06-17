@@ -156,41 +156,75 @@ Alpine.data('codeHighlighter', (language = null) => ({
 }));
 
 /**
- * Polls the thumbnail endpoint for a resource whose preview is still being
- * generated in the background (preview_type === FUTURE). The endpoint returns
- * 404 until the preview exists, so we probe by loading the image: the first
- * successful load swaps the placeholder icon for the thumbnail. Polling stops
- * once ready, while the tab is hidden it pauses, and a hard cap prevents an
- * endless loop when the job resolves to "no preview" (e.g. ffmpeg missing).
+ * Drives a gallery card whose preview is still being generated in the background
+ * (the server rendered the card because preview_type === FUTURE). It polls the
+ * thumbnail endpoint and reacts to the HTTP status, which encodes the state:
+ *
+ *   200  the preview is ready and the response body *is* the image, so we show
+ *        it straight from the downloaded bytes — no second request, no cache or
+ *        stale-`src` pitfalls.
+ *   425  (Too Early) still being generated; retry after a short delay.
+ *   404  the job resolved to "no preview" (e.g. ffmpeg missing); give up.
+ *   else a transient network/server hiccup; retry.
+ *
+ * The 425 is only returned to an explicit `probe` request — a plain thumbnail
+ * load (e.g. a bare <img>) just 404s until the preview exists — so we always
+ * poll with that flag set.
+ *
+ * Polling pauses while the tab is hidden and is capped so a stuck job never polls
+ * forever. `settled` flips once we reach a terminal state (shown or given up),
+ * which lets the placeholder stop pulsing.
  */
+const PENDING_PREVIEW_MAX_ATTEMPTS = 40;
+const PENDING_PREVIEW_INTERVAL = 3000;
+
 Alpine.data('pendingPreview', (url) => ({
+    src: null,
     ready: false,
-    src: url,
+    settled: false,
     timer: null,
+    probeUrl: url + (url.includes('?') ? '&' : '?') + 'probe=1',
     init() {
-        this.probe(0);
+        this.poll(0);
     },
-    probe(attempt) {
-        if (attempt >= 40) {
+    async poll(attempt) {
+        if (attempt >= PENDING_PREVIEW_MAX_ATTEMPTS) {
+            this.settled = true;
             return;
         }
+        // Pause without spending an attempt while the tab is in the background.
         if (document.hidden) {
-            this.timer = setTimeout(() => this.probe(attempt), 3000);
+            this.retry(attempt);
             return;
         }
-        const probeUrl = url + (url.includes('?') ? '&' : '?') + 'probe=' + attempt;
-        const img = new Image();
-        img.onload = () => {
-            this.src = probeUrl;
+
+        let response;
+        try {
+            response = await fetch(this.probeUrl, { cache: 'no-store' });
+        } catch {
+            this.retry(attempt + 1);
+            return;
+        }
+
+        if (response.ok) {
+            this.src = URL.createObjectURL(await response.blob());
             this.ready = true;
-        };
-        img.onerror = () => {
-            this.timer = setTimeout(() => this.probe(attempt + 1), 3000);
-        };
-        img.src = probeUrl;
+            this.settled = true;
+        } else if (response.status === 425) {
+            this.retry(attempt + 1);
+        } else {
+            // 404 (or any other definitive status): no preview is ever coming.
+            this.settled = true;
+        }
+    },
+    retry(attempt) {
+        this.timer = setTimeout(() => this.poll(attempt), PENDING_PREVIEW_INTERVAL);
     },
     destroy() {
         clearTimeout(this.timer);
+        if (this.src) {
+            URL.revokeObjectURL(this.src);
+        }
     },
 }));
 

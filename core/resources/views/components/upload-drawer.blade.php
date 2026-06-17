@@ -15,38 +15,68 @@
     close-on-escape
     title="Uploads"
 >
-    <div id="drop-area"
-         class="w-full p-6 border-2 border-dashed border-base-content/50 rounded-lg text-center relative">
-        <input id="files" type="file" class="absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer" multiple>
-        <div class="flex flex-col items-center justify-center gap-4">
-            <x-icon name="o-cloud-arrow-up" class="text-base-content/70 w-20 h-20"/>
-            <div class="flex flex-col items-center">
-                <span class="text-base-content/70">Drop files here or click to upload</span>
-                @if ($maxUploadSizeHuman)
-                    <span class="text-base-content/50 text-xs mt-1">Maximum upload size: {{ $maxUploadSizeHuman }}</span>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="flex flex-col mt-4" x-data="uploads">
-        <template x-for="(file, index) in Object.values(list)" :key="index">
-            <div class="card w-full bg-neutral/20 card-sm shadow-sm mb-2">
-                <div class="card-body">
-                    <div class="flex items-center justify-between mb-2 gap-2">
-                        <h2 class="card-title truncate block" x-text="file.name"></h2>
-                        <div class="card-actions justify-end">
-                            <x-button x-show="!file.completed && !file.canceled && !file.failed" icon="o-x-mark" class="btn-circle btn-xs btn-error" x-on:click="cancelFile(file.id)"/>
-                            <x-button x-show="file.completed" icon="o-check" class="btn-circle btn-xs btn-success" x-on:click="removeFile(file.id)"/>
-                            <x-button x-show="file.canceled" icon="o-x-mark" class="btn-circle btn-xs btn-neutral" x-on:click="removeFile(file.id)"/>
-                            <x-button x-show="file.failed" icon="o-exclamation-triangle" class="btn-circle btn-xs btn-error" x-on:click="removeFile(file.id)"/>
+    <div x-data="uploads">
+        <x-tabs selected="files">
+            <x-tab name="files" label="Files" icon="o-cloud-arrow-up">
+                <div id="drop-area"
+                     class="w-full p-6 border-2 border-dashed border-base-content/50 rounded-lg text-center relative">
+                    <input id="files" type="file" class="absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer" multiple>
+                    <div class="flex flex-col items-center justify-center gap-4">
+                        <x-icon name="o-cloud-arrow-up" class="text-base-content/70 w-20 h-20"/>
+                        <div class="flex flex-col items-center">
+                            <span class="text-base-content/70">Drop files here or click to upload</span>
+                            @if ($maxUploadSizeHuman)
+                                <span class="text-base-content/50 text-xs mt-1">Maximum upload size: {{ $maxUploadSizeHuman }}</span>
+                            @endif
                         </div>
                     </div>
-                    <progress x-show="!file.completed && !file.canceled && !file.failed" class="progress progress-primary w-full" max="100" x-bind:value="file.progress"></progress>
-                    <progress x-show="file.completed" class="progress progress-success w-full" max="100" value="100"></progress>
-                    <span x-show="file.failed" class="text-error text-xs break-words" x-text="file.error"></span>
                 </div>
-            </div>
-        </template>
+            </x-tab>
+
+            <x-tab name="paste" label="Paste" icon="o-clipboard-document">
+                <div class="flex flex-col gap-3">
+                    <x-input placeholder="Filename (optional, e.g. snippet.js)" icon="o-document-text" x-model="pasteFilename"/>
+                    <x-textarea
+                        placeholder="Paste or type your text here…"
+                        rows="10"
+                        class="font-mono text-sm"
+                        x-model="pasteContent"
+                        x-on:keydown.ctrl.enter="submitPaste()"
+                        x-on:keydown.meta.enter="submitPaste()"
+                    />
+                    <div class="flex justify-end">
+                        <x-button
+                            label="Create paste"
+                            icon="o-plus"
+                            class="btn-primary"
+                            x-bind:disabled="!pasteContent.trim()"
+                            x-on:click="submitPaste()"
+                        />
+                    </div>
+                </div>
+            </x-tab>
+        </x-tabs>
+
+        <div class="flex flex-col mt-4">
+            <template x-for="(file, index) in Object.values(list)" :key="index">
+                <div class="card w-full bg-neutral/20 card-sm shadow-sm mb-2">
+                    <div class="card-body">
+                        <div class="flex items-center justify-between mb-2 gap-2">
+                            <h2 class="card-title truncate block" x-text="file.name"></h2>
+                            <div class="card-actions justify-end">
+                                <x-button x-show="!file.completed && !file.canceled && !file.failed" icon="o-x-mark" class="btn-circle btn-xs btn-error" x-on:click="cancelFile(file.id)"/>
+                                <x-button x-show="file.completed" icon="o-check" class="btn-circle btn-xs btn-success" x-on:click="removeFile(file.id)"/>
+                                <x-button x-show="file.canceled" icon="o-x-mark" class="btn-circle btn-xs btn-neutral" x-on:click="removeFile(file.id)"/>
+                                <x-button x-show="file.failed" icon="o-exclamation-triangle" class="btn-circle btn-xs btn-error" x-on:click="removeFile(file.id)"/>
+                            </div>
+                        </div>
+                        <progress x-show="!file.completed && !file.canceled && !file.failed" class="progress progress-primary w-full" max="100" x-bind:value="file.progress"></progress>
+                        <progress x-show="file.completed" class="progress progress-success w-full" max="100" value="100"></progress>
+                        <span x-show="file.failed" class="text-error text-xs break-words" x-text="file.error"></span>
+                    </div>
+                </div>
+            </template>
+        </div>
     </div>
 </x-drawer>
 
@@ -56,6 +86,8 @@
         counter: 0,
         maxUploadSize: {{ $maxUploadSize }},
         maxUploadSizeHuman: @js($maxUploadSizeHuman),
+        pasteFilename: '',
+        pasteContent: '',
         list: {
             // // Example file list
             // 0: {id: 0, name: 'file1.txt', completed: false, canceled: false, progress: 20},
@@ -91,6 +123,17 @@
                 e.preventDefault();
                 dropArea.classList.remove('bg-neutral/30');
                 this.uploadFiles(e.dataTransfer.files);
+            });
+
+            document.addEventListener('paste', e => {
+                const files = e.clipboardData?.files;
+                if (!files || files.length === 0) {
+                    return;
+                }
+
+                e.preventDefault();
+                $wire.showUploadDrawer = true;
+                this.uploadFiles(files);
             });
         },
         uploadFiles(files) {
@@ -136,6 +179,26 @@
                     delete this.list[id];
                 })
             }
+        },
+        submitPaste() {
+            const content = this.pasteContent;
+            if (!content.trim()) {
+                return;
+            }
+
+            const name = this.pasteFilename.trim() || this.defaultPasteName();
+            const file = new File([content], name, {type: 'text/plain'});
+
+            this.uploadFiles([file]);
+            this.pasteFilename = '';
+            this.pasteContent = '';
+        },
+        defaultPasteName() {
+            const now = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            const stamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`
+                + `-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+            return `paste-${stamp}.txt`;
         },
         cancelFile(id) {
             if (this.list[id] && !this.list[id].canceled) {

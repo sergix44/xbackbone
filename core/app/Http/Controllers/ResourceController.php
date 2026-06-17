@@ -17,13 +17,11 @@ class ResourceController extends Controller
 
     public function thumbnail(Request $request, Resource $resource, GetResourcePreview $getResourcePreview)
     {
-        $response = $getResourcePreview($resource, $request->input('w'), $request->input('h'), $request->input('q'));
-
-        if ($response === null) {
-            abort(404);
+        if ($resource->preview_is_pending && $request->has('probe')) {
+            abort(425);
         }
 
-        return $response;
+        return $getResourcePreview($resource, $request->input('w'), $request->input('h'), $request->input('q')) ?? abort(404);
     }
 
     public function download(Resource $resource): StreamedResponse

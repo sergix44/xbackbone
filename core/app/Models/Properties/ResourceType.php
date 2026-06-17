@@ -185,6 +185,7 @@ enum ResourceType: string
                 'video/mp4',
                 'video/webm',
                 'video/ogg',
+                'video/quicktime',
             ], true),
 
             self::AUDIO => in_array($mime, [
@@ -192,8 +193,10 @@ enum ResourceType: string
                 'audio/mp4',  // aac/m4a often comes as audio/mp4
                 'audio/aac',
                 'audio/wav',
+                'audio/x-wav',
                 'audio/ogg',
                 'audio/opus',
+                'audio/flac',
             ], true),
 
             self::PDF => in_array($mime, [
