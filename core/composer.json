@@ -15,6 +15,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4",
+        "maennchen/zipstream-php": "^3",
         "php-ffmpeg/php-ffmpeg": "^1.4",
         "robsontenorio/mary": "^2.6",
         "sergix44/imagezen": "^0.2.2",

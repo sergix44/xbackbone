@@ -25,6 +25,7 @@ class ResourceResource extends JsonResource
             'download_count' => $this->downloads,
             'preview_url' => $this->preview_url,
             'preview_ext_url' => $this->preview_ext_url,
+            'raw_url' => $this->raw_url,
             'published_at' => $this->published_at,
             'expires_at' => $this->expires_at,
         ];

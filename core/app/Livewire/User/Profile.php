@@ -2,10 +2,16 @@
 
 namespace App\Livewire\User;
 
+use App\Actions\DeleteUserAccount;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\Properties\ResourceType;
 use App\Models\User;
+use App\Support\Helpers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Laravel\Pennant\Feature;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -36,6 +42,11 @@ class Profile extends Component
 
     /* TOKENS */
     public array $selectedTokens = [];
+
+    /* DELETE ACCOUNT */
+    public bool $confirmingDelete = false;
+
+    public ?string $deletePassword = null;
 
     public function mount(string $tab = 'profile'): void
     {
@@ -82,7 +93,18 @@ class Profile extends Component
             );
         }
 
+        $this->currentPassword = null;
+        $this->newPassword = null;
+        $this->user = $this->user->refresh();
+
         $this->success(__('Profile updated successfully!'));
+    }
+
+    public function resendVerification(): void
+    {
+        auth()->user()->sendEmailVerificationNotification();
+
+        $this->success(__('A new verification link has been sent to your email address.'));
     }
 
     public function revokeSelectedTokens(): void
@@ -102,6 +124,48 @@ class Profile extends Component
         $this->user = $this->user->refresh();
         $this->selectedTokens = [];
         $this->success(__('Selected tokens revoked successfully!'));
+    }
+
+    /**
+     * Aggregate, display-ready statistics for the resources the user has uploaded.
+     *
+     * @return array{media: string, size: string, views: string, downloads: string}
+     */
+    #[Computed]
+    public function stats(): array
+    {
+        $aggregate = $this->user->resources()
+            ->where('type', '!=', ResourceType::DIRECTORY->value)
+            ->selectRaw('COUNT(*) as media, COALESCE(SUM(size), 0) as size, COALESCE(SUM(views), 0) as views, COALESCE(SUM(downloads), 0) as downloads')
+            ->first();
+
+        return [
+            'media' => number_format((int) $aggregate->media),
+            'size' => Helpers::humanizeBytes((int) $aggregate->size),
+            'views' => number_format((int) $aggregate->views),
+            'downloads' => number_format((int) $aggregate->downloads),
+        ];
+    }
+
+    public function deleteAccount(DeleteUserAccount $deleteUserAccount): mixed
+    {
+        $this->validate(
+            ['deletePassword' => ['required', 'current_password:web']],
+            ['deletePassword.current_password' => __('The provided password does not match your current password.')],
+            ['deletePassword' => __('password')],
+        );
+
+        $user = auth()->user();
+
+        // Log out before deleting: logging out cycles the remember token and saves
+        // the model, which would re-insert the row if the user were already gone.
+        Auth::logout();
+        Session::invalidate();
+        Session::regenerateToken();
+
+        $deleteUserAccount($user);
+
+        return $this->redirect(route('login'));
     }
 
     public function render(): object

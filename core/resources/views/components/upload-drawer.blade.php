@@ -33,7 +33,7 @@
                 </div>
             </x-tab>
 
-            <x-tab name="paste" label="Paste" icon="o-clipboard-document">
+            <x-tab name="paste" label="Paste text" icon="o-clipboard-document">
                 <div class="flex flex-col gap-3">
                     <x-input placeholder="Filename (optional, e.g. snippet.js)" icon="o-document-text" x-model="pasteFilename"/>
                     <x-textarea

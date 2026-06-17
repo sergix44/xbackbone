@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ExportController;
+use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\ResourceController;
 use App\Livewire\Admin\Settings;
 use App\Livewire\Dashboard;
@@ -24,7 +26,11 @@ Route::redirect('/', '/dashboard');
 Route::group(['middleware' => ['auth', 'verified']], static function () {
     Route::livewire('dashboard', Dashboard::class)->name('dashboard');
     Route::livewire('integrations', Integrations::class)->name('integrations');
-    Route::livewire('settings', Settings::class)->name('admin.settings')->can('administrate');
+    Route::get('integrations/sharex', [IntegrationController::class, 'shareX'])->name('integrations.sharex');
+    Route::livewire('settings/{tab?}', Settings::class)->name('admin.settings')
+        ->whereIn('tab', ['general', 'users', 'statistics'])
+        ->can('administrate');
+    Route::get('profile/export/download', [ExportController::class, 'download'])->name('user.profile.export');
     Route::livewire('profile/{tab?}', Profile::class)->name('user.profile')
         ->whereIn('tab', ['profile', 'tokens', 'export', 'delete']);
 });
