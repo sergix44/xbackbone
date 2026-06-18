@@ -81,15 +81,15 @@
     {{-- Create / edit modal --}}
     <x-modal wire:model="showUserModal" :title="$editingId ? __('Edit user') : __('Create user')" separator>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <x-input :label="__('Name')" wire:model="name" error-field="name" inline/>
-            <x-input :label="__('Email')" type="email" wire:model="email" error-field="email" inline/>
-            <x-input :label="__('Password')" type="password" wire:model="password" error-field="password"
+            <x-input :label="__('Name')" wire:model="name" error-field="name" :placeholder="__('Name')" inline/>
+            <x-input :label="__('Email')" type="email" wire:model="email" error-field="email" :placeholder="__('Email')" inline/>
+            <x-input :label="__('Password')" type="password" wire:model="password" error-field="password" :placeholder="__('Password')" :
                      :hint="$editingId ? __('Leave blank to keep the current password.') : null" inline/>
             <x-select :label="__('Status')" :options="$this->statusOptions" wire:model="status" error-field="status" inline/>
             <x-toggle :label="__('Administrator')" wire:model="isAdmin" class="md:col-span-2"/>
             <x-checkbox :label="__('Unlimited quota')" wire:model.live="unlimitedQuota" class="md:col-span-2"/>
             @unless($unlimitedQuota)
-                <x-input :label="__('Quota (MB)')" type="number" min="0" wire:model="quotaMb" error-field="quotaMb" class="md:col-span-2" inline/>
+                <x-input :label="__('Quota (MB)')" type="number" min="0" wire:model="quotaMb" error-field="quotaMb" :placeholder="__('Quota (MB)')" class="md:col-span-2" inline/>
             @endunless
         </div>
 
