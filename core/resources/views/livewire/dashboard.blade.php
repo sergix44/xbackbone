@@ -24,7 +24,7 @@
     </div>
     <div class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
         @foreach($this->resources as $resource)
-            <x-resource :resource="$resource"/>
+            <x-resource :resource="$resource" wire:key="resource-{{ $resource->id }}"/>
         @endforeach
     </div>
     <div class="flex justify-center mt-4">

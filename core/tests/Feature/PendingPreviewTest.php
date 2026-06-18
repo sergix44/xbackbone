@@ -32,6 +32,16 @@ test('the gallery card polls for a pending video preview', function () {
         ->assertSeeHtml('pendingPreview(');
 });
 
+test('each gallery card is keyed so morphing keeps its preview poller bound to the right resource', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->for($user)->video()->pending()->create();
+
+    $this->actingAs($user);
+
+    Livewire::test(Dashboard::class)
+        ->assertSeeHtml('wire:key="resource-'.$resource->id.'"');
+});
+
 test('the gallery card shows the thumbnail once the preview is ready', function () {
     $user = User::factory()->create();
     Resource::factory()->for($user)->video()->withPreview()->create();

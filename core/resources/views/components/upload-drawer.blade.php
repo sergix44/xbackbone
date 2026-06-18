@@ -163,7 +163,6 @@
                     this.list[id].completed = true;
                     this.list[id].progress = 100;
                     $wire.saveUpload(id)
-                    $wire.$refresh()
                     this.checkAllCompleted()
                 }, () => {
                     console.log(`File upload failed: ${file.name}`);
