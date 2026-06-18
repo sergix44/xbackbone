@@ -46,6 +46,47 @@ enum ResourceType: string
         'application/x-tex',
     ];
 
+    /**
+     * List of potentially harmful file extensions for the server.
+     * @var list<string>
+     */
+    private const HARMFUL_EXTENSIONS = [
+        // --- PHP & Variants ---
+        'php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'phar', 'phps',
+
+        // --- Active Server Pages (Microsoft IIS) ---
+        'asp', 'aspx', 'axd', 'asmx', 'ashx', 'config',
+
+        // --- Java Server Pages & Java ---
+        'jsp', 'jspx', 'wss', 'do', 'action', 'jar', 'class',
+
+        // --- Python ---
+        'py', 'pyc', 'pyd', 'pyo',
+
+        // --- Ruby ---
+        'rb', 'rhtml',
+
+        // --- Perl & CGI ---
+        'pl', 'cgi',
+
+        // --- Node.js / JavaScript (Server-side) ---
+        'js', 'jsx', 'ts', 'tsx',
+
+        // --- ColdFusion ---
+        'cfm', 'cfc',
+
+        // --- Web Server Configuration Files (Dangerous if overwritten) ---
+        'htaccess', 'htpasswd', 'ini', 'conf',
+
+        // --- Executables / System Scripts (If the server allows execution) ---
+        'sh', 'bash', 'bat', 'cmd', 'exe', 'msi', 'com', 'vbs', 'ps1',
+    ];
+
+    public static function canExtensionBeHarmful(string $ext): bool
+    {
+        return in_array($ext, self::HARMFUL_EXTENSIONS);
+    }
+
     public static function fromMime(string $mime): self
     {
         $mime = self::normalizeMime($mime);
