@@ -24,6 +24,20 @@ test('admins can render the user management list', function () {
         ->assertSee('Regular Joe');
 });
 
+test('the list renders labelled action buttons and a date tooltip', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create(['name' => 'Joined Jane']);
+
+    $this->actingAs($admin);
+
+    Livewire::test(UserManagement::class)
+        ->assertSeeHtml('btn-error')
+        ->assertSee(__('Edit'))
+        ->assertSee(__('Delete'))
+        ->assertSeeHtml('data-tip="'.e($user->created_at).'"')
+        ->assertSee($user->created_at->diffForHumans());
+});
+
 test('the list can be searched by name or email', function () {
     $admin = User::factory()->admin()->create(['name' => 'Searcher']);
     User::factory()->create(['name' => 'Findable Frank', 'email' => 'frank@example.com']);

@@ -57,13 +57,15 @@
                 @endscope
 
                 @scope('cell_created_at', $user)
-                    {{ $user->created_at?->diffForHumans() }}
+                    <span class="tooltip tooltip-bottom" data-tip="{{ $user->created_at }}">
+                        {{ $user->created_at?->diffForHumans() }}
+                    </span>
                 @endscope
 
                 @scope('cell_actions', $user)
-                    <div class="flex justify-end gap-1">
-                        <x-button icon="o-pencil-square" class="btn-ghost btn-sm" wire:click="openEdit({{ $user->id }})" :tooltip="__('Edit')"/>
-                        <x-button icon="o-trash" class="btn-ghost btn-sm text-error" wire:click="confirmDelete({{ $user->id }})" :tooltip="__('Delete')"/>
+                    <div class="flex justify-end gap-2">
+                        <x-button :label="__('Edit')" icon="o-pencil-square" class="btn-soft btn-sm" wire:click="openEdit({{ $user->id }})"/>
+                        <x-button :label="__('Delete')" icon="o-trash" class="btn-soft btn-error btn-sm" wire:click="confirmDelete({{ $user->id }})"/>
                     </div>
                 @endscope
 

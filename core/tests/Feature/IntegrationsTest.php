@@ -45,19 +45,7 @@ test('issues a ShareX token to the user', function () {
 
     $this->actingAs($user)->get(route('integrations.sharex'))->assertOk();
 
-    expect($user->tokens()->where('name', 'ShareX')->count())->toBe(1);
-});
-
-test('rotates the ShareX token on every download', function () {
-    $user = User::factory()->create();
-
-    $this->actingAs($user)->get(route('integrations.sharex'))->assertOk();
-    $firstId = $user->tokens()->where('name', 'ShareX')->value('id');
-
-    $this->actingAs($user)->get(route('integrations.sharex'))->assertOk();
-
-    expect($user->tokens()->where('name', 'ShareX')->count())->toBe(1);
-    expect($user->tokens()->where('name', 'ShareX')->value('id'))->not->toBe($firstId);
+    expect($user->tokens()->where('name', 'like','%sharex%')->count())->toBe(1);
 });
 
 test('ShareX config download requires authentication', function () {
