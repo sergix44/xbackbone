@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Actions\Resource\DeleteResource;
 use App\Actions\Resource\ListResources;
 use App\Actions\Resource\StoreResource;
+use App\Actions\Resource\ToggleResourceVisibility;
 use App\Models\Resource;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -57,6 +58,28 @@ class Dashboard extends Component
         $this->success('Upload successful!', $resource->preview_ext_url);
 
         $file->delete();
+    }
+
+    public function toggleVisibility(int $id): void
+    {
+        $resource = Resource::query()->find($id);
+
+        if (! $resource || $resource->user_id !== auth()->id()) {
+            $this->error('Resource not found');
+
+            return;
+        }
+
+        app(ToggleResourceVisibility::class)($resource);
+
+        activity()
+            ->performedOn($resource)
+            ->causedBy(auth()->user())
+            ->log($resource->is_private ? 'resource.hidden' : 'resource.published');
+
+        unset($this->resources);
+
+        $this->success($resource->is_private ? 'Resource hidden' : 'Resource published');
     }
 
     public function confirmDelete(int $id): void

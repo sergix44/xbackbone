@@ -59,6 +59,19 @@ class Resource extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Whether the given user may access this resource. Hidden (private) resources
+     * are only accessible to their owner and to administrators.
+     */
+    public function isAccessibleBy(?User $user): bool
+    {
+        if (! $this->is_private) {
+            return true;
+        }
+
+        return $user !== null && ($user->is_admin || $user->id === $this->user_id);
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Resource::class, 'parent_id');
@@ -71,27 +84,27 @@ class Resource extends Model
 
     public function rawUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->makeResourceUrl('raw.ext', $this->code, $this->extension));
+        return Attribute::make(get: fn () => $this->makeResourceUrl('raw.ext', $this->code, $this->extension));
     }
 
     public function downloadUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->makeResourceUrl('download.ext', $this->code, $this->extension));
+        return Attribute::make(get: fn () => $this->makeResourceUrl('download.ext', $this->code, $this->extension));
     }
 
     public function previewUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->makeResourceUrl('preview', $this->code));
+        return Attribute::make(get: fn () => $this->makeResourceUrl('preview', $this->code));
     }
 
     public function previewExtUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->makeResourceUrl('preview.ext', $this->code, $this->extension));
+        return Attribute::make(get: fn () => $this->makeResourceUrl('preview.ext', $this->code, $this->extension));
     }
 
     public function thumbnailUrl(): Attribute
     {
-        return Attribute::make(get: fn() => $this->makeResourceUrl('thumbnail', $this->code));
+        return Attribute::make(get: fn () => $this->makeResourceUrl('thumbnail', $this->code));
     }
 
     private function makeResourceUrl(string $route, string $resource, ?string $ext = null): string
@@ -109,7 +122,7 @@ class Resource extends Model
      */
     public function storagePath(): Attribute
     {
-        return Attribute::make(get: fn() => $this->fingerprint);
+        return Attribute::make(get: fn () => $this->fingerprint);
     }
 
     /**
@@ -117,42 +130,42 @@ class Resource extends Model
      */
     public function previewPath(): Attribute
     {
-        return Attribute::make(get: fn() => "{$this->fingerprint}.preview.{$this->preview_extension}");
+        return Attribute::make(get: fn () => "{$this->fingerprint}.preview.{$this->preview_extension}");
     }
 
     public function isDir(): Attribute
     {
-        return Attribute::make(get: fn() => $this->type === ResourceType::DIRECTORY);
+        return Attribute::make(get: fn () => $this->type === ResourceType::DIRECTORY);
     }
 
     public function sizeHumanReadable(): Attribute
     {
-        return Attribute::make(get: fn() => $this->size ? Helpers::humanizeBytes($this->size) : null);
+        return Attribute::make(get: fn () => $this->size ? Helpers::humanizeBytes($this->size) : null);
     }
 
     public function hasPreview(): Attribute
     {
-        return Attribute::make(get: fn() => $this->preview_type !== null
+        return Attribute::make(get: fn () => $this->preview_type !== null
             && $this->preview_type !== ResourceType::FUTURE);
     }
 
     public function previewIsPending(): Attribute
     {
-        return Attribute::make(get: fn() => $this->preview_type === ResourceType::FUTURE);
+        return Attribute::make(get: fn () => $this->preview_type === ResourceType::FUTURE);
     }
 
     public function isDisplayable(): Attribute
     {
-        return Attribute::make(get: fn() => $this->type->isDisplayable($this->mime));
+        return Attribute::make(get: fn () => $this->type->isDisplayable($this->mime));
     }
 
     public function icon(): Attribute
     {
-        return Attribute::make(get: fn() => $this->type->icon($this->extension));
+        return Attribute::make(get: fn () => $this->type->icon($this->extension));
     }
 
     public function iconColor(): Attribute
     {
-        return Attribute::make(get: fn() => $this->type->iconColor($this->extension));
+        return Attribute::make(get: fn () => $this->type->iconColor($this->extension));
     }
 }

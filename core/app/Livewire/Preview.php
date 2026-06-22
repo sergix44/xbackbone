@@ -25,6 +25,10 @@ class Preview extends Component
         view()->share('previewMode', true);
         $this->resource = $resource;
 
+        if (! $resource->isAccessibleBy(auth()->user())) {
+            abort(404);
+        }
+
         if ($ext && $resource->extension !== $ext) {
             abort(404);
         }

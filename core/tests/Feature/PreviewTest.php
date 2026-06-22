@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Resource;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 test('preview page displays an image resource with its metadata', function () {
@@ -113,4 +114,38 @@ test('preview page returns 404 when the extension does not match', function () {
 
     $this->get(route('preview.ext', ['resource' => $resource->code, 'ext' => 'zip']))
         ->assertNotFound();
+});
+
+test('preview page returns 404 for a hidden resource to a guest', function () {
+    $resource = Resource::factory()->image()->create(['is_private' => true]);
+
+    $this->get(route('preview', ['resource' => $resource->code]))
+        ->assertNotFound();
+});
+
+test('preview page returns 404 for a hidden resource to a non owner', function () {
+    $resource = Resource::factory()->image()->create(['is_private' => true]);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('preview', ['resource' => $resource->code]))
+        ->assertNotFound();
+});
+
+test('preview page shows a hidden resource to its owner', function () {
+    $owner = User::factory()->create();
+    $resource = Resource::factory()->image()->for($owner)->create(['is_private' => true]);
+
+    $this->actingAs($owner)
+        ->get(route('preview', ['resource' => $resource->code]))
+        ->assertOk()
+        ->assertSee($resource->filename);
+});
+
+test('preview page shows a hidden resource to an admin', function () {
+    $resource = Resource::factory()->image()->create(['is_private' => true]);
+
+    $this->actingAs(User::factory()->create(['is_admin' => true]))
+        ->get(route('preview', ['resource' => $resource->code]))
+        ->assertOk()
+        ->assertSee($resource->filename);
 });
