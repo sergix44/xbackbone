@@ -5,11 +5,15 @@
         <div class="flex items-center gap-1 min-w-0">
             <a class="font-semibold text-sm truncate flex-1 min-w-0 hover:text-primary transition-colors"
                href="{{ $resource?->preview_ext_url }}" wire:navigate>
-                {{ $resource?->filename ?? 'File Name' }}
+                {{ $resource?->display_name ?? 'File Name' }}
             </a>
             <div class="inline-flex gap-0.5 shrink-0 ml-1">
                 <x-button icon="m-link" class="btn-ghost btn-xs btn-square text-success" @click="$clipboard('{{$resource?->preview_ext_url}}')"/>
-                <x-button icon="m-cloud-arrow-down" class="btn-ghost btn-xs btn-square text-info" :link="route('download', ['resource' => $resource->code])" no-wire-navigate external/>
+                @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+                    <x-button icon="m-arrow-top-right-on-square" class="btn-ghost btn-xs btn-square text-info" :link="$resource->raw_url" no-wire-navigate external/>
+                @else
+                    <x-button icon="m-cloud-arrow-down" class="btn-ghost btn-xs btn-square text-info" :link="route('download', ['resource' => $resource->code])" no-wire-navigate external/>
+                @endif
                 <x-button icon="{{ $resource->is_private ? 'm-eye' : 'm-eye-slash' }}"
                           class="btn-ghost btn-xs btn-square {{ $resource->is_private ? 'text-success' : 'text-warning' }}"
                           tooltip="{{ $resource->is_private ? __('Publish') : __('Hide') }}"
@@ -46,7 +50,13 @@
     </figure>
     <div class="card-body px-3 py-2 gap-0">
         <div class="flex justify-between items-center text-xs text-base-content/50">
-            <span class="font-mono">{{ $resource?->size_human_readable ?? '0' }}</span>
+            <span class="font-mono truncate">
+                @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+                    {{ parse_url($resource->data, PHP_URL_HOST) ?? __('Link') }}
+                @else
+                    {{ $resource?->size_human_readable ?? '0' }}
+                @endif
+            </span>
             <span class="tooltip tooltip-bottom" data-tip="{{ $resource?->created_at ?? '' }}">
                 {{ $resource?->created_at?->diffForHumans() ?? '0' }}
             </span>

@@ -1,11 +1,35 @@
 @section('menu-items')
     <x-button label="Copy link" icon="o-link" class="btn-sm btn-soft btn-success" @click="$clipboard('{{ $resource->preview_ext_url }}')"/>
-    <x-button label="Download" icon="o-cloud-arrow-down" class="btn-sm btn-soft btn-info" link="{{ $resource->download_url }}" external no-wire-navigate/>
-    <x-button label="Original" icon="o-eye" class="btn-sm btn-soft" link="{{ $resource->raw_url }}" external no-wire-navigate/>
+    @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+        <x-button label="Open link" icon="o-arrow-top-right-on-square" class="btn-sm btn-soft btn-primary" link="{{ $resource->raw_url }}" external no-wire-navigate/>
+    @else
+        <x-button label="Download" icon="o-cloud-arrow-down" class="btn-sm btn-soft btn-info" link="{{ $resource->download_url }}" external no-wire-navigate/>
+        <x-button label="Original" icon="o-eye" class="btn-sm btn-soft" link="{{ $resource->raw_url }}" external no-wire-navigate/>
+    @endif
 @endsection
 
 <div>
-@if($resource->is_displayable)
+@if($resource->type === \App\Models\Properties\ResourceType::LINK)
+    {{-- Link: an interstitial showing the destination before redirecting to it. --}}
+    <div class="flex justify-center items-center min-h-[calc(100dvh-8rem)]">
+        <div class="card @container bg-base-100 w-full max-w-2xl shadow-sm">
+            <div class="card-body items-center text-center gap-4">
+                <x-icon name="o-link" class="w-32 h-32 text-primary"/>
+                @if($resource->name)
+                    <h2 class="card-title break-all justify-center">{{ $resource->name }}</h2>
+                @endif
+                <p class="opacity-70">{{ __('You are about to be redirected to:') }}</p>
+                <a href="{{ $resource->raw_url }}" target="_blank" rel="noopener nofollow"
+                   class="link link-primary font-mono text-sm break-all">{{ $resource->data }}</a>
+                <x-button label="Open link" icon="o-arrow-top-right-on-square" class="btn-primary"
+                          link="{{ $resource->raw_url }}" external no-wire-navigate/>
+                <div class="w-full mt-4 pt-4 border-t border-base-content/10">
+                    @include('livewire.partials.resource-metadata')
+                </div>
+            </div>
+        </div>
+    </div>
+@elseif($resource->is_displayable)
     <div x-data="aboveBelowFoldSync()" class="flex flex-col items-center gap-6">
         {{-- MEDIA: fills the available space above the fold --}}
         <div class="flex items-center justify-center w-full min-h-[calc(100dvh-8rem)]">

@@ -75,6 +75,20 @@ class ResourceFactory extends Factory
         ]);
     }
 
+    public function link(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => ResourceType::LINK,
+            'data' => 'https://example.com/'.fake()->slug(),
+            'filename' => null,
+            'extension' => null,
+            'mime' => null,
+            'size' => null,
+            'preview_type' => null,
+            'preview_extension' => null,
+        ]);
+    }
+
     public function withPreview(): static
     {
         return $this->state(fn (array $attributes) => [

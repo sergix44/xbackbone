@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Resource\GetResourcePreview;
+use App\Models\Properties\ResourceType;
 use App\Models\Resource;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResourceController extends Controller
 {
-    public function raw(Resource $resource): StreamedResponse
+    public function raw(Resource $resource): StreamedResponse|RedirectResponse
     {
+        if ($resource->type === ResourceType::LINK) {
+            return redirect()->away($resource->data);
+        }
+
         return Storage::response($resource->storage_path, $resource->filename);
     }
 
@@ -24,8 +30,12 @@ class ResourceController extends Controller
         return $getResourcePreview($resource, $request->input('w'), $request->input('h'), $request->input('q')) ?? abort(404);
     }
 
-    public function download(Resource $resource): StreamedResponse
+    public function download(Resource $resource): StreamedResponse|RedirectResponse
     {
+        if ($resource->type === ResourceType::LINK) {
+            return redirect()->away($resource->data);
+        }
+
         return Storage::response($resource->storage_path, $resource->filename, disposition: 'attachment');
     }
 }

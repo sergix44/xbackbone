@@ -109,11 +109,13 @@ class Resource extends Model
 
     private function makeResourceUrl(string $route, string $resource, ?string $ext = null): string
     {
-        if ($ext !== null && ResourceType::canExtensionBeHarmful($ext)) {
-            return $this->makeResourceUrl(Str::remove('.ext', $route), $resource);
+        // Resources without an extension (e.g. links) or with a harmful one fall back
+        // to the extension-less route variant rather than failing URL generation.
+        if ($ext === null || ResourceType::canExtensionBeHarmful($ext)) {
+            return route(Str::remove('.ext', $route), ['resource' => $resource]);
         }
 
-        return route($route, array_filter(['resource' => $resource, 'ext' => $ext]));
+        return route($route, ['resource' => $resource, 'ext' => $ext]);
     }
 
     /**
@@ -136,6 +138,15 @@ class Resource extends Model
     public function isDir(): Attribute
     {
         return Attribute::make(get: fn () => $this->type === ResourceType::DIRECTORY);
+    }
+
+    /**
+     * A human-friendly label for the resource. Never derived from {@see $data},
+     * which may hold a URL today and larger or non-displayable content later.
+     */
+    public function displayName(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->name ?? $this->filename ?? $this->code);
     }
 
     public function sizeHumanReadable(): Attribute

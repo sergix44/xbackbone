@@ -55,6 +55,22 @@
                     </div>
                 </div>
             </x-tab>
+
+            <x-tab name="link" label="Shorten link" icon="o-link">
+                <div class="flex flex-col gap-3">
+                    <x-input placeholder="https://example.com/very/long/url" icon="o-link" wire:model="linkUrl"/>
+                    <x-input placeholder="Title (optional)" icon="o-tag" wire:model="linkName"/>
+                    <div class="flex justify-end">
+                        <x-button
+                            label="Create link"
+                            icon="o-plus"
+                            class="btn-primary"
+                            wire:click="createLink"
+                            spinner="createLink"
+                        />
+                    </div>
+                </div>
+            </x-tab>
         </x-tabs>
 
         <div class="flex flex-col mt-4">

@@ -22,6 +22,10 @@ class Dashboard extends Component
 
     public array $files = [];
 
+    public string $linkUrl = '';
+
+    public string $linkName = '';
+
     public bool $confirmingDelete = false;
 
     public ?int $deletingId = null;
@@ -58,6 +62,32 @@ class Dashboard extends Component
         $this->success('Upload successful!', $resource->preview_ext_url);
 
         $file->delete();
+    }
+
+    public function createLink(): void
+    {
+        $validated = $this->validate([
+            'linkUrl' => ['required', 'url:http,https', 'max:2048'],
+            'linkName' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $resource = app(StoreResource::class)(
+            auth()->user(),
+            data: $validated['linkUrl'],
+            name: $validated['linkName'] ?: null,
+        );
+
+        activity()
+            ->performedOn($resource)
+            ->causedBy(auth()->user())
+            ->log('resource.uploaded');
+
+        $this->reset('linkUrl', 'linkName');
+        $this->showUploadDrawer = false;
+
+        unset($this->resources);
+
+        $this->success('Link created!', $resource->preview_ext_url);
     }
 
     public function toggleVisibility(int $id): void

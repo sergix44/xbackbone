@@ -32,19 +32,27 @@ class StoreResource
         }
 
         $fingerprint = $file ? sha1_file($file->getRealPath()) : sha1($data);
+        $type = $this->findType($file, $data);
 
-        return DB::transaction(function () use ($user, $file, $name, $data, $fingerprint) {
+        return DB::transaction(function () use ($user, $file, $name, $data, $fingerprint, $type) {
             // Content-addressed deduplication: an existing resource with the same fingerprint
             // already has the physical file (and possibly a preview) stored.
             $existing = Resource::query()->where('fingerprint', $fingerprint)->first();
 
+            // A link has no physical file, so the file-derived columns stay empty.
+            $isLink = $type === ResourceType::LINK;
+
+            if ($isLink && !$name) {
+                $name = parse_url($data, PHP_URL_HOST);
+            }
+
             $resource = Resource::query()->create([
-                'type' => $this->findType($file, $data),
+                'type' => $type,
                 'user_id' => $user->id,
                 'filename' => $file?->getClientOriginalName(),
-                'size' => $file?->getSize() ?? strlen($data),
-                'mime' => $file?->getMimeType() ?? 'text/plain',
-                'extension' => $this->fromFilename($file) ?? $file?->extension() ?? 'txt',
+                'size' => $isLink ? null : ($file?->getSize() ?? strlen($data)),
+                'mime' => $isLink ? null : ($file?->getMimeType() ?? 'text/plain'),
+                'extension' => $isLink ? null : ($this->fromFilename($file) ?? $file?->extension() ?? 'txt'),
                 'name' => $name,
                 'data' => $data,
                 'fingerprint' => $fingerprint,
