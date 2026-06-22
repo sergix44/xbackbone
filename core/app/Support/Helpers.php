@@ -2,8 +2,23 @@
 
 namespace App\Support;
 
+use App\Models\User;
+use Laravel\Pennant\Feature;
+
 class Helpers
 {
+    /**
+     * Resolve the theme to apply for the given user.
+     *
+     * A user's personal theme wins, but an empty value (guests, or users who
+     * never picked one) falls back to the global default theme. Empty string
+     * and null are treated alike so the global default is never shadowed.
+     */
+    public static function theme(?User $user = null): string
+    {
+        return (string) ($user?->theme ?: Feature::value('default-theme'));
+    }
+
     public static function humanizeBytes(int $bytes, int $decimals = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];

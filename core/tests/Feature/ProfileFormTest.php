@@ -44,3 +44,29 @@ test('a successful update clears the password fields', function () {
 
     expect($user->fresh()->name)->toBe('Renamed');
 });
+
+test('a personal theme is persisted', function () {
+    $user = User::factory()->create(['theme' => null]);
+
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->set('theme', 'dracula')
+        ->call('updateTheme')
+        ->assertHasNoErrors();
+
+    expect($user->fresh()->theme)->toBe('dracula');
+});
+
+test('choosing the default theme stores null rather than an empty string', function () {
+    $user = User::factory()->create(['theme' => 'dracula']);
+
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->set('theme', '')
+        ->call('updateTheme')
+        ->assertHasNoErrors();
+
+    expect($user->fresh()->theme)->toBeNull();
+});

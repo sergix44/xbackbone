@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Support\Helpers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Laravel\Pennant\Feature;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -56,7 +55,7 @@ class Profile extends Component
         if ($tab === 'profile') {
             $this->name = $this->user->name;
             $this->email = $this->user->email;
-            $this->theme = $this->user->theme ?? Feature::value('default-theme');
+            $this->theme = Helpers::theme($this->user);
 
             $this->themes = collect(config('themes'))
                 ->map(fn ($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
@@ -69,7 +68,9 @@ class Profile extends Component
     public function updateTheme(): void
     {
         $user = auth()->user();
-        $user->theme = $this->theme;
+        // Store null (never an empty string) when the user inherits the
+        // global default, so the layout's fallback is never shadowed.
+        $user->theme = $this->theme ?: null;
         $user->save();
 
         $this->success(__('Theme updated successfully!'), redirectTo: '#');
