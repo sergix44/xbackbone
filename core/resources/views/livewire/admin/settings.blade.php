@@ -61,8 +61,23 @@
         @else
             <div class="card bg-base-100">
                 <div class="card-body">
-                    <h1 class="card-title">General Settings</h1>
-                    <p class="opacity-60">General settings will be available here.</p>
+                    <h1 class="card-title">{{ __('General Settings') }}</h1>
+
+                    <div class="divider">{{ __('Registration') }}</div>
+                    <x-toggle :label="__('Enable user sign up')"
+                              :hint="__('Allow new visitors to create an account.')"
+                              wire:model="signupEnabled"
+                              wire:change="updateSignup()"/>
+
+                    <div class="divider mt-8">{{ __('Appearance') }}</div>
+                    <x-select :label="__('Default theme')"
+                              :hint="__('Theme applied to guests and to users who have not chosen their own.')"
+                              icon="o-paint-brush"
+                              :options="$themes"
+                              :value="$defaultTheme"
+                              wire:model="defaultTheme"
+                              wire:change="updateDefaultTheme()"
+                              inline/>
                 </div>
             </div>
         @endif

@@ -4,6 +4,7 @@ use App\Livewire\Admin\Settings;
 use App\Models\Properties\ResourceType;
 use App\Models\Resource;
 use App\Models\User;
+use Laravel\Pennant\Feature;
 use Livewire\Livewire;
 
 test('guests are redirected away from the settings page', function () {
@@ -31,7 +32,45 @@ test('the settings page defaults to the general tab', function () {
 
     Livewire::test(Settings::class)
         ->assertSet('tab', 'general')
-        ->assertSee('General settings will be available here.');
+        ->assertSee('Enable user sign up')
+        ->assertSee('Default theme');
+});
+
+test('the general tab reflects the current feature values', function () {
+    Feature::activate('signup');
+    Feature::activate('default-theme', 'aqua');
+
+    $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+    Livewire::test(Settings::class)
+        ->assertSet('signupEnabled', true)
+        ->assertSet('defaultTheme', 'aqua');
+});
+
+test('an admin can enable and disable user sign up', function () {
+    $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+    Livewire::test(Settings::class)
+        ->set('signupEnabled', true)
+        ->call('updateSignup');
+
+    expect(Feature::value('signup'))->toBeTrue();
+
+    Livewire::test(Settings::class)
+        ->set('signupEnabled', false)
+        ->call('updateSignup');
+
+    expect(Feature::value('signup'))->toBeFalse();
+});
+
+test('an admin can set the global default theme', function () {
+    $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+    Livewire::test(Settings::class)
+        ->set('defaultTheme', 'dracula')
+        ->call('updateDefaultTheme');
+
+    expect(Feature::value('default-theme'))->toBe('dracula');
 });
 
 test('the settings page resolves the requested tab', function (string $tab, string $content) {

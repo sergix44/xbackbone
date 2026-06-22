@@ -7,16 +7,56 @@ use App\Models\Resource;
 use App\Models\User;
 use App\Support\Helpers;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Mary\Traits\Toast;
 
 class Settings extends Component
 {
+    use Toast;
+
     public string $tab;
+
+    /* GENERAL */
+    public bool $signupEnabled = false;
+
+    public string $defaultTheme = '';
+
+    public array $themes = [];
 
     public function mount(string $tab = 'general'): void
     {
         $this->tab = $tab;
+
+        if ($tab === 'general') {
+            $this->signupEnabled = (bool) Feature::value('signup');
+            $this->defaultTheme = (string) Feature::value('default-theme');
+
+            $this->themes = collect(config('themes'))
+                ->map(fn ($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
+                ->sortBy('name')
+                ->prepend(['id' => '', 'name' => '(default)'])
+                ->toArray();
+        }
+    }
+
+    public function updateSignup(): void
+    {
+        if ($this->signupEnabled) {
+            Feature::activate('signup');
+        } else {
+            Feature::deactivate('signup');
+        }
+
+        $this->success(__('Settings updated successfully!'));
+    }
+
+    public function updateDefaultTheme(): void
+    {
+        Feature::activate('default-theme', $this->defaultTheme);
+
+        $this->success(__('Settings updated successfully!'));
     }
 
     /**
