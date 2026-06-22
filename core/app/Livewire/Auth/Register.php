@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use Illuminate\Auth\Events\Registered;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Fortify\Fortify;
+use Laravel\Pennant\Feature;
 use Livewire\Component;
 
 class Register extends Component
@@ -16,6 +17,11 @@ class Register extends Component
     public string $password = '';
 
     public string $password_confirmation = '';
+
+    public function mount(): void
+    {
+        abort_unless(Feature::active('signup'), 404);
+    }
 
     public function register(CreatesNewUsers $creator)
     {
