@@ -19,7 +19,6 @@ yarn-error.log
 /.idea
 /.vscode
 /*.db
-/.ai
 /.claude
 /.junie
 /.mcp.json
