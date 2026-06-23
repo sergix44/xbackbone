@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   pint:
-    name: Pint
+    name: Code Style
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,7 +37,7 @@ jobs:
         run: vendor/bin/pint --test
 
   phpstan:
-    name: PHPStan
+    name: Static Analysis
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -60,7 +60,7 @@ jobs:
         run: vendor/bin/phpstan analyse --no-progress --memory-limit=2G
 
   pest:
-    name: Pest
+    name: Test Suite
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
