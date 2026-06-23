@@ -46,11 +46,16 @@ class Preview extends Component
     }
 
     /**
-     * The textual content of the resource, read from storage.
+     * The textual content of the resource. Pastes live in the {@see Resource::$data}
+     * column, while uploaded text files are read from storage.
      */
     #[Computed]
     public function textContent(): string
     {
+        if ($this->resource->has_inline_content) {
+            return $this->resource->data ?? '';
+        }
+
         return Storage::get($this->resource->storage_path) ?? '';
     }
 

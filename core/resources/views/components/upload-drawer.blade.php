@@ -202,9 +202,8 @@
             }
 
             const name = this.pasteFilename.trim() || this.defaultPasteName();
-            const file = new File([content], name, {type: 'text/plain'});
 
-            this.uploadFiles([file]);
+            $wire.createPaste(content, name);
             this.pasteFilename = '';
             this.pasteContent = '';
         },

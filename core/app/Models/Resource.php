@@ -54,6 +54,58 @@ class Resource extends Model
         ];
     }
 
+    /**
+     * The resource payload (a link URL or paste content), transparently
+     * compressed on write to save disk space. Compression is adaptive: the
+     * packed form is only kept when it is actually smaller, so short URLs stay
+     * raw (and human-readable) in the column.
+     */
+    public function data(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $this->decompressData($value),
+            set: fn (?string $value) => $this->compressData($value),
+        );
+    }
+
+    private function compressData(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return $value;
+        }
+
+        $packed = base64_encode(gzencode($value, 9));
+
+        return strlen($packed) < strlen($value) ? $packed : $value;
+    }
+
+    private function decompressData(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return $value;
+        }
+
+        $decoded = base64_decode($value, true);
+
+        // Not valid base64 (e.g. a link URL contains ":") → stored raw.
+        if ($decoded === false || ! str_starts_with($decoded, "\x1f\x8b")) {
+            return $value;
+        }
+
+        $uncompressed = gzdecode($decoded);
+
+        return $uncompressed === false ? $value : $uncompressed;
+    }
+
+    /**
+     * Whether the resource serves its content from the {@see $data} column
+     * (a paste) rather than from a physical file or a redirect (a link).
+     */
+    public function hasInlineContent(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->type !== ResourceType::LINK && $this->data !== null);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

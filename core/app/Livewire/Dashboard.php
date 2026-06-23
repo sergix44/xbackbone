@@ -64,6 +64,35 @@ class Dashboard extends Component
         $file->delete();
     }
 
+    public function createPaste(string $content, ?string $name = null): void
+    {
+        $validated = validator(
+            ['content' => $content, 'name' => $name],
+            [
+                'content' => ['required', 'string', 'max:1048576'],
+                'name' => ['nullable', 'string', 'max:255'],
+            ]
+        )->validate();
+
+        $resource = app(StoreResource::class)(
+            auth()->user(),
+            data: $validated['content'],
+            name: ($validated['name'] ?? null) ?: null,
+            mime: 'text/plain',
+        );
+
+        activity()
+            ->performedOn($resource)
+            ->causedBy(auth()->user())
+            ->log('resource.uploaded');
+
+        $this->showUploadDrawer = false;
+
+        unset($this->resources);
+
+        $this->success('Paste created!', $resource->preview_ext_url);
+    }
+
     public function createLink(): void
     {
         $validated = $this->validate([

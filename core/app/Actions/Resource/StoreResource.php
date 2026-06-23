@@ -21,7 +21,8 @@ class StoreResource
         User $user,
         ?UploadedFile $file = null,
         ?string $name = null,
-        ?string $data = null
+        ?string $data = null,
+        ?string $mime = null
     ): Resource {
         if (! $file && ! $data) {
             throw new InvalidArgumentException('Cannot store a resource without a file or data.');
@@ -32,9 +33,9 @@ class StoreResource
         }
 
         $fingerprint = $file ? sha1_file($file->getRealPath()) : sha1($data);
-        $type = $this->findType($file, $data);
+        $type = $this->findType($file, $data, $mime);
 
-        return DB::transaction(function () use ($user, $file, $name, $data, $fingerprint, $type) {
+        return DB::transaction(function () use ($user, $file, $name, $data, $mime, $fingerprint, $type) {
             // Content-addressed deduplication: an existing resource with the same fingerprint
             // already has the physical file (and possibly a preview) stored.
             $existing = Resource::query()->where('fingerprint', $fingerprint)->first();
@@ -42,17 +43,17 @@ class StoreResource
             // A link has no physical file, so the file-derived columns stay empty.
             $isLink = $type === ResourceType::LINK;
 
-            if ($isLink && !$name) {
+            if ($isLink && ! $name) {
                 $name = parse_url($data, PHP_URL_HOST);
             }
 
             $resource = Resource::query()->create([
                 'type' => $type,
                 'user_id' => $user->id,
-                'filename' => $file?->getClientOriginalName(),
+                'filename' => $file?->getClientOriginalName() ?? ($isLink ? null : $name),
                 'size' => $isLink ? null : ($file?->getSize() ?? strlen($data)),
-                'mime' => $isLink ? null : ($file?->getMimeType() ?? 'text/plain'),
-                'extension' => $isLink ? null : ($this->fromFilename($file) ?? $file?->extension() ?? 'txt'),
+                'mime' => $isLink ? null : ($file?->getMimeType() ?: $mime ?: 'text/plain'),
+                'extension' => $isLink ? null : ($this->fromFilename($file) ?? $file?->extension() ?? $this->fromName($name) ?? 'txt'),
                 'name' => $name,
                 'data' => $data,
                 'fingerprint' => $fingerprint,
@@ -86,10 +87,15 @@ class StoreResource
         });
     }
 
-    private function findType(?UploadedFile $file, ?string $data): ResourceType
+    private function findType(?UploadedFile $file, ?string $data, ?string $mime): ResourceType
     {
         if ($file) {
             return ResourceType::fromMime($file->getMimeType());
+        }
+
+        // An explicit mime marks data-backed content (a paste) vs. a link.
+        if ($mime !== null) {
+            return ResourceType::fromMime($mime);
         }
 
         if ($data) {
@@ -108,5 +114,16 @@ class StoreResource
         }
 
         return strtolower($originalExtension);
+    }
+
+    private function fromName(?string $name): ?string
+    {
+        $extension = $name ? pathinfo($name, PATHINFO_EXTENSION) : '';
+
+        if (empty($extension)) {
+            return null;
+        }
+
+        return strtolower($extension);
     }
 }
