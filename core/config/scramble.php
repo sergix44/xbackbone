@@ -18,7 +18,7 @@ return [
      * Multiple includes or wildcards → server defaults to / and paths stay full (/api/users).
      * Override with `servers`, or use Scramble::registerApi() for separate bases.
      */
-    'api_path' => 'api',
+    'api_path' => 'api/v*',
 
     /*
      * Your API domain. By default, app domain is used. This is also a part of the default API routes
@@ -45,7 +45,7 @@ return [
         /*
          * API version.
          */
-        'version' => env('API_VERSION', '0.0.1'),
+        'version' => 'v1',
 
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
@@ -57,7 +57,7 @@ return [
         'title' => null,
     ],
 
-    'renderer' => 'elements',
+    'renderer' => 'scalar',
 
     'renderers' => [
         /*
