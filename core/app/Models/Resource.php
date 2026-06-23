@@ -12,6 +12,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
+/**
+ * @property ResourceType $type
+ * @property ResourceType|null $preview_type
+ * @property-read bool $has_inline_content
+ * @property-read string $raw_url
+ * @property-read string $download_url
+ * @property-read string $preview_url
+ * @property-read string $preview_ext_url
+ * @property-read string $thumbnail_url
+ * @property-read string $deletion_url
+ * @property-read string $storage_path
+ * @property-read string $preview_path
+ * @property-read bool $is_dir
+ * @property-read string $display_name
+ * @property-read string|null $size_human_readable
+ * @property-read bool $has_preview
+ * @property-read bool $preview_is_pending
+ * @property-read bool $is_displayable
+ * @property-read string $icon
+ * @property-read string $icon_color
+ */
 class Resource extends Model
 {
     use HasFactory;

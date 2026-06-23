@@ -69,8 +69,8 @@ class UserManagement extends Component
     #[Computed]
     public function users(): LengthAwarePaginator
     {
-        $column = in_array($this->sortBy['column'] ?? null, self::SORTABLE, true) ? $this->sortBy['column'] : 'name';
-        $direction = ($this->sortBy['direction'] ?? 'asc') === 'desc' ? 'desc' : 'asc';
+        $column = in_array($this->sortBy['column'], self::SORTABLE, true) ? $this->sortBy['column'] : 'name';
+        $direction = $this->sortBy['direction'] === 'desc' ? 'desc' : 'asc';
 
         return User::query()
             ->withCount(['resources as media_count' => fn ($query) => $query->where('type', '!=', ResourceType::DIRECTORY->value)])

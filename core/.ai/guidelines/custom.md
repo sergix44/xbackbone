@@ -12,6 +12,9 @@
 - All the code, docs and comments must be in English.
 - Use comments to explain code only when is necessary, do not comment obvious code.
 
+# Tools
+- Phpstan, Pint and Pest test suites must pass.
+
 # Tips during development on `next` branch
 - The Vite development server is usually already running, so its not necessary to run build commands.
 - The next branch is the next written from scratch app with the above structure, the master branch contains the legacy app.

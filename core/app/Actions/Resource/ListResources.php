@@ -12,12 +12,12 @@ class ListResources
     public function __invoke(?User $user = null, int $perPage = 20): AbstractPaginator
     {
         return QueryBuilder::for(Resource::class)
-            ->when($user, function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
             ->allowedFilters(['filename', 'type', 'mime', 'extension', 'code'])
             ->allowedSorts(['created_at', 'size', 'filename', 'views', 'downloads'])
             ->defaultSort('-created_at')
+            ->when($user, function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
             ->paginate($perPage)
             ->appends(request()->query());
     }

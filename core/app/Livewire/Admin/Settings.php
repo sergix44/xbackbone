@@ -36,7 +36,7 @@ class Settings extends Component
             $this->themes = collect(config('themes'))
                 ->map(fn ($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
                 ->sortBy('name')
-                ->prepend(['id' => '', 'name' => '(default)'])
+                ->prepend((object) ['id' => '', 'name' => '(default)'])
                 ->toArray();
         }
     }
@@ -70,6 +70,7 @@ class Settings extends Component
         $aggregate = Resource::query()
             ->where('type', '!=', ResourceType::DIRECTORY->value)
             ->selectRaw('COUNT(*) as media, COALESCE(SUM(size), 0) as size, COALESCE(SUM(views), 0) as views, COALESCE(SUM(downloads), 0) as downloads')
+            ->toBase()
             ->first();
 
         return [
@@ -99,7 +100,7 @@ class Settings extends Component
                 'label' => Str::title($row->type->value),
                 'icon' => $row->type->icon(),
                 'color' => $row->type->iconColor(),
-                'count' => number_format((int) $row->count),
+                'count' => number_format((int) ($row->count ?? 0)),
                 'size' => Helpers::humanizeBytes((int) $row->size),
             ])
             ->all();
@@ -122,7 +123,7 @@ class Settings extends Component
             ->get()
             ->map(fn (User $user) => [
                 'name' => $user->name,
-                'media' => number_format((int) $user->media_count),
+                'media' => number_format((int) ($user->media_count ?? 0)),
                 'size' => Helpers::humanizeBytes((int) ($user->storage_used ?? 0)),
             ])
             ->all();

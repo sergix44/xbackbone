@@ -178,7 +178,7 @@ enum ResourceType: string
             self::TEXT => ['icon' => 'o-document-text', 'color' => 'text-info'],
             self::LINK => ['icon' => 'o-link', 'color' => 'text-primary'],
             self::DIRECTORY => ['icon' => 'o-folder', 'color' => 'text-warning'],
-            self::FILE => ['icon' => 'o-document', 'color' => 'text-base-content'],
+            self::FILE, self::FUTURE => ['icon' => 'o-document', 'color' => 'text-base-content'],
         };
     }
 

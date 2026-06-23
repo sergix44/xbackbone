@@ -29,7 +29,7 @@ class StoreResource
         }
 
         if (! $name && $file) {
-            $name = $file?->getClientOriginalName() ?? $file?->hashName();
+            $name = $file->getClientOriginalName() ?: $file->hashName();
         }
 
         $fingerprint = $file ? sha1_file($file->getRealPath()) : sha1($data);
@@ -47,6 +47,9 @@ class StoreResource
                 $name = parse_url($data, PHP_URL_HOST);
             }
 
+            // Inherit the preview from a duplicate so the UI has one immediately.
+            $inheritedPreviewType = $existing?->preview_type;
+
             $resource = Resource::query()->create([
                 'type' => $type,
                 'user_id' => $user->id,
@@ -57,14 +60,9 @@ class StoreResource
                 'name' => $name,
                 'data' => $data,
                 'fingerprint' => $fingerprint,
-                // Inherit the preview from a duplicate so the UI has one immediately.
-                'preview_type' => $existing?->preview_type ?? ResourceType::FUTURE,
+                'preview_type' => $inheritedPreviewType ?? ResourceType::FUTURE,
                 'preview_extension' => $existing?->preview_extension,
             ]);
-
-            if (! $resource) {
-                throw new InvalidArgumentException('Failed to store the resource.');
-            }
 
             $code = $this->genId->encode([$user->id, $resource->id]);
 

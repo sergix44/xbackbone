@@ -7,6 +7,7 @@ use App\Models\Properties\ResourceType;
 use App\Models\Resource;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
+use FFMpeg\Media\Video;
 use SergiX44\ImageZen\Image;
 
 class VideoFramePreviewGenerator implements PreviewGenerator
@@ -34,9 +35,9 @@ class VideoFramePreviewGenerator implements PreviewGenerator
         $framePath = sys_get_temp_dir().'/xbb-frame-'.bin2hex(random_bytes(8)).'.png';
 
         try {
-            $ffmpeg->open($localPath)
-                ->frame(TimeCode::fromSeconds($seconds))
-                ->save($framePath);
+            /** @var Video $video */
+            $video = $ffmpeg->open($localPath);
+            $video->frame(TimeCode::fromSeconds($seconds))->save($framePath);
 
             return Image::make($framePath);
         } finally {

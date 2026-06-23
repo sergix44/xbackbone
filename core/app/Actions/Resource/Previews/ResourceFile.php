@@ -2,7 +2,10 @@
 
 namespace App\Actions\Resource\Previews;
 
-use App\Models\Resource;
+// Aliased to avoid colliding with the `resource` pseudo-type used in this
+// class's PHPDoc (PHP type names are case-insensitive, so an imported
+// `Resource` would otherwise shadow `resource` for static analysis).
+use App\Models\Resource as ResourceModel;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use RuntimeException;
@@ -23,7 +26,7 @@ class ResourceFile
     /** @var list<string> */
     private array $tempPaths = [];
 
-    public function __construct(public readonly Resource $resource) {}
+    public function __construct(public readonly ResourceModel $resource) {}
 
     /**
      * A readable stream to the original file. Closed automatically on cleanup().

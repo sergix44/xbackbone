@@ -43,7 +43,7 @@ class Dashboard extends Component
 
     public function saveUpload(int $id): void
     {
-        /** @var TemporaryUploadedFile $file */
+        /** @var TemporaryUploadedFile|null $file */
         $file = $this->files[$id] ?? null;
 
         if (! $file) {

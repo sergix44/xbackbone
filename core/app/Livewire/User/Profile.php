@@ -60,7 +60,7 @@ class Profile extends Component
             $this->themes = collect(config('themes'))
                 ->map(fn ($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
                 ->sortBy('name')
-                ->prepend(['id' => null, 'name' => '(default)'])
+                ->prepend((object) ['id' => null, 'name' => '(default)'])
                 ->toArray();
         }
     }
@@ -138,6 +138,7 @@ class Profile extends Component
         $aggregate = $this->user->resources()
             ->where('type', '!=', ResourceType::DIRECTORY->value)
             ->selectRaw('COUNT(*) as media, COALESCE(SUM(size), 0) as size, COALESCE(SUM(views), 0) as views, COALESCE(SUM(downloads), 0) as downloads')
+            ->toBase()
             ->first();
 
         return [
