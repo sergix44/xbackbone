@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\User;
 
 use App\Actions\Resource\DeleteResource;
 use App\Models\Resource;

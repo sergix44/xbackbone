@@ -2,9 +2,9 @@
 
 namespace App\Livewire\User;
 
-use App\Actions\DeleteUserAccount;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Actions\User\DeleteUserAccount;
 use App\Models\Properties\ResourceType;
 use App\Models\User;
 use App\Support\Helpers;

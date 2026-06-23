@@ -4,7 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Actions\Admin\CreateUser;
 use App\Actions\Admin\UpdateUser;
-use App\Actions\DeleteUserAccount;
+use App\Actions\User\DeleteUserAccount;
 use App\Models\Properties\ResourceType;
 use App\Models\Properties\UserStatus;
 use App\Models\User;
