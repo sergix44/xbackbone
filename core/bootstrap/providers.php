@@ -1,7 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\FortifyServiceProvider;
+use App\Providers\MaryBootServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\FortifyServiceProvider::class,
-    App\Providers\MaryBootServiceProvider::class,
+    AppServiceProvider::class,
+    FortifyServiceProvider::class,
+    MaryBootServiceProvider::class,
 ];

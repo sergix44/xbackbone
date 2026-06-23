@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\Integration\GenerateSharexConfig;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class IntegrationController extends Controller
 {

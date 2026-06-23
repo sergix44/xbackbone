@@ -9,6 +9,7 @@
     "require": {
         "php": "^8.4",
         "codeat3/blade-simple-icons": "^8.12",
+        "dedoc/scramble": "^0.13.28",
         "laravel/fortify": "^1.24",
         "laravel/framework": "^13.0",
         "laravel/pennant": "^1.11",
@@ -25,6 +26,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.0",
         "laravel/boost": "^2.0",
         "laravel/pao": "^1.1",
         "laravel/pint": "^1.13",

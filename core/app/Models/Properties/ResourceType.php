@@ -48,6 +48,7 @@ enum ResourceType: string
 
     /**
      * List of potentially harmful file extensions for the server.
+     *
      * @var list<string>
      */
     private const HARMFUL_EXTENSIONS = [
