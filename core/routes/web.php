@@ -42,5 +42,6 @@ Route::get('raw/{resource:code}', [ResourceController::class, 'raw'])->name('raw
 Route::get('download/{resource:code}.{ext}', [ResourceController::class, 'download'])->name('download.ext');
 Route::get('download/{resource:code}', [ResourceController::class, 'download'])->name('download');
 Route::get('thumbnail/{resource:code}', [ResourceController::class, 'thumbnail'])->name('thumbnail');
+Route::get('delete/{resource:code}', [ResourceController::class, 'delete'])->name('resource.delete')->middleware('signed');
 Route::livewire('{resource:code}.{ext}', Preview::class)->name('preview.ext');
 Route::livewire('{resource:code}', Preview::class)->name('preview');

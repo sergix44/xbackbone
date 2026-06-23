@@ -30,6 +30,7 @@ test('upload a file', function () {
                 'download_count',
                 'preview_url',
                 'preview_ext_url',
+                'deletion_url',
                 'published_at',
                 'expires_at',
             ],
@@ -58,10 +59,24 @@ test('upload a file string', function () {
                 'download_count',
                 'preview_url',
                 'preview_ext_url',
+                'deletion_url',
                 'published_at',
                 'expires_at',
             ],
         ]);
+});
+
+test('shortens a url into a link resource', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->postJson(route('api.v1.upload'), [
+            'data' => 'https://example.com/some/very/long/path',
+        ])
+        ->assertCreated();
+
+    expect($response->json('data.type'))->toBe('LINK');
+    expect($response->json('data.deletion_url'))->toContain('signature=');
 });
 
 test('fails when not authenticated', function () {

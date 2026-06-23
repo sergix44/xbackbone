@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class Resource extends Model
@@ -157,6 +158,16 @@ class Resource extends Model
     public function thumbnailUrl(): Attribute
     {
         return Attribute::make(get: fn () => $this->makeResourceUrl('thumbnail', $this->code));
+    }
+
+    /**
+     * A permanent, signed URL that deletes the resource when requested. ShareX (and
+     * similar uploaders) open it with a plain GET, so possession of the signature is
+     * the authorization — no further ownership check is required.
+     */
+    public function deletionUrl(): Attribute
+    {
+        return Attribute::make(get: fn () => URL::signedRoute('resource.delete', ['resource' => $this->code]));
     }
 
     private function makeResourceUrl(string $route, string $resource, ?string $ext = null): string

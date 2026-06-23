@@ -38,6 +38,10 @@ test('downloads a working ShareX uploader config', function () {
     expect($config['Headers']['Authorization'])->toStartWith('Bearer ');
     expect($config['URL'])->toBe('{json:data.preview_ext_url}');
     expect($config['ThumbnailURL'])->toBe('{json:data.raw_url}');
+    expect($config['DeletionURL'])->toBe('{json:data.deletion_url}');
+    expect($config['ErrorMessage'])->toBe('{json:message}');
+    expect($config['DestinationType'])->toContain('URLShortener');
+    expect($config['DestinationType'])->toContain('URLSharingService');
 });
 
 test('issues a ShareX token to the user', function () {
@@ -45,7 +49,7 @@ test('issues a ShareX token to the user', function () {
 
     $this->actingAs($user)->get(route('integrations.sharex'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like','%sharex%')->count())->toBe(1);
+    expect($user->tokens()->where('name', 'like', '%sharex%')->count())->toBe(1);
 });
 
 test('ShareX config download requires authentication', function () {

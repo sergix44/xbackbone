@@ -15,7 +15,7 @@ class GenerateSharexConfig
         return [
             'Version' => '17.0.0',
             'Name' => config('app.name').' - '.$user->name,
-            'DestinationType' => 'ImageUploader, TextUploader, FileUploader',
+            'DestinationType' => 'ImageUploader, TextUploader, FileUploader, URLShortener, URLSharingService',
             'RequestMethod' => 'POST',
             'RequestURL' => route('api.v1.upload'),
             'Headers' => [
@@ -30,6 +30,8 @@ class GenerateSharexConfig
             ],
             'URL' => '{json:data.preview_ext_url}',
             'ThumbnailURL' => '{json:data.raw_url}',
+            'DeletionURL' => '{json:data.deletion_url}',
+            'ErrorMessage' => '{json:message}',
         ];
     }
 }

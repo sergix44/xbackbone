@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Resource\DeleteResource;
 use App\Actions\Resource\GetResourcePreview;
 use App\Models\Properties\ResourceType;
 use App\Models\Resource;
@@ -53,5 +54,17 @@ class ResourceController extends Controller
         }
 
         return Storage::response($resource->storage_path, $resource->filename, disposition: 'attachment');
+    }
+
+    /**
+     * Delete a resource through a permanent signed URL, as used by ShareX's
+     * "DeletionURL". The route's `signed` middleware validates the signature, so
+     * possession of the URL is the authorization — no ownership check is needed.
+     */
+    public function delete(Resource $resource, DeleteResource $deleteResource): RedirectResponse
+    {
+        $deleteResource($resource);
+
+        return redirect()->route('dashboard');
     }
 }
