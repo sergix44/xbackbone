@@ -9,6 +9,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\Integrations;
 use App\Livewire\Preview;
 use App\Livewire\User\Profile;
+use App\Models\Resource;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,3 +48,17 @@ Route::middleware(EnsureResourceAccessible::class)->group(static function () {
     Route::livewire('{resource:code}.{ext}', Preview::class)->name('preview.ext');
     Route::livewire('{resource:code}', Preview::class)->name('preview');
 });
+
+/*
+ * Legacy URL fallback. Old XBackBone links were /{userCode}/{code}[.ext]; resources imported from a
+ * legacy instance keep their original code in `legacy_code`. This two-segment route is registered last
+ * so it only catches old links the current single-segment routes above cannot, and permanently
+ * redirects them to the current /{code} URL.
+ */
+Route::get('{legacyUserCode}/{legacyCode}', static function (string $legacyUserCode, string $legacyCode) {
+    $resource = Resource::query()
+        ->where('legacy_code', pathinfo($legacyCode, PATHINFO_FILENAME))
+        ->firstOrFail();
+
+    return redirect()->route('preview', ['resource' => $resource->code], 301);
+})->name('legacy.redirect');

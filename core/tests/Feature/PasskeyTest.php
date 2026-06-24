@@ -54,7 +54,7 @@ test('an authenticated user can fetch passkey registration options', function ()
 test('the login page offers a passkey sign-in button', function () {
     $this->get(route('login'))
         ->assertOk()
-        ->assertSee('Sign in with a passkey');
+        ->assertSee('Login with a passkey');
 });
 
 test('the profile passkeys tab lists the user passkeys', function () {

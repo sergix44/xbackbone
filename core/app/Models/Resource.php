@@ -47,6 +47,7 @@ class Resource extends Model
         'type',
         'user_id',
         'code',
+        'legacy_code',
         'is_private',
         'data',
         'extension',

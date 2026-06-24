@@ -15,7 +15,7 @@
 
     <div x-data="passkeyLogin()" x-show="supported" x-cloak class="mt-4">
         <div class="divider text-xs opacity-60">{{ __('or') }}</div>
-        <x-button :label="__('Sign in with a passkey')" icon="o-finger-print" class="btn-block"
+        <x-button :label="__('Login with a passkey')" icon="o-finger-print" class="btn-block"
                   @click="login()" ::disabled="busy"/>
         <p x-show="error" x-text="error" x-cloak class="text-error text-sm text-center mt-2"></p>
     </div>
