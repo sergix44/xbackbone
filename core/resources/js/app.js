@@ -3,6 +3,7 @@ import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
 import WaveSurfer from 'wavesurfer.js';
 import hljs from 'highlight.js/lib/common';
+import {Passkeys, UserCancelledError} from '@laravel/passkeys';
 
 function clipboard(subject) {
     return new Promise(function (resolve, reject) {
@@ -224,6 +225,72 @@ Alpine.data('pendingPreview', (url) => ({
         clearTimeout(this.timer);
         if (this.src) {
             URL.revokeObjectURL(this.src);
+        }
+    },
+}));
+
+/**
+ * Drives the "Sign in with a passkey" button on the login page. Runs the
+ * WebAuthn verification ceremony against Fortify's guest passkey endpoints and,
+ * on success, follows the server-provided redirect. A user dismissing the
+ * native prompt (UserCancelledError) is a silent no-op, not an error.
+ */
+Alpine.data('passkeyLogin', () => ({
+    busy: false,
+    error: null,
+    supported: true,
+    init() {
+        this.supported = Passkeys.isSupported();
+    },
+    async login() {
+        if (this.busy) {
+            return;
+        }
+        this.busy = true;
+        this.error = null;
+        try {
+            const {redirect} = await Passkeys.verify();
+            window.location.assign(redirect ?? '/');
+        } catch (e) {
+            this.busy = false;
+            if (e instanceof UserCancelledError) {
+                return;
+            }
+            this.error = e?.message || 'Passkey sign-in failed.';
+        }
+    },
+}));
+
+/**
+ * Drives the "Add a passkey" form in the profile's Passkeys tab. Runs the
+ * WebAuthn registration ceremony against Fortify's authenticated endpoints and,
+ * on success, asks the Livewire component to refresh its list via an event.
+ */
+Alpine.data('passkeyManager', () => ({
+    name: '',
+    busy: false,
+    error: null,
+    supported: true,
+    init() {
+        this.supported = Passkeys.isSupported();
+    },
+    async register() {
+        const name = this.name.trim();
+        if (this.busy || name === '') {
+            return;
+        }
+        this.busy = true;
+        this.error = null;
+        try {
+            await Passkeys.register({name});
+            this.name = '';
+            Livewire.dispatch('passkey-registered');
+        } catch (e) {
+            if (!(e instanceof UserCancelledError)) {
+                this.error = e?.message || 'Could not register passkey.';
+            }
+        } finally {
+            this.busy = false;
         }
     },
 }));

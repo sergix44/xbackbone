@@ -9,15 +9,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passkeys\Contracts\PasskeyUser;
+use Laravel\Passkeys\PasskeyAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property UserStatus $status
  * @property-read string $avatar
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
-    use HasApiTokens, HasFactory, ImplementMustVerifyEmail, Notifiable;
+    use HasApiTokens, HasFactory, ImplementMustVerifyEmail, Notifiable, PasskeyAuthenticatable;
 
     /**
      * The attributes that are mass assignable.

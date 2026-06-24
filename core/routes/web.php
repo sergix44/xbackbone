@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
         ->can('administrate');
     Route::get('profile/export/download', [ExportController::class, 'download'])->name('user.profile.export');
     Route::livewire('profile/{tab?}', Profile::class)->name('user.profile')
-        ->whereIn('tab', ['profile', 'tokens', 'export', 'delete']);
+        ->whereIn('tab', ['profile', 'tokens', 'passkeys', 'export', 'delete']);
 });
 
 Route::get('delete/{resource:code}', [ResourceController::class, 'delete'])->name('resource.delete')->middleware('signed');

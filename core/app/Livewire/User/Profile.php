@@ -8,9 +8,12 @@ use App\Actions\User\DeleteUserAccount;
 use App\Models\Properties\ResourceType;
 use App\Models\User;
 use App\Support\Helpers;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Laravel\Passkeys\Passkey;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -125,6 +128,40 @@ class Profile extends Component
         $this->user = $this->user->refresh();
         $this->selectedTokens = [];
         $this->success(__('Selected tokens revoked successfully!'));
+    }
+
+    /**
+     * The passkeys registered by the user, newest first.
+     *
+     * @return Collection<int, Passkey>
+     */
+    #[Computed]
+    public function passkeys(): Collection
+    {
+        return $this->user->passkeys()->latest()->get();
+    }
+
+    /**
+     * Delete one of the current user's passkeys. Scoping the query through the
+     * relation guarantees a user can only ever delete their own passkey.
+     */
+    public function deletePasskey(int $passkeyId): void
+    {
+        $this->user->passkeys()->whereKey($passkeyId)->delete();
+
+        unset($this->passkeys);
+        $this->success(__('Passkey removed successfully!'));
+    }
+
+    /**
+     * Refresh the passkey list after the browser completes a registration
+     * ceremony (dispatched from the passkeyManager Alpine component).
+     */
+    #[On('passkey-registered')]
+    public function onPasskeyRegistered(): void
+    {
+        unset($this->passkeys);
+        $this->success(__('Passkey added successfully!'));
     }
 
     /**

@@ -3,6 +3,7 @@
         <x-menu class="rounded-lg bg-base-100" activate-by-route>
             <x-menu-item title="Profile" icon="o-user-circle" :link="route('user.profile')" exact/>
             <x-menu-item title="Tokens" icon="o-command-line" :link="route('user.profile', ['tab' => 'tokens'])"/>
+            <x-menu-item title="Passkeys" icon="o-finger-print" :link="route('user.profile', ['tab' => 'passkeys'])"/>
             <x-menu-item title="Export Data" icon="o-arrow-right-start-on-rectangle" :link="route('user.profile', ['tab' => 'export'])"/>
             <x-menu-item title="Delete Account" icon="o-user-minus" class="text-red-500" :link="route('user.profile', ['tab' => 'delete'])"/>
         </x-menu>
@@ -23,6 +24,59 @@
                     <x-table :headers="$headers" :rows="$user->tokens" wire:model="selectedTokens" striped selectable/>
                     <div class="mt-4">
                         <x-button class="btn-primary" label="Revoke Tokens" icon="o-trash" wire:click="revokeSelectedTokens" spinner/>
+                    </div>
+                </div>
+            </div>
+        @elseif($tab === 'passkeys')
+            <div class="card bg-base-100">
+                <div class="card-body">
+                    <h1 class="card-title">{{ __('Passkeys') }}</h1>
+                    <p class="text-sm opacity-70">
+                        {{ __('Passkeys let you sign in without a password using your device biometrics or a security key.') }}
+                    </p>
+
+                    <div class="mt-4 flex flex-col gap-3">
+                        @forelse($this->passkeys as $passkey)
+                            <div class="flex items-center justify-between rounded-lg border border-base-300 px-4 py-3">
+                                <div class="flex items-center gap-3">
+                                    <x-icon name="o-finger-print" class="w-5 h-5 text-primary"/>
+                                    <div>
+                                        <div class="font-semibold">{{ $passkey->name }}</div>
+                                        <div class="text-xs opacity-60">
+                                            @if($passkey->authenticator){{ $passkey->authenticator }} · @endif
+                                            {{ __('added :date', ['date' => $passkey->created_at->diffForHumans()]) }}
+                                            @if($passkey->last_used_at)
+                                                · {{ __('last used :date', ['date' => $passkey->last_used_at->diffForHumans()]) }}
+                                            @else
+                                                · {{ __('never used') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <x-button icon="o-trash" class="btn-ghost btn-sm text-error"
+                                          wire:click="deletePasskey({{ $passkey->id }})"
+                                          wire:confirm="{{ __('Remove this passkey?') }}"
+                                          spinner="deletePasskey({{ $passkey->id }})"/>
+                            </div>
+                        @empty
+                            <p class="text-sm opacity-60">{{ __('You have not registered any passkeys yet.') }}</p>
+                        @endforelse
+                    </div>
+
+                    <div class="divider mt-6">{{ __('Add a passkey') }}</div>
+                    <div x-data="passkeyManager()">
+                        <template x-if="!supported">
+                            <div class="alert alert-warning text-sm">
+                                {{ __('Your browser does not support passkeys.') }}
+                            </div>
+                        </template>
+                        <div x-show="supported" x-cloak class="flex flex-col gap-2 sm:flex-row sm:items-end">
+                            <x-input :label="__('Name')" :placeholder="__('e.g. MacBook Touch ID')" x-model="name"
+                                     @keydown.enter.prevent="register()" class="w-full"/>
+                            <x-button :label="__('Add a passkey')" icon="o-plus" class="btn-primary"
+                                      @click="register()" ::disabled="busy"/>
+                        </div>
+                        <p x-show="error" x-text="error" x-cloak class="text-error text-sm mt-2"></p>
                     </div>
                 </div>
             </div>
