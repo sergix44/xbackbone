@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Actions\Resource\RecordResourceView;
 use App\Models\Properties\ResourceType;
 use App\Models\Resource;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class Preview extends Component
 
     public Resource $resource;
 
-    public function mount(Resource $resource, ?string $ext = null): void
+    public function mount(Resource $resource, RecordResourceView $recordResourceView, ?string $ext = null): void
     {
         view()->share('previewMode', true);
         $this->resource = $resource;
@@ -32,6 +33,8 @@ class Preview extends Component
         if ($ext && $resource->extension !== $ext) {
             abort(404);
         }
+
+        $recordResourceView($resource);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Resource\DeleteResource;
 use App\Actions\Resource\GetResourcePreview;
+use App\Actions\Resource\RecordResourceDownload;
 use App\Models\Properties\ResourceType;
 use App\Models\Resource;
 use Illuminate\Http\RedirectResponse;
@@ -14,9 +15,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResourceController extends Controller
 {
-    public function raw(Resource $resource): Response|StreamedResponse|RedirectResponse
+    public function raw(Resource $resource, RecordResourceDownload $recordResourceDownload): Response|StreamedResponse|RedirectResponse
     {
         if ($resource->type === ResourceType::LINK) {
+            // For a link there is no file to serve: following it is a redirect,
+            // which counts as a download.
+            $recordResourceDownload($resource);
+
             return redirect()->away($resource->data);
         }
 
@@ -39,8 +44,10 @@ class ResourceController extends Controller
         return $getResourcePreview($resource, $request->input('w'), $request->input('h'), $request->input('q')) ?? abort(404);
     }
 
-    public function download(Resource $resource): Response|StreamedResponse|RedirectResponse
+    public function download(Resource $resource, RecordResourceDownload $recordResourceDownload): Response|StreamedResponse|RedirectResponse
     {
+        $recordResourceDownload($resource);
+
         if ($resource->type === ResourceType::LINK) {
             return redirect()->away($resource->data);
         }

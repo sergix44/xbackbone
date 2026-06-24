@@ -8,17 +8,21 @@
                 {{ $resource?->display_name ?? 'File Name' }}
             </a>
             <div class="inline-flex gap-0.5 shrink-0 ml-1">
-                <x-button icon="m-link" class="btn-ghost btn-xs btn-square text-success" @click="$clipboard('{{$resource?->preview_ext_url}}')"/>
+                <x-button icon="m-link" class="btn-ghost btn-xs btn-square text-success"
+                          tooltip="{{ __('Copy link') }}" @click="$clipboard('{{$resource?->preview_ext_url}}')"/>
                 @if($resource->type === \App\Models\Properties\ResourceType::LINK)
-                    <x-button icon="m-arrow-top-right-on-square" class="btn-ghost btn-xs btn-square text-info" :link="$resource->raw_url" no-wire-navigate external/>
+                    <x-button icon="m-arrow-top-right-on-square" class="btn-ghost btn-xs btn-square text-info"
+                              tooltip="{{ __('Open link') }}" :link="$resource->raw_url" no-wire-navigate external/>
                 @else
-                    <x-button icon="m-cloud-arrow-down" class="btn-ghost btn-xs btn-square text-info" :link="route('download', ['resource' => $resource->code])" no-wire-navigate external/>
+                    <x-button icon="m-cloud-arrow-down" class="btn-ghost btn-xs btn-square text-info"
+                              tooltip="{{ __('Download') }}" :link="route('download', ['resource' => $resource->code])" no-wire-navigate external/>
                 @endif
                 <x-button icon="{{ $resource->is_private ? 'm-eye' : 'm-eye-slash' }}"
                           class="btn-ghost btn-xs btn-square {{ $resource->is_private ? 'text-success' : 'text-warning' }}"
                           tooltip="{{ $resource->is_private ? __('Publish') : __('Hide') }}"
                           wire:click="toggleVisibility({{ $resource->id }})"/>
                 <x-button icon="m-x-mark" class="btn-ghost btn-xs btn-square text-error"
+                          tooltip="{{ __('Delete') }}"
                           wire:click="confirmDelete({{ $resource->id }})"/>
             </div>
         </div>
