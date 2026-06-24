@@ -10,6 +10,12 @@
     @endunless
 @endsection
 
+@push('head')
+    @include('partials.social-embed', [
+        'embed' => \App\Support\SocialEmbed::forResource($resource, $this->locked),
+    ])
+@endpush
+
 <div>
 @if($this->locked)
     {{-- Password gate: render only the unlock form so no protected content or

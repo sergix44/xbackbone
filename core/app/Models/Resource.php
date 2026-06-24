@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
  * @property Carbon|null $published_at
  * @property Carbon|null $expires_at
  * @property string|null $password
+ * @property-read User $user
  * @property-read bool $has_inline_content
  * @property-read string $raw_url
  * @property-read string $download_url

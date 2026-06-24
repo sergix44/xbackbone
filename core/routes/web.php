@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IntegrationController;
+use App\Http\Controllers\OembedController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Middleware\EnsureResourceAccessible;
+use App\Http\Middleware\ServeSocialEmbed;
 use App\Livewire\Admin\Settings;
 use App\Livewire\Dashboard;
 use App\Livewire\Integrations;
@@ -39,7 +41,10 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
 
 Route::get('delete/{resource:code}', [ResourceController::class, 'delete'])->name('resource.delete')->middleware('signed');
 
-Route::middleware(EnsureResourceAccessible::class)->group(static function () {
+// Registered before the single-segment preview route below so it is not captured as a resource code.
+Route::get('oembed', [OembedController::class, 'show'])->name('oembed');
+
+Route::middleware([EnsureResourceAccessible::class, ServeSocialEmbed::class])->group(static function () {
     Route::get('raw/{resource:code}.{ext}', [ResourceController::class, 'raw'])->name('raw.ext');
     Route::get('raw/{resource:code}', [ResourceController::class, 'raw'])->name('raw');
     Route::get('download/{resource:code}.{ext}', [ResourceController::class, 'download'])->name('download.ext');
