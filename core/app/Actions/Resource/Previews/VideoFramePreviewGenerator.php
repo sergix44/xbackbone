@@ -2,10 +2,10 @@
 
 namespace App\Actions\Resource\Previews;
 
-use Alchemy\BinaryDriver\Exception\ExecutableNotFoundException;
 use App\Models\Properties\ResourceType;
 use App\Models\Resource;
 use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Exception\ExecutableNotFoundException;
 use FFMpeg\FFMpeg;
 use FFMpeg\Media\Video;
 use SergiX44\ImageZen\Image;

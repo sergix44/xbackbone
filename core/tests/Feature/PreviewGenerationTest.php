@@ -48,6 +48,28 @@ function pngFixture(int $width, int $height): string
     return ob_get_clean();
 }
 
+function imagickCanRasterizePdf(): bool
+{
+    if (! extension_loaded('imagick') || empty(Imagick::queryFormats('PDF'))) {
+        return false;
+    }
+
+    // queryFormats only reports the registered coder. Actually rasterizing a PDF needs a
+    // working Ghostscript delegate and an ImageMagick policy that permits it; CI images
+    // frequently ship without Ghostscript or with PDF disabled in policy.xml. Probe with a
+    // real read so the test skips instead of failing when rendering is genuinely unavailable.
+    try {
+        $imagick = new Imagick;
+        $imagick->setResolution(72, 72);
+        $imagick->readImageBlob(pdfFixture());
+        $imagick->clear();
+
+        return true;
+    } catch (Throwable) {
+        return false;
+    }
+}
+
 function storedResource(string $factoryState, string $contents): Resource
 {
     $resource = Resource::factory()->{$factoryState}()->create([
@@ -116,7 +138,7 @@ test('generates a preview from the first pdf page', function () {
 
     Storage::assertExists("{$resource->fingerprint}.preview.webp");
     expect($resource->refresh()->preview_type)->toBe(ResourceType::IMAGE);
-})->skip(fn () => ! extension_loaded('imagick') || empty(Imagick::queryFormats('PDF')), 'imagick PDF support not available');
+})->skip(fn () => ! imagickCanRasterizePdf(), 'imagick PDF rasterization not available');
 
 test('generates a frame preview for a video', function () {
     $videoPath = sys_get_temp_dir().'/xbb-test-video.mp4';

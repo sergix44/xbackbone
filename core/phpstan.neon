@@ -3,6 +3,8 @@ includes:
     - vendor/nesbot/carbon/extension.neon
 
 parameters:
+    parallel:
+        maximumNumberOfProcesses: 16
 
     paths:
         - app/

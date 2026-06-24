@@ -34,7 +34,7 @@ jobs:
           working-directory: core
 
       - name: Run Pint
-        run: vendor/bin/pint --test
+        run: vendor/bin/pint --test --parallel
 
   phpstan:
     name: Static Analysis
@@ -70,9 +70,21 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
-          extensions: mbstring, dom, fileinfo, bcmath, intl, gd, pdo_sqlite, sqlite3
+          extensions: mbstring, dom, fileinfo, bcmath, intl, gd, imagick, pdo_sqlite, sqlite3
           coverage: none
           tools: composer:v2
+
+      - name: Install media tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg ghostscript
+          # ImageMagick ships a policy.xml that blocks the Ghostscript-backed PDF
+          # coder by default; allow it so PDF previews can be rasterized.
+          for policy in /etc/ImageMagick-6/policy.xml /etc/ImageMagick-7/policy.xml; do
+            if [ -f "$policy" ]; then
+              sudo sed -i '/PDF/s/rights="none"/rights="read|write"/' "$policy"
+            fi
+          done
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
@@ -85,4 +97,4 @@ jobs:
           php artisan key:generate
 
       - name: Run Pest
-        run: php artisan test
+        run: php artisan test --parallel
