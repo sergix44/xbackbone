@@ -1,15 +1,35 @@
 @section('menu-items')
     <x-button label="Copy link" icon="o-link" class="btn-sm btn-soft btn-success" @click="$clipboard('{{ $resource->preview_ext_url }}')"/>
-    @if($resource->type === \App\Models\Properties\ResourceType::LINK)
-        <x-button label="Open link" icon="o-arrow-top-right-on-square" class="btn-sm btn-soft btn-primary" link="{{ $resource->raw_url }}" external no-wire-navigate/>
-    @else
-        <x-button label="Download" icon="o-cloud-arrow-down" class="btn-sm btn-soft btn-info" link="{{ $resource->download_url }}" external no-wire-navigate/>
-        <x-button label="Original" icon="o-eye" class="btn-sm btn-soft" link="{{ $resource->raw_url }}" external no-wire-navigate/>
-    @endif
+    @unless($this->locked)
+        @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+            <x-button label="Open link" icon="o-arrow-top-right-on-square" class="btn-sm btn-soft btn-primary" link="{{ $resource->raw_url }}" external no-wire-navigate/>
+        @else
+            <x-button label="Download" icon="o-cloud-arrow-down" class="btn-sm btn-soft btn-info" link="{{ $resource->download_url }}" external no-wire-navigate/>
+            <x-button label="Original" icon="o-eye" class="btn-sm btn-soft" link="{{ $resource->raw_url }}" external no-wire-navigate/>
+        @endif
+    @endunless
 @endsection
 
 <div>
-@if($resource->type === \App\Models\Properties\ResourceType::LINK)
+@if($this->locked)
+    {{-- Password gate: render only the unlock form so no protected content or
+         destination URL is exposed before the password is supplied. --}}
+    <div class="flex justify-center items-center min-h-[calc(100dvh-8rem)]">
+        <div class="card @container bg-base-100 w-full max-w-md shadow-sm">
+            <div class="card-body items-center text-center gap-4">
+                <x-icon name="o-lock-closed" class="w-24 h-24 text-warning"/>
+                <h2 class="card-title justify-center">{{ __('This resource is protected') }}</h2>
+                <p class="opacity-70">{{ __('Enter the password to view it.') }}</p>
+                <x-form wire:submit="unlock" class="w-full">
+                    <x-password wire:model="passwordInput" :placeholder="__('Password')" autofocus/>
+                    <x-slot:actions>
+                        <x-button label="Unlock" icon="o-lock-open" type="submit" class="btn-primary" spinner="unlock"/>
+                    </x-slot:actions>
+                </x-form>
+            </div>
+        </div>
+    </div>
+@elseif($resource->type === \App\Models\Properties\ResourceType::LINK)
     {{-- Link: an interstitial showing the destination before redirecting to it. --}}
     <div class="flex justify-center items-center min-h-[calc(100dvh-8rem)]">
         <div class="card @container bg-base-100 w-full max-w-2xl shadow-sm">

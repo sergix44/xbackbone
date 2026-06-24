@@ -89,6 +89,21 @@ class ResourceFactory extends Factory
         ]);
     }
 
+    public function passwordProtected(string $password = 'secret'): static
+    {
+        // The model's 'hashed' cast hashes the value on assignment.
+        return $this->state(fn (array $attributes) => [
+            'password' => $password,
+        ]);
+    }
+
+    public function expired(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'expires_at' => now()->subDay(),
+        ]);
+    }
+
     public function withPreview(): static
     {
         return $this->state(fn (array $attributes) => [

@@ -4,17 +4,22 @@ namespace App\Models;
 
 use App\Models\Properties\ResourceType;
 use App\Support\Helpers;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 /**
  * @property ResourceType $type
  * @property ResourceType|null $preview_type
+ * @property Carbon|null $published_at
+ * @property Carbon|null $expires_at
+ * @property string|null $password
  * @property-read bool $has_inline_content
  * @property-read string $raw_url
  * @property-read string $download_url
@@ -134,15 +139,69 @@ class Resource extends Model
     }
 
     /**
-     * Whether the given user may access this resource. Hidden (private) resources
-     * are only accessible to their owner and to administrators.
+     * Whether the given user may access this resource. Private resources — and
+     * expired ones, which become private once {@see $expires_at} passes — are only
+     * accessible to their owner and to administrators. A password, when set, is a
+     * separate gate handled via {@see requiresPasswordFor()}.
      */
     public function isAccessibleBy(?User $user): bool
     {
-        if (! $this->is_private) {
-            return true;
+        if ($this->is_private || $this->isExpired()) {
+            return $this->isOwnerOrAdmin($user);
         }
 
+        return true;
+    }
+
+    /**
+     * Whether the resource has passed its expiration date and is therefore no
+     * longer publicly visible.
+     */
+    public function isExpired(): bool
+    {
+        return $this->expires_at !== null && $this->expires_at->isPast();
+    }
+
+    public function hasPassword(): bool
+    {
+        return $this->password !== null;
+    }
+
+    /**
+     * Whether the given user must supply the resource password before they may
+     * view or download it. The owner and administrators always bypass it.
+     */
+    public function requiresPasswordFor(?User $user): bool
+    {
+        return $this->hasPassword() && ! $this->isOwnerOrAdmin($user);
+    }
+
+    /**
+     * The session key under which a successful password unlock is remembered for
+     * the current browser session.
+     */
+    public function unlockSessionKey(): string
+    {
+        return "resource_unlocked.{$this->id}";
+    }
+
+    public function isUnlockedIn(Session $session): bool
+    {
+        return (bool) $session->get($this->unlockSessionKey(), false);
+    }
+
+    /**
+     * Whether the resource is password-protected and the given user has not yet
+     * unlocked it in the current session. Combines the password gate with the
+     * per-session unlock state so callers share a single source of truth.
+     */
+    public function isLockedFor(?User $user, Session $session): bool
+    {
+        return $this->requiresPasswordFor($user) && ! $this->isUnlockedIn($session);
+    }
+
+    private function isOwnerOrAdmin(?User $user): bool
+    {
         return $user !== null && ($user->is_admin || $user->id === $this->user_id);
     }
 

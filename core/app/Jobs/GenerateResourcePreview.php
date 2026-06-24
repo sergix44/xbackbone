@@ -15,6 +15,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Draws\Constraint;
 use SergiX44\ImageZen\Format;
 use Throwable;
@@ -86,7 +87,7 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
-            $image->resizeCanvas($maxDimension, $maxDimension);
+            $image->resizeCanvas($maxDimension, $maxDimension, background: Color::transparent());
 
             Storage::put(
                 $previewKey,

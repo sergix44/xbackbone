@@ -39,6 +39,28 @@
             <x-button label="Delete" class="btn-error" wire:click="deleteResource" spinner="deleteResource"/>
         </x-slot:actions>
     </x-modal>
+
+    <x-modal wire:model="showSettingsModal" title="Resource settings"
+             subtitle="Manage password protection and expiration." separator>
+        <div class="flex flex-col gap-4">
+            <x-datetime label="Expires at" wire:model="settingsExpiresAt" icon="o-clock"
+                        hint="Leave empty for no expiration. Once passed, the resource becomes private."/>
+
+            @unless($settingsRemovePassword)
+                <x-password label="Password" wire:model="settingsPassword"
+                            :hint="$settingsHasPassword ? 'Leave blank to keep the current password.' : 'Set a password to require it before viewing or downloading.'"/>
+            @endunless
+
+            @if($settingsHasPassword)
+                <x-checkbox label="Remove password protection" wire:model.live="settingsRemovePassword"/>
+            @endif
+        </div>
+
+        <x-slot:actions>
+            <x-button label="Cancel" @click="$wire.showSettingsModal = false"/>
+            <x-button label="Save" icon="o-check-circle" class="btn-primary" wire:click="saveSettings" spinner="saveSettings"/>
+        </x-slot:actions>
+    </x-modal>
 </div>
 
 @script

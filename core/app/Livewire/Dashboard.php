@@ -6,6 +6,7 @@ use App\Actions\Resource\DeleteResource;
 use App\Actions\Resource\ListResources;
 use App\Actions\Resource\StoreResource;
 use App\Actions\Resource\ToggleResourceVisibility;
+use App\Actions\Resource\UpdateResourceSettings;
 use App\Models\Resource;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -29,6 +30,18 @@ class Dashboard extends Component
     public bool $confirmingDelete = false;
 
     public ?int $deletingId = null;
+
+    public bool $showSettingsModal = false;
+
+    public ?int $settingsId = null;
+
+    public ?string $settingsPassword = null;
+
+    public bool $settingsRemovePassword = false;
+
+    public ?string $settingsExpiresAt = null;
+
+    public bool $settingsHasPassword = false;
 
     public function render()
     {
@@ -139,6 +152,64 @@ class Dashboard extends Component
         unset($this->resources);
 
         $this->success($resource->is_private ? 'Resource hidden' : 'Resource published');
+    }
+
+    public function editSettings(int $id): void
+    {
+        $resource = Resource::query()->find($id);
+
+        if (! $resource || $resource->user_id !== auth()->id()) {
+            $this->error('Resource not found');
+
+            return;
+        }
+
+        $this->settingsId = $resource->id;
+        $this->settingsExpiresAt = $resource->expires_at?->format('Y-m-d\TH:i');
+        $this->settingsHasPassword = $resource->hasPassword();
+        $this->settingsPassword = null;
+        $this->settingsRemovePassword = false;
+
+        $this->resetValidation();
+        $this->showSettingsModal = true;
+    }
+
+    public function saveSettings(UpdateResourceSettings $updateResourceSettings): void
+    {
+        // Treat empty inputs as "no value": null skips the nullable rules and, for
+        // the password, signals "keep the current one".
+        $this->settingsExpiresAt = $this->settingsExpiresAt ?: null;
+        $this->settingsPassword = $this->settingsPassword ?: null;
+
+        $this->validate([
+            'settingsExpiresAt' => ['nullable', 'date', 'after:now'],
+            'settingsPassword' => ['nullable', 'string', 'min:4', 'max:255'],
+        ]);
+
+        $resource = Resource::query()->find($this->settingsId);
+
+        if (! $resource || $resource->user_id !== auth()->id()) {
+            $this->error('Resource not found');
+
+            return;
+        }
+
+        $updateResourceSettings($resource, [
+            'expires_at' => $this->settingsExpiresAt,
+            'password' => $this->settingsPassword,
+            'remove_password' => $this->settingsRemovePassword,
+        ]);
+
+        activity()
+            ->performedOn($resource)
+            ->causedBy(auth()->user())
+            ->log('resource.updated');
+
+        $this->showSettingsModal = false;
+
+        unset($this->resources);
+
+        $this->success('Settings updated');
     }
 
     public function confirmDelete(int $id): void

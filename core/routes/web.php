@@ -3,6 +3,7 @@
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\ResourceController;
+use App\Http\Middleware\EnsureResourceAccessible;
 use App\Livewire\Admin\Settings;
 use App\Livewire\Dashboard;
 use App\Livewire\Integrations;
@@ -35,13 +36,14 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
         ->whereIn('tab', ['profile', 'tokens', 'export', 'delete']);
 });
 
-// Route::get('preview/{resource:code}.{ext}', [ResourceController::class, 'preview'])->name('preview.ext');
-// Route::get('preview/{resource:code}', [ResourceController::class, 'preview'])->name('preview');
-Route::get('raw/{resource:code}.{ext}', [ResourceController::class, 'raw'])->name('raw.ext');
-Route::get('raw/{resource:code}', [ResourceController::class, 'raw'])->name('raw');
-Route::get('download/{resource:code}.{ext}', [ResourceController::class, 'download'])->name('download.ext');
-Route::get('download/{resource:code}', [ResourceController::class, 'download'])->name('download');
-Route::get('thumbnail/{resource:code}', [ResourceController::class, 'thumbnail'])->name('thumbnail');
 Route::get('delete/{resource:code}', [ResourceController::class, 'delete'])->name('resource.delete')->middleware('signed');
-Route::livewire('{resource:code}.{ext}', Preview::class)->name('preview.ext');
-Route::livewire('{resource:code}', Preview::class)->name('preview');
+
+Route::middleware(EnsureResourceAccessible::class)->group(static function () {
+    Route::get('raw/{resource:code}.{ext}', [ResourceController::class, 'raw'])->name('raw.ext');
+    Route::get('raw/{resource:code}', [ResourceController::class, 'raw'])->name('raw');
+    Route::get('download/{resource:code}.{ext}', [ResourceController::class, 'download'])->name('download.ext');
+    Route::get('download/{resource:code}', [ResourceController::class, 'download'])->name('download');
+    Route::get('thumbnail/{resource:code}', [ResourceController::class, 'thumbnail'])->name('thumbnail');
+    Route::livewire('{resource:code}.{ext}', Preview::class)->name('preview.ext');
+    Route::livewire('{resource:code}', Preview::class)->name('preview');
+});

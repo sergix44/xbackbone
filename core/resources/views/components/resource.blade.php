@@ -3,6 +3,10 @@
 <div {{ $attributes->class('card bg-base-100 w-full shadow-sm') }}>
     <div class="card-body px-3 py-2 gap-0">
         <div class="flex items-center gap-1 min-w-0">
+            @if($resource?->hasPassword())
+                <x-icon name="m-lock-closed" class="w-3.5 h-3.5 shrink-0 text-warning tooltip tooltip-bottom"
+                        data-tip="{{ __('Password protected') }}"/>
+            @endif
             <a class="font-semibold text-sm truncate flex-1 min-w-0 hover:text-primary transition-colors"
                href="{{ $resource?->preview_ext_url }}" wire:navigate>
                 {{ $resource?->display_name ?? 'File Name' }}
@@ -21,6 +25,9 @@
                           class="btn-ghost btn-xs btn-square {{ $resource->is_private ? 'text-success' : 'text-warning' }}"
                           tooltip="{{ $resource->is_private ? __('Publish') : __('Hide') }}"
                           wire:click="toggleVisibility({{ $resource->id }})"/>
+                <x-button icon="m-cog-6-tooth" class="btn-ghost btn-xs btn-square text-base-content/60"
+                          tooltip="{{ __('Settings') }}"
+                          wire:click="editSettings({{ $resource->id }})"/>
                 <x-button icon="m-x-mark" class="btn-ghost btn-xs btn-square text-error"
                           tooltip="{{ __('Delete') }}"
                           wire:click="confirmDelete({{ $resource->id }})"/>
@@ -53,15 +60,28 @@
         </a>
     </figure>
     <div class="card-body px-3 py-2 gap-0">
-        <div class="flex justify-between items-center text-xs text-base-content/50">
-            <span class="font-mono truncate">
-                @if($resource->type === \App\Models\Properties\ResourceType::LINK)
-                    {{ parse_url($resource->data, PHP_URL_HOST) ?? __('Link') }}
-                @else
-                    {{ $resource?->size_human_readable ?? '0' }}
+        <div class="flex justify-between items-center gap-2 text-xs text-base-content/50">
+            <span class="flex items-center gap-1 min-w-0">
+                <span class="font-mono truncate">
+                    @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+                        {{ parse_url($resource->data, PHP_URL_HOST) ?? __('Link') }}
+                    @else
+                        {{ $resource?->size_human_readable ?? '0' }}
+                    @endif
+                </span>
+                @if($resource?->isExpired())
+                    <x-badge value="{{ __('Expired') }}" class="badge-error badge-soft badge-xs"/>
                 @endif
             </span>
-            <span class="tooltip tooltip-bottom" data-tip="{{ $resource?->created_at ?? '' }}">
+            <div class="flex items-center gap-3 shrink-0">
+                <span class="inline-flex items-center gap-1 tooltip tooltip-bottom" data-tip="{{ __('Views') }}">
+                    <x-icon name="m-eye" class="w-3.5 h-3.5"/>{{ $resource?->views ?? 0 }}
+                </span>
+                <span class="inline-flex items-center gap-1 tooltip tooltip-bottom" data-tip="{{ __('Downloads') }}">
+                    <x-icon name="m-arrow-down-tray" class="w-3.5 h-3.5"/>{{ $resource?->downloads ?? 0 }}
+                </span>
+            </div>
+            <span class="tooltip tooltip-bottom shrink-0" data-tip="{{ $resource?->created_at ?? '' }}">
                 {{ $resource?->created_at?->diffForHumans() ?? '0' }}
             </span>
         </div>
