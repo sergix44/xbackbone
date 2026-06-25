@@ -21,7 +21,8 @@
     ],
     "post-create-project-cmd": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "@php xbb key:generate --ansi"
+      "@php xbb key:generate --ansi --force",
+      "@php xbb storage:link"
     ]
   }
 }
