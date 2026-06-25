@@ -1,0 +1,57 @@
+name: Split Monorepo
+
+on:
+  push:
+    branches:
+      - next
+    tags:
+      - '*'
+
+jobs:
+  split:
+    name: Split ${{ matrix.package.directory }}
+    runs-on: ubuntu-latest
+    # Keep splitting the other package even if one fails.
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - directory: app
+            repository: xbb
+          - directory: core
+            repository: xbb-core
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # splitsh-lite needs the full history to rebuild the subtree.
+          fetch-depth: 0
+
+      # Push to the target branch when this is a branch push.
+      - name: Split branch
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: danharrin/monorepo-split-github-action@v2.4.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          branch: master
+          package_directory: ${{ matrix.package.directory }}
+          repository_organization: sergix44
+          repository_name: ${{ matrix.package.repository }}
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+
+      # Mirror the tag (used by Packagist for stable releases) when this is a tag push.
+      - name: Split tag
+        if: "startsWith(github.ref, 'refs/tags/')"
+        uses: danharrin/monorepo-split-github-action@v2.4.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          tag: ${GITHUB_REF#refs/tags/}
+          branch: master
+          package_directory: ${{ matrix.package.directory }}
+          repository_organization: sergix44
+          repository_name: ${{ matrix.package.repository }}
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com

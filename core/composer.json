@@ -15,6 +15,8 @@
         "laravel/pennant": "^1.11",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
+        "league/flysystem-ftp": "^3.0",
+        "league/flysystem-sftp-v3": "^3.0",
         "livewire/livewire": "^4",
         "maennchen/zipstream-php": "^3",
         "php-ffmpeg/php-ffmpeg": "^1.4",

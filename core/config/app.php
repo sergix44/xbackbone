@@ -56,6 +56,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Installation State
+    |--------------------------------------------------------------------------
+    |
+    | Mirrors the on-disk installation marker so a config-cached deployment can
+    | resolve the installed state without a filesystem probe. The web installer
+    | sets APP_INSTALLED=true once the setup wizard completes.
+    |
+    */
+
+    'installed' => (bool) env('APP_INSTALLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
