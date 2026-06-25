@@ -9,14 +9,8 @@
     }
   ],
   "minimum-stability": "stable",
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../core/"
-    }
-  ],
   "require": {
-    "xbb/core": "dev-next as 1.0"
+    "sergix44/xbb-core": "dev-master"
   },
   "scripts": {
     "post-autoload-dump": [
