@@ -1,5 +1,5 @@
 {
-  "name": "xbb/app",
+  "name": "xbackbone/app",
   "description": "The standalone xbackbone application",
   "license": "AGPL-3.0-only",
   "authors": [
@@ -10,7 +10,7 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "sergix44/xbb-core": "dev-master"
+    "xbackbone/core": "dev-master"
   },
   "scripts": {
     "post-autoload-dump": [
