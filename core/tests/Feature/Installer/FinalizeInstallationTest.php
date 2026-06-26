@@ -3,6 +3,7 @@
 use App\Installer\Actions\FinalizeInstallation;
 use App\Installer\Support\InstallationState;
 use App\Models\User;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 beforeEach(function () {
@@ -17,6 +18,12 @@ beforeEach(function () {
     // storage marker are never touched.
     $this->app->useEnvironmentPath($this->tempDir);
     $this->app->useStoragePath($this->tempDir.'/storage');
+
+    // Stub the final optimize step: the real command runs config:cache, which
+    // reloads the running config (dropping the runtime "install" connection) and
+    // writes a cache file into the real bootstrap/cache. It is a best-effort
+    // performance step, irrelevant to what these tests assert.
+    Artisan::command('optimize', fn () => 0);
 });
 
 afterEach(function () {

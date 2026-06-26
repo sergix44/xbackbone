@@ -71,6 +71,9 @@ class FinalizeInstallation
         // 8. Point of no return.
         InstallationState::lock();
 
+        // 9. Cache config/routes/views for production (best effort).
+        $this->optimize();
+
         return $admin;
     }
 
@@ -205,6 +208,16 @@ class FinalizeInstallation
             } catch (Throwable) {
                 // Best effort: a failure here does not invalidate the install.
             }
+        }
+    }
+
+    private function optimize(): void
+    {
+        try {
+            Artisan::call('optimize');
+        } catch (Throwable) {
+            // Best effort: caching is a performance optimization that runs after
+            // the point of no return, so a failure must not fail a completed install.
         }
     }
 }
