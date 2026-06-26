@@ -19,16 +19,16 @@ class Installer extends Component
 {
     use Toast;
 
-    public int $step = 0;
+    public int $step = 1;
 
     public bool $dbConnectionVerified = false;
 
     public bool $storageVerified = false;
 
-    /* Step 0: application */
+    /* Step 1: application */
     public string $appUrl = '';
 
-    /* Step 1: database */
+    /* Step 2: database */
     public string $dbDriver = 'sqlite';
 
     public string $dbSqlitePath = '';
@@ -43,7 +43,7 @@ class Installer extends Component
 
     public string $dbPassword = '';
 
-    /* Step 2: storage */
+    /* Step 3: storage */
     public string $storageDriver = 'local';
 
     public string $localRoot = '';
@@ -70,7 +70,7 @@ class Installer extends Component
 
     public string $ftpRoot = '';
 
-    /* Step 3: admin */
+    /* Step 4: admin */
     public string $name = '';
 
     public string $email = '';
@@ -79,7 +79,7 @@ class Installer extends Component
 
     public string $password_confirmation = '';
 
-    /* Step 4: legacy import */
+    /* Step 5: legacy import */
     public bool $importLegacy = false;
 
     public string $legacyDriver = 'mysql';
@@ -177,7 +177,7 @@ class Installer extends Component
     }
 
     /**
-     * The read-only environment requirements checklist for step 0.
+     * The read-only environment requirements checklist for step 1.
      *
      * @return list<array{label: string, ok: bool}>
      */
@@ -190,8 +190,6 @@ class Installer extends Component
             ['label' => 'OpenSSL extension', 'ok' => extension_loaded('openssl')],
             ['label' => 'Mbstring extension', 'ok' => extension_loaded('mbstring')],
             ['label' => 'GD or Imagick extension', 'ok' => extension_loaded('gd') || extension_loaded('imagick')],
-            ['label' => 'Storage directory writable', 'ok' => is_writable(storage_path())],
-            ['label' => 'Application key generated', 'ok' => (string) config('app.key') !== ''],
         ];
     }
 
@@ -199,24 +197,24 @@ class Installer extends Component
     {
         $this->validateStep($this->step);
 
-        if ($this->step === 1 && ! $this->dbConnectionVerified) {
+        if ($this->step === 2 && ! $this->dbConnectionVerified) {
             $this->error(__('Please test the database connection before continuing.'));
 
             return;
         }
 
-        $this->step = min($this->step + 1, 4);
+        $this->step = min($this->step + 1, 5);
     }
 
     public function previousStep(): void
     {
         $this->resetValidation();
-        $this->step = max($this->step - 1, 0);
+        $this->step = max($this->step - 1, 1);
     }
 
     public function testDatabase(TestDatabaseConnection $test): void
     {
-        $this->validateStep(1);
+        $this->validateStep(2);
 
         $result = $test($this->databasePayload());
 
@@ -233,7 +231,7 @@ class Installer extends Component
 
     public function testStorage(TestStorageDisk $test): void
     {
-        $this->validateStep(2);
+        $this->validateStep(3);
 
         $result = $test($this->storagePayload());
 
@@ -250,7 +248,7 @@ class Installer extends Component
 
     public function previewLegacy(CountLegacyRecords $count): void
     {
-        $this->validateStep(4);
+        $this->validateStep(5);
 
         $result = $count($this->legacyPayload());
 
@@ -267,12 +265,12 @@ class Installer extends Component
 
     public function install(FinalizeInstallation $finalize)
     {
-        foreach ([0, 1, 2, 3, 4] as $step) {
+        foreach ([1, 2, 3, 4, 5] as $step) {
             $this->validateStep($step);
         }
 
         if (! $this->dbConnectionVerified) {
-            $this->step = 1;
+            $this->step = 2;
             $this->error(__('Please re-test the database connection.'));
 
             return null;
@@ -323,10 +321,10 @@ class Installer extends Component
     private function rulesForStep(int $step): array
     {
         return match ($step) {
-            0 => [
+            1 => [
                 'appUrl' => ['required', 'url'],
             ],
-            1 => $this->dbDriver === 'sqlite'
+            2 => $this->dbDriver === 'sqlite'
                 ? [
                     'dbDriver' => ['required', Rule::in(['sqlite', 'mysql', 'mariadb', 'pgsql'])],
                     'dbSqlitePath' => ['required', 'string'],
@@ -339,7 +337,7 @@ class Installer extends Component
                     'dbUsername' => ['required', 'string'],
                     'dbPassword' => ['nullable', 'string'],
                 ],
-            2 => match ($this->storageDriver) {
+            3 => match ($this->storageDriver) {
                 's3' => [
                     'storageDriver' => ['required', Rule::in(['local', 's3', 'ftp', 'sftp'])],
                     's3Key' => ['required', 'string'],
@@ -362,12 +360,12 @@ class Installer extends Component
                     'localRoot' => ['required', 'string'],
                 ],
             },
-            3 => [
+            4 => [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'password' => ['required', 'string', 'confirmed', Password::default()],
             ],
-            4 => $this->importLegacy
+            5 => $this->importLegacy
                 ? [
                     'legacyDriver' => ['required', Rule::in(['mysql', 'sqlite'])],
                     'legacyStoragePath' => ['required', 'string'],

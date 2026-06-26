@@ -5,11 +5,11 @@ namespace App\Installer\Actions;
 use App\Actions\Admin\CreateUser;
 use App\Installer\Exceptions\InstallationException;
 use App\Installer\Support\DatabaseConfig;
-use App\Installer\Support\EnvWriter;
 use App\Installer\Support\InstallationState;
 use App\Installer\Support\StorageConfig;
 use App\Models\Properties\UserStatus;
 use App\Models\User;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -34,14 +34,12 @@ class FinalizeInstallation
      */
     public function __invoke(array $payload): User
     {
-        $env = EnvWriter::forApp();
-
         // 1. Probe the database before persisting anything irreversible.
         $this->connectDatabase($payload['database']);
 
         // 2. Persist app URL + database + storage configuration first; a crash
         //    after this still leaves a re-runnable, correctly configured app.
-        $env->set([
+        $this->writeEnv([
             'APP_URL' => $payload['appUrl'],
             ...DatabaseConfig::env($payload['database']),
             ...StorageConfig::env($payload['storage']),
@@ -60,7 +58,7 @@ class FinalizeInstallation
 
         // 6. Restore database-backed runtime services and mark installed
         //    (effective on the next request).
-        $env->set([
+        $this->writeEnv([
             'APP_INSTALLED' => true,
             'SESSION_DRIVER' => 'database',
             'CACHE_STORE' => 'database',
@@ -74,6 +72,32 @@ class FinalizeInstallation
         InstallationState::lock();
 
         return $admin;
+    }
+
+    /**
+     * Upsert the given keys into the app's env file via the framework's
+     * line-oriented writer. Booleans are rendered as `true`/`false` so they
+     * round-trip through env() instead of collapsing to `1`/empty, and the
+     * file is created when absent (Env::writeVariables requires it to exist).
+     *
+     * @param  array<string, scalar|null>  $values
+     */
+    private function writeEnv(array $values): void
+    {
+        $path = app()->environmentFilePath();
+
+        if (! is_file($path)) {
+            touch($path);
+        }
+
+        Env::writeVariables(
+            array_map(
+                static fn (mixed $value): mixed => is_bool($value) ? ($value ? 'true' : 'false') : $value,
+                $values,
+            ),
+            $path,
+            overwrite: true,
+        );
     }
 
     /**
@@ -104,7 +128,7 @@ class FinalizeInstallation
             DB::reconnect('install');
             DB::connection('install')->getPdo();
         } catch (Throwable $e) {
-            throw InstallationException::atStep(1, __('Could not connect to the database: :error', ['error' => $e->getMessage()]), $e);
+            throw InstallationException::atStep(2, __('Could not connect to the database: :error', ['error' => $e->getMessage()]), $e);
         }
     }
 
@@ -113,7 +137,7 @@ class FinalizeInstallation
         try {
             Artisan::call('migrate', ['--force' => true]);
         } catch (Throwable $e) {
-            throw InstallationException::atStep(1, __('Database migration failed: :error', ['error' => $e->getMessage()]), $e);
+            throw InstallationException::atStep(2, __('Database migration failed: :error', ['error' => $e->getMessage()]), $e);
         }
     }
 
@@ -138,7 +162,7 @@ class FinalizeInstallation
                 'quota' => -1,
             ]);
         } catch (Throwable $e) {
-            throw InstallationException::atStep(3, __('Could not create the administrator account: :error', ['error' => $e->getMessage()]), $e);
+            throw InstallationException::atStep(4, __('Could not create the administrator account: :error', ['error' => $e->getMessage()]), $e);
         }
     }
 

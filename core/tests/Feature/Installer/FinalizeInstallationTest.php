@@ -72,9 +72,11 @@ it('performs a full install with sqlite and local storage', function () {
     // The chosen configuration is persisted to the env file.
     $env = file_get_contents($this->tempDir.'/.env');
 
+    // Env::writeVariables() quotes any value that is not purely alphanumeric,
+    // so the URL is written double-quoted (phpdotenv reads it back unquoted).
     expect($env)
         ->toContain('APP_INSTALLED=true')
-        ->toContain('APP_URL=https://files.example.com')
+        ->toContain('APP_URL="https://files.example.com"')
         ->toContain('DB_CONNECTION=sqlite')
         ->toContain('SESSION_DRIVER=database');
 });

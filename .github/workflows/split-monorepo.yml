@@ -1,11 +1,12 @@
 name: Split Monorepo
 
+# Reusable: ci.yml calls this after Code Quality and Build Assets have finished,
+# both for branch pushes (split to master) and tag pushes (mirror the tag).
 on:
-  push:
-    branches:
-      - next
-    tags:
-      - '*'
+  workflow_call:
+    secrets:
+      ACCESS_TOKEN:
+        required: true
 
 jobs:
   split:
@@ -26,6 +27,9 @@ jobs:
         with:
           # splitsh-lite needs the full history to rebuild the subtree.
           fetch-depth: 0
+          # Resolve the branch/tag tip rather than the pushed SHA so we include
+          # the production bundle the Build Assets job just committed to `next`.
+          ref: ${{ github.ref_name }}
 
       # Push to the target branch when this is a branch push.
       - name: Split branch

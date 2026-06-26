@@ -1,16 +1,16 @@
 <div>
-    <x-card :title="__('Install XBackBone')" :subtitle="__('A few steps and you are ready to go.')" shadow separator>
-        <x-steps wire:model="step" steps-color="step-primary" class="mb-8">
-            {{-- Step 0: application --}}
-            <x-step :step="0" :text="__('Application')">
-                <p class="text-sm opacity-70 mb-4">
-                    {{ __('Confirm the public URL of your installation and review the server requirements.') }}
-                </p>
-
-                <x-input :label="__('Application URL')" wire:model="appUrl" error-field="appUrl" icon="o-globe-alt"/>
+    <x-card shadow>
+        <x-steps wire:model="step" steps-color="step-primary" class="mb-8" stepper-classes="w-full">
+            {{-- Step 1: application --}}
+            <x-step :step="1" :text="__('Application')">
+                <div class="divider"></div>
+                <x-input :label="__('Application URL')" wire:model="appUrl" error-field="appUrl" icon="o-globe-alt" hint="Confirm the public URL of your installation."/>
 
                 <div class="mt-6">
-                    <h3 class="font-semibold mb-3">{{ __('Server requirements') }}</h3>
+                    <h3 class="font-semibold">{{ __('Server requirements') }}</h3>
+                    <p class="text-xs opacity-70 mb-3">
+                        {{ __('Review the server requirements and make sure they are met.') }}
+                    </p>
                     <ul class="space-y-2">
                         @foreach($this->requirements as $requirement)
                             <li class="flex items-center gap-2 text-sm">
@@ -26,12 +26,13 @@
                 </div>
             </x-step>
 
-            {{-- Step 1: database --}}
-            <x-step :step="1" :text="__('Database')">
+            {{-- Step 2: database --}}
+            <x-step :step="2" :text="__('Database')">
+                <div class="divider"></div>
                 <x-select :label="__('Database driver')" :options="$this->databaseDrivers" wire:model.live="dbDriver" error-field="dbDriver"/>
 
                 @if($dbDriver === 'sqlite')
-                    <x-input :label="__('Database file path')" wire:model.blur="dbSqlitePath" error-field="dbSqlitePath" class="mt-4"/>
+                    <x-input :label="__('Database file path')" wire:model.blur="dbSqlitePath" error-field="dbSqlitePath" />
                 @else
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <x-input :label="__('Host')" wire:model.blur="dbHost" error-field="dbHost"/>
@@ -50,12 +51,13 @@
                 </div>
             </x-step>
 
-            {{-- Step 2: storage --}}
-            <x-step :step="2" :text="__('Storage')">
+            {{-- Step 3: storage --}}
+            <x-step :step="3" :text="__('Storage')">
+                <div class="divider"></div>
                 <x-select :label="__('Storage driver')" :options="$this->storageDrivers" wire:model.live="storageDriver" error-field="storageDriver"/>
 
                 @if($storageDriver === 'local')
-                    <x-input :label="__('Storage root path')" wire:model.blur="localRoot" error-field="localRoot" class="mt-4"/>
+                    <x-input :label="__('Storage root path')" wire:model.blur="localRoot" error-field="localRoot"/>
                 @elseif($storageDriver === 's3')
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <x-input :label="__('Access key ID')" wire:model.blur="s3Key" error-field="s3Key"/>
@@ -83,8 +85,9 @@
                 </div>
             </x-step>
 
-            {{-- Step 3: admin --}}
-            <x-step :step="3" :text="__('Administrator')">
+            {{-- Step 4: admin --}}
+            <x-step :step="4" :text="__('Administrator')">
+                <div class="divider"></div>
                 <p class="text-sm opacity-70 mb-4">{{ __('Create the first administrator account.') }}</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -95,8 +98,9 @@
                 </div>
             </x-step>
 
-            {{-- Step 4: legacy import --}}
-            <x-step :step="4" :text="__('Import')">
+            {{-- Step 5: legacy import --}}
+            <x-step :step="5" :text="__('Import')">
+                <div class="divider"></div>
                 <x-toggle :label="__('Import data from an existing XBackBone 3 instance')" wire:model.live="importLegacy"/>
 
                 @if($importLegacy)
@@ -135,12 +139,12 @@
 
         <div class="flex items-center justify-between mt-8">
             <div>
-                @if($step > 0)
+                @if($step > 1)
                     <x-button :label="__('Back')" icon="o-arrow-left" wire:click="previousStep"/>
                 @endif
             </div>
             <div>
-                @if($step < 4)
+                @if($step < 5)
                     <x-button :label="__('Next')" icon-right="o-arrow-right" class="btn-primary" wire:click="nextStep" spinner="nextStep"/>
                 @else
                     <x-button :label="__('Install XBackBone')" icon="o-rocket-launch" class="btn-primary" wire:click="install" spinner="install"/>

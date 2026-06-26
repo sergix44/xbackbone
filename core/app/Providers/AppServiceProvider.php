@@ -47,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $group = [
             base_path('public/build/') => public_path('build'),
-            base_path('public/vendor/') => public_path('vendor'),
             base_path('public/.htaccess') => public_path('.htaccess'),
         ];
 

@@ -1,0 +1,68 @@
+name: Build Assets
+
+# Compile the production Vite bundle for the core package and commit it back to
+# `next` whenever it differs. The committed bundle is what gets split into
+# sergix44/xbb-core, so the package ships ready-to-serve assets and consumers
+# never need a Node toolchain.
+#
+# Triggers:
+#   - workflow_call    -> invoked by ci.yml on every push to `next`
+#   - workflow_dispatch -> run on demand from the Actions tab
+on:
+  workflow_call:
+  workflow_dispatch:
+
+# Needed to commit the rebuilt bundle back to the branch.
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: core
+
+jobs:
+  build:
+    name: Compile production assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Check out the branch tip (not the detached push SHA) so we can
+          # commit the rebuilt bundle straight back onto it.
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: core/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build production assets
+        run: npm run build
+
+      - name: Commit assets if changed
+        run: |
+          # public/build is git-ignored for local development, so force-add it:
+          # CI is the single source of truth for the committed production bundle.
+          # `git add <dir>` also stages removals, so stale content-hashed files
+          # from previous builds are dropped automatically.
+          git add -f public/build
+
+          if git diff --cached --quiet; then
+            echo "Production assets are unchanged — nothing to commit."
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: rebuild production assets'
+          # Pushed with the default GITHUB_TOKEN, which by design does NOT start
+          # a new workflow run — so this commit can't loop back into ci.yml. The
+          # split still ships it because ci.yml runs the split job after this one
+          # (needs:) and checks out the updated branch tip.
+          git push origin HEAD:${{ github.ref_name }}

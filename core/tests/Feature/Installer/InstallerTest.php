@@ -43,7 +43,7 @@ describe('installer gating', function () {
 describe('installer step validation', function () {
     it('requires the application url', function () {
         Livewire::test(Installer::class)
-            ->set('step', 0)
+            ->set('step', 1)
             ->set('appUrl', '')
             ->call('nextStep')
             ->assertHasErrors(['appUrl' => 'required']);
@@ -51,7 +51,7 @@ describe('installer step validation', function () {
 
     it('requires a sqlite path when using the sqlite driver', function () {
         Livewire::test(Installer::class)
-            ->set('step', 1)
+            ->set('step', 2)
             ->set('dbDriver', 'sqlite')
             ->set('dbSqlitePath', '')
             ->call('nextStep')
@@ -60,7 +60,7 @@ describe('installer step validation', function () {
 
     it('requires connection fields for server drivers', function () {
         Livewire::test(Installer::class)
-            ->set('step', 1)
+            ->set('step', 2)
             ->set('dbDriver', 'mysql')
             ->set('dbDatabase', '')
             ->set('dbUsername', '')
@@ -70,17 +70,17 @@ describe('installer step validation', function () {
 
     it('cannot advance past the database step until the connection is verified', function () {
         Livewire::test(Installer::class)
-            ->set('step', 1)
+            ->set('step', 2)
             ->set('dbDriver', 'sqlite')
             ->set('dbSqlitePath', '/tmp/whatever.sqlite')
             ->set('dbConnectionVerified', false)
             ->call('nextStep')
-            ->assertSet('step', 1);
+            ->assertSet('step', 2);
     });
 
     it('requires a root path for the local storage driver', function () {
         Livewire::test(Installer::class)
-            ->set('step', 2)
+            ->set('step', 3)
             ->set('storageDriver', 'local')
             ->set('localRoot', '')
             ->call('nextStep')
@@ -89,7 +89,7 @@ describe('installer step validation', function () {
 
     it('requires credentials for the s3 storage driver', function () {
         Livewire::test(Installer::class)
-            ->set('step', 2)
+            ->set('step', 3)
             ->set('storageDriver', 's3')
             ->call('nextStep')
             ->assertHasErrors(['s3Key', 's3Secret', 's3Region', 's3Bucket']);
@@ -97,7 +97,7 @@ describe('installer step validation', function () {
 
     it('validates the administrator account', function () {
         Livewire::test(Installer::class)
-            ->set('step', 3)
+            ->set('step', 4)
             ->set('name', '')
             ->set('email', 'not-an-email')
             ->set('password', 'short')
@@ -108,7 +108,7 @@ describe('installer step validation', function () {
 
     it('requires matching password confirmation', function () {
         Livewire::test(Installer::class)
-            ->set('step', 3)
+            ->set('step', 4)
             ->set('name', 'Admin')
             ->set('email', 'admin@example.com')
             ->set('password', 'password123')
@@ -119,7 +119,7 @@ describe('installer step validation', function () {
 
     it('skips legacy validation when import is disabled', function () {
         Livewire::test(Installer::class)
-            ->set('step', 4)
+            ->set('step', 5)
             ->set('importLegacy', false)
             ->call('nextStep')
             ->assertHasNoErrors();
@@ -127,7 +127,7 @@ describe('installer step validation', function () {
 
     it('requires legacy fields when import is enabled', function () {
         Livewire::test(Installer::class)
-            ->set('step', 4)
+            ->set('step', 5)
             ->set('importLegacy', true)
             ->set('legacyDriver', 'mysql')
             ->call('nextStep')
@@ -140,7 +140,7 @@ describe('installer connection probes', function () {
         $path = sys_get_temp_dir().'/xbb-probe-'.uniqid().'.sqlite';
 
         Livewire::test(Installer::class)
-            ->set('step', 1)
+            ->set('step', 2)
             ->set('dbDriver', 'sqlite')
             ->set('dbSqlitePath', $path)
             ->call('testDatabase')
@@ -151,7 +151,7 @@ describe('installer connection probes', function () {
 
     it('reports a failure for an unwritable sqlite directory', function () {
         Livewire::test(Installer::class)
-            ->set('step', 1)
+            ->set('step', 2)
             ->set('dbDriver', 'sqlite')
             ->set('dbSqlitePath', '/this/path/does/not/exist/xbb.db')
             ->call('testDatabase')
@@ -202,7 +202,7 @@ describe('installer finalize wiring', function () {
         {
             public function __invoke(array $payload): User
             {
-                throw InstallationException::atStep(1, 'connection refused');
+                throw InstallationException::atStep(2, 'connection refused');
             }
         };
 
@@ -222,7 +222,7 @@ describe('installer finalize wiring', function () {
             ->set('importLegacy', false)
             ->call('install')
             ->assertNoRedirect()
-            ->assertSet('step', 1);
+            ->assertSet('step', 2);
     });
 
     it('blocks installation until the database connection is verified', function () {
@@ -240,6 +240,6 @@ describe('installer finalize wiring', function () {
             ->set('importLegacy', false)
             ->call('install')
             ->assertNoRedirect()
-            ->assertSet('step', 1);
+            ->assertSet('step', 2);
     });
 });
