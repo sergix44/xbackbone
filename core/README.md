@@ -1,66 +1,141 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="../.github/xbackbone.png" width="320px" alt="XBackBone">
 </p>
 
-## About Laravel
+<h1 align="center">XBackBone Core</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  The engine behind <a href="https://github.com/SergiX44/XBackBone">XBackBone</a> — a self-hosted
+  file and media sharing platform.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+`xbackbone/core` is the heart of XBackBone: a full [Laravel 13](https://laravel.com) application
+built with [Livewire 4](https://livewire.laravel.com), packaged as a Composer dependency so it
+can be installed, upgraded and downgraded independently from the deployment skeleton (see the
+[`app/`](../app) folder in the monorepo root).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech stack
 
-## Learning Laravel
+- **PHP** 8.4+ · **Laravel** 13
+- **Livewire 4** for the reactive UI, with **Tailwind CSS 4**, **daisyUI** and
+  [Mary UI](https://mary-ui.com/) components
+- **Laravel Fortify** for authentication, **Sanctum** for API tokens, **Pennant** for feature
+  flags
+- **Scramble** for auto-generated OpenAPI documentation
+- **Flysystem** adapters for FTP/SFTP, **php-ffmpeg** and **ImageMagick/GD** for media previews
+- **Vite 8** for asset bundling
+- Tested with **Pest 4**, analyzed with **Larastan**, formatted with **Pint**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Application overview
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Domain
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The two central models are **`User`** and **`Resource`**. A resource represents anything that
+can be shared — an uploaded file (image, video, audio, PDF, text, or generic file), a paste, a
+shortened link, or a directory. Resources are **content-addressed**: files are stored under
+their content fingerprint so duplicates are stored once, and each resource is exposed through a
+short [Sqids](https://sqids.org/)-based code. Resources support public/private visibility,
+optional password protection, and expiration.
 
-## Laravel Sponsors
+### Business logic — Actions
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Application logic lives in small, context-agnostic building blocks under
+[`app/Actions/`](app/Actions), grouped by domain (`Resource`, `User`, `Admin`, `Integration`,
+`Import`, `Fortify`). Each action does one thing and is reusable from web requests, the console,
+or queued jobs.
 
-### Premium Partners
+### Web UI — Livewire
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+User-facing pages are Livewire components under [`app/Livewire/`](app/Livewire):
 
-## Contributing
+- **Dashboard** — upload files, create pastes and links, manage and search your resources.
+- **Preview** — the public viewer for a shared resource, with media players and social embeds.
+- **Integrations** — generate a ShareX uploader configuration.
+- **Profile** — manage account info, API tokens, passkeys, data export, and account deletion.
+- **Admin settings** — sign-up toggle and default theme, user management, and statistics.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### REST API
 
-## Code of Conduct
+A versioned API lives under [`routes/api/`](routes/api) (currently **v1**) and is authenticated
+with Sanctum bearer tokens scoped by ability (`resource:upload`, `resource:delete`):
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Method   | Endpoint                       | Ability           |
+| -------- | ------------------------------ | ----------------- |
+| `POST`   | `/api/v1/upload`               | `resource:upload` |
+| `DELETE` | `/api/v1/resources/{code}`     | `resource:delete` |
 
-## Security Vulnerabilities
+OpenAPI documentation is generated automatically by Scramble.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Storage backends
+
+Configured in [`config/filesystems.php`](config/filesystems.php): **Local**, **Amazon S3**
+(and S3-compatible services), **FTP**, and **SFTP**.
+
+### Authentication
+
+Powered by Laravel Fortify: registration (gated by the `signup` feature flag), email
+verification, password reset, profile and password updates, two-factor authentication (TOTP),
+and passkeys (WebAuthn).
+
+### Feature flags & settings
+
+Global and per-user settings are managed with Laravel Pennant (see [`app/Features/`](app/Features)):
+`SignUp`, `DefaultTheme`, and `AlphabetForIds`.
+
+### Media previews
+
+Previews are generated asynchronously via the `GenerateResourcePreview` job and the generators
+in `app/Actions/Resource/Previews/` (raster images, SVG, PDF, and video frames), producing WebP
+thumbnails. Tunable via [`config/previews.php`](config/previews.php).
+
+### Web installer
+
+A guided Livewire installer (under [`app/Installer/`](app/Installer)) is served at `/install`.
+Until the app is installed, the bootstrap swaps every database-backed driver for a driverless
+equivalent and a middleware redirects all traffic to the installer. It configures the
+application URL, database, storage, the first admin account, and optional legacy import.
+
+### Legacy import
+
+`php artisan xbackbone:import` (and the installer's import step) migrates users and uploads from
+a legacy XBackBone instance. Legacy codes are preserved in `legacy_code`, and old
+`/{userCode}/{code}` links are permanently redirected to the new short URLs.
+
+## Development
+
+> **Note:** these instructions are for working on the package in isolation. For a full
+> deployment, use the [`app/`](../app) skeleton.
+
+```bash
+# Install dependencies
+composer install
+npm install
+
+# Set up the environment
+cp .env.example .env
+php artisan key:generate
+
+# Run migrations
+php artisan migrate
+
+# Start the dev servers (Vite + PHP)
+npm run dev
+php artisan serve
+```
+
+Open the app in your browser; on first run you'll be redirected to the `/install` wizard to
+create the database schema and the admin account.
+
+### Quality tooling
+
+```bash
+php artisan test          # Pest test suite
+vendor/bin/pint           # Code style (Laravel Pint)
+vendor/bin/phpstan analyse # Static analysis (Larastan)
+```
+
+All three must pass before changes are merged.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Apache License 2.0 — see the [LICENSE](../LICENSE) at the repository root.

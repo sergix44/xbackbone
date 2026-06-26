@@ -1,53 +1,75 @@
-
-# <a href="https://hosted.weblate.org/engage/xbackbone/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/xbackbone/-/xbackbone/svg-badge.svg" alt="Weblate"></a> <a href="https://codeclimate.com/github/SergiX44/XBackBone/maintainability"><img src="https://api.codeclimate.com/v1/badges/bf8ee4a8df9c9f0dfa08/maintainability" alt="Codeclimate"></a> <a href="http://bit.ly/XBackBonePaypal"><img src="https://img.shields.io/badge/donate-PayPal-yellow" alt="Donations"></a> <a href="https://discord.gg/ksPfXFbhDF"><img src="https://img.shields.io/discord/780922715393359904?label=discord%20chat" alt="Discord"></a>
-
 <p align="center">
-  <img src=".github/xbackbone.png" width="350px">
+  <img src=".github/xbackbone.png" width="350px" alt="XBackBone">
 </p>
 
-XBackBone is a simple, self-hosted, lightweight PHP file manager that support the instant sharing tool ShareX and *NIX systems. It supports uploading and displaying images, GIF, video, code, formatted text, and file downloading and uploading. Also have a web UI with multi user management, past uploads history and search support.
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License"></a>
+</p>
 
+**XBackBone** is a simple, self-hosted, lightweight file and media sharing platform with
+first-class [ShareX](https://getsharex.com/) support. Upload images, GIFs, video, audio, PDFs,
+code and arbitrary files, then share them through clean short links with rich social embeds.
+It ships with a modern web UI, multi-user management, a versioned REST API, and pluggable
+storage backends.
+
+This is the next-generation XBackBone, rebuilt from the ground up on **Laravel 13** and
+**Livewire 4**.
+
+## Features
+
+- **ShareX ready** — generate a ready-to-use ShareX uploader config in one click.
+- **Wide media support** — inline previews for images, video, audio (waveform), PDFs, and
+  syntax-highlighted code, plus pastes and link shortening.
+- **Multiple storage backends** — Local disk, Amazon S3 (and S3-compatible), FTP, and SFTP.
+- **Content-addressed storage** — uploads are de-duplicated by content fingerprint.
+- **Private & public uploads** — per-resource visibility, optional password protection and
+  expiration.
+- **REST API** — versioned API with token authentication and auto-generated OpenAPI docs.
+- **Modern authentication** — registration, email verification, password reset, and passkeys (WebAuthn).
+- **User management** — admin roles, per-user disk quotas, and usage statistics.
+- **Feature flags** — toggle sign-ups, default theme and more without redeploying.
+- **Theming** — switchable daisyUI themes, localization-ready UI.
+- **Guided web installer** — set up the database, storage, and admin account from the browser.
+- **Legacy import** — migrate users and uploads from a legacy XBackBone instance, with old
+  links transparently redirected.
+
+## Architecture
+
+This repository is a monorepo composed of two parts:
+
+| Directory | Description |
+| --------- | ----------- |
+| [`core/`](core) | The full XBackBone application — a Laravel + Livewire app that implements all the logic. It is published as the `xbackbone/core` Composer package. |
+| [`app/`](app) | A minimal installation skeleton (config, bootstrap and public entrypoint) that pulls `xbackbone/core` in as a Composer dependency. |
+
+The skeleton boots the core package and remaps its public, storage and environment paths to
+the skeleton root. Keeping the application logic in a versioned package means an instance can
+be **upgraded or downgraded by simply changing the required version of `xbackbone/core`**,
+without touching the rest of the deployment.
+
+See [`core/README.md`](core/README.md) for the application's technical details and the
+development setup.
+
+## Getting started
+
+Full installation, configuration and usage instructions are available in the documentation.
 
 ## Documentation
-All the installations, configuration, and usage instructions are available in the GitHub Pages:
 
 [XBackBone Documentation](https://sergix44.github.io/XBackBone/)
 
-## Main Features
+## Contributing
 
-+ Supports every upload type from ShareX.
-+ Config generator for ShareX.
-+ Low memory footprint.
-+ Multiple backends support: Local storage, AWS S3, Google Cloud, Azure Blob Storage, Dropbox, FTP(s).
-+ Web file upload.
-+ Code uploads syntax highlighting.
-+ Video and audio uploads webplayer.
-+ PDF viewer.
-+ Files preview page.
-+ Bootswatch themes support.
-+ Responsive theme for mobile use.
-+ Multi language support.
-+ User management, multi user features, roles and disk quota.
-+ Public and private uploads.
-+ Logging system.
-+ Share to Telegram.
-+ Linux supported via a per-user custom generated script (server and desktop).
-+ Direct downloads using curl or wget commands.
-+ Direct images links support on Discord, Telegram, Facebook, etc.
-+ System updates without FTP or CLI.
-+ Easy web installer.
-+ LDAP authentication.
-+ Registration system.
-+ Automatic uploads tagging system.
-+ Tag uploads with custom tags for categorization.
-+ ... and more.
+Contributions are welcome! Please read the [Code of Conduct](CODE_OF_CONDUCT.md) before
+opening an issue or pull request.
 
+## Security
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within XBackBone, please send an e-mail to Sergio at sergio@brighenti.me. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within XBackBone, please email
+**sergio@brighenti.me** instead of using the public issue tracker. See
+[SECURITY.md](SECURITY.md) for details. All reports are addressed promptly.
 
 ## License
-This software is licensed under the <a href="https://choosealicense.com/licenses/agpl-3.0/">GNU Affero General Public License v3.0</a>, available in this repository.
-As a "copyright notice" it is sufficient to keep the small footer at the bottom of the page, also to help other people to learn about this project!
 
+XBackBone is open-source software licensed under the
+[Apache License 2.0](LICENSE).
