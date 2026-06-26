@@ -10,4 +10,19 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    build: {
+        rolldownOptions: {
+            output: {
+                codeSplitting: {
+                    minSize: 20000,
+                    groups: [
+                        {
+                            name: 'vendor',
+                            test: /node_modules/,
+                        },
+                    ],
+                },
+            },
+        }
+    }
 });

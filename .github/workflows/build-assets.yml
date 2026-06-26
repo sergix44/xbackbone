@@ -62,11 +62,10 @@ jobs:
 
       - name: Commit assets if changed
         run: |
-          # public/build is git-ignored for local development, so force-add it:
-          # CI is the single source of truth for the committed production bundle.
-          # `git add <dir>` also stages removals, so stale content-hashed files
-          # from previous builds are dropped automatically.
-          git add -f public/build
+          # public/build is tracked (see core/.gitignore) so the monorepo split
+          # ships it. `git add <dir>` also stages removals, so stale
+          # content-hashed files from previous builds are dropped automatically.
+          git add public/build
 
           if git diff --cached --quiet; then
             echo "Production assets are unchanged — nothing to commit."

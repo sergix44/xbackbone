@@ -1,6 +1,8 @@
 /.phpunit.cache
 /node_modules
-/public/build
+# /public/build is intentionally NOT ignored: CI builds the production Vite
+# bundle and commits it so the split ships ready-to-serve assets. The split
+# action stages with plain `git add .`, which would skip an ignored path.
 /public/hot
 /public/storage
 /storage/*.key
