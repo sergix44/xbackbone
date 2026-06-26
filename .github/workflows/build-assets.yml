@@ -32,6 +32,21 @@ jobs:
           # commit the rebuilt bundle straight back onto it.
           ref: ${{ github.ref_name }}
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, dom, fileinfo, bcmath, intl, gd, pdo_sqlite, sqlite3
+          coverage: none
+          tools: composer:v2
+
+      # app.js imports vendor/livewire/livewire/dist/livewire.esm, so the Vite
+      # build needs Composer's vendor/ present.
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          working-directory: core
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
