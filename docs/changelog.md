@@ -5,6 +5,17 @@ nav_order: 9
 ---
 # Changelog
 
+## [3.8.2] - 2026-06-27
+> This is the final planned maintenance release of the legacy 3.x line.
+
+### Security
+- Updated `guzzlehttp/psr7` to 2.12.3, fixing CRLF injection and host-confusion advisories (CVE-2026-55766, CVE-2026-49214, CVE-2026-48998).
+- Updated `mtdowling/jmespath.php` to 2.9.1, fixing a code-injection advisory (CVE-2026-54133).
+- Updated the JavaScript build toolchain dependencies `lodash` (4.18.1) and `qs` (6.15.3) to patched releases.
+
+### Changed
+- Updated PHP and JavaScript development dependencies.
+
 ## [3.8.1] - 2025-01-24
 ### Fixed
 - Crash when uploading file (#625)
