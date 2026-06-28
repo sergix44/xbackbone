@@ -1,0 +1,65 @@
+/**
+ * XBackBone brand theming for the VitePress default theme.
+ * Colors are derived from the logo: blue (primary), with red/green/yellow
+ * accents reused in the home hero gradient.
+ */
+
+:root {
+  --vp-c-brand-1: #1f6fe8;
+  --vp-c-brand-2: #2f7df1;
+  --vp-c-brand-3: #4f93f4;
+  --vp-c-brand-soft: rgba(47, 125, 241, 0.14);
+
+  /* Height reserved for the early-access banner injected in `layout-top`. */
+  --vp-layout-top-height: 40px;
+}
+
+/* The banner wraps to two lines on narrow viewports. */
+@media (max-width: 640px) {
+  :root {
+    --vp-layout-top-height: 64px;
+  }
+}
+
+.dark {
+  --vp-c-brand-1: #6aa6f8;
+  --vp-c-brand-2: #4f93f4;
+  --vp-c-brand-3: #2f7df1;
+  --vp-c-brand-soft: rgba(47, 125, 241, 0.18);
+}
+
+/* Home hero: multicolor brand gradient on the title, glow behind the logo. */
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    #ea4335 0%,
+    #2f7df1 38%,
+    #1aa260 70%,
+    #f4b400 100%
+  );
+
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    rgba(47, 125, 241, 0.6) 30%,
+    rgba(26, 162, 96, 0.6) 70%
+  );
+  --vp-home-hero-image-filter: blur(48px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}
+
+/* Slightly softer, larger hero logo. */
+.VPHero .image-bg {
+  opacity: 0.65;
+}

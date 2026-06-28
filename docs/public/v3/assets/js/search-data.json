@@ -1,0 +1,604 @@
+{"0": {
+    "doc": "Basic Usage",
+    "title": "Basic Usage",
+    "content": " ",
+    "url": "/v3/basic_usage.html",
+    
+    "relUrl": "/v3/basic_usage.html"
+  },"1": {
+    "doc": "Basic Usage",
+    "title": "Users",
+    "content": "Some functions that every user that use XBackBone should know: . | You can hide/publish every upload, once it’s hidden, it’s visible only by yourself. | You can download your ShareX configuration file from your profile page. | You can upload files directly from the upload page. | You can change you upload token anytime. | You can export all your uploads in a single zip files in your profile page. | (v3.1+) With the right click on the uploaded media, you can select them, and then remove them in bulk. | (v3.1+) You can add additional tag to your uploads, clicking on the + button on the media. | (v3.1+) You can add you can delete tags, by right-click on them. | (v3.1+) You can choose in your profile options if hide the uploads by default. | (v3.1+) You can choose in your profile options if always copy the raw url (from the web interface). | . ",
+    "url": "/v3/basic_usage.html#users",
+    
+    "relUrl": "/v3/basic_usage.html#users"
+  },"2": {
+    "doc": "Basic Usage",
+    "title": "Administrator",
+    "content": "In addition, from the system page, and administrator can: . | Perform maintenance actions. | Change theme. | Force system languages. | Enabled recaptcha. | Enable user disk quota. | … and more. | . In the users page, it can add/remove users, and edit per user configurations. ",
+    "url": "/v3/basic_usage.html#administrator",
+    
+    "relUrl": "/v3/basic_usage.html#administrator"
+  },"3": {
+    "doc": "Changelog",
+    "title": "Changelog",
+    "content": " ",
+    "url": "/v3/changelog.html",
+    
+    "relUrl": "/v3/changelog.html"
+  },"4": {
+    "doc": "Changelog",
+    "title": "[3.8.2] - 2026-06-27",
+    "content": "This is the final planned maintenance release of the legacy 3.x line. Security . | Updated guzzlehttp/psr7 to 2.12.3, fixing CRLF injection and host-confusion advisories (CVE-2026-55766, CVE-2026-49214, CVE-2026-48998). | Updated mtdowling/jmespath.php to 2.9.1, fixing a code-injection advisory (CVE-2026-54133). | Updated the JavaScript build toolchain dependencies lodash (4.18.1) and qs (6.15.3) to patched releases. | . Changed . | Updated PHP and JavaScript development dependencies. | . ",
+    "url": "/v3/changelog.html#382---2026-06-27",
+    
+    "relUrl": "/v3/changelog.html#382---2026-06-27"
+  },"5": {
+    "doc": "Changelog",
+    "title": "[3.8.1] - 2025-01-24",
+    "content": "Fixed . | Crash when uploading file (#625) | . ",
+    "url": "/v3/changelog.html#381---2025-01-24",
+    
+    "relUrl": "/v3/changelog.html#381---2025-01-24"
+  },"6": {
+    "doc": "Changelog",
+    "title": "[3.8.0] - 2025-01-18",
+    "content": "Added . | Support for PHP 8.4 | Add an app_email option to the config (#616) | Exporting ShareX settings now work for the latest version of ShareX 16.1.0 (#617) | Option to upload file with a custom name (#588) | Upload from clipboard (#572) | . Changed . | Updated translations. | Updated dependencies. | . Fixed . | Page count calculation (#586) | . ",
+    "url": "/v3/changelog.html#380---2025-01-18",
+    
+    "relUrl": "/v3/changelog.html#380---2025-01-18"
+  },"7": {
+    "doc": "Changelog",
+    "title": "[3.7.0] - 2024-01-14",
+    "content": "Added . | Added support for vanity urls. | Added KDE integration for linux script. | . Changed . | Updated translations. | File preview is now clickable to open the file. | . Fixed . | Fixes for LDAP authentication. | . ",
+    "url": "/v3/changelog.html#370---2024-01-14",
+    
+    "relUrl": "/v3/changelog.html#370---2024-01-14"
+  },"8": {
+    "doc": "Changelog",
+    "title": "[3.6.3] - 2023-05-27",
+    "content": "Fixed . | Fix LDAP for php &gt;= 8.1 | . ",
+    "url": "/v3/changelog.html#363---2023-05-27",
+    
+    "relUrl": "/v3/changelog.html#363---2023-05-27"
+  },"9": {
+    "doc": "Changelog",
+    "title": "[3.6.2] - 2023-05-24",
+    "content": "Changed . | Support for PHP 8.2 | . Removed . | Azure blob storage driver | . ",
+    "url": "/v3/changelog.html#362---2023-05-24",
+    
+    "relUrl": "/v3/changelog.html#362---2023-05-24"
+  },"10": {
+    "doc": "Changelog",
+    "title": "[3.6.1] - 2022-11-27",
+    "content": "Changed . | Upgraded dependencies | Updated translations | . Fixed . | Fixed error in export data (#499) | Fixed issues with reverse proxies (#495) | Fixed duplicated twitter tags (#496) | . ",
+    "url": "/v3/changelog.html#361---2022-11-27",
+    
+    "relUrl": "/v3/changelog.html#361---2022-11-27"
+  },"11": {
+    "doc": "Changelog",
+    "title": "[3.6.0] - 2022-06-20",
+    "content": "Changed . | Improved embedding on discord of large videos. | Releases are now compressed for faster downloads | Updated translations | . Fixed . | Fixed deprecation notices on php &gt;= 8 | Fixed embed UA for Discord. | Fixed error with post_max_size = 0 | . Removed . | Support for php 7.2 | . ",
+    "url": "/v3/changelog.html#360---2022-06-20",
+    
+    "relUrl": "/v3/changelog.html#360---2022-06-20"
+  },"12": {
+    "doc": "Changelog",
+    "title": "[3.5.1] - 2021-10-22",
+    "content": "Changed . | Fixed embed UA for Discord. | Updated translations. | . ",
+    "url": "/v3/changelog.html#351---2021-10-22",
+    
+    "relUrl": "/v3/changelog.html#351---2021-10-22"
+  },"13": {
+    "doc": "Changelog",
+    "title": "[3.5.0] - 2021-09-05",
+    "content": "Added . | Support for theme-park.dev themes. | Updated translations. | . Fixed . | Wrong css when reapplying the default theme. | . Removed . | Dropped theme cli command. | . ",
+    "url": "/v3/changelog.html#350---2021-09-05",
+    
+    "relUrl": "/v3/changelog.html#350---2021-09-05"
+  },"14": {
+    "doc": "Changelog",
+    "title": "[3.4.1] - 2021-08-11",
+    "content": "Added . | Toggle to disable embeds. | . Changed . | Raw url copying now contains also the file extension. | . ",
+    "url": "/v3/changelog.html#341---2021-08-11",
+    
+    "relUrl": "/v3/changelog.html#341---2021-08-11"
+  },"15": {
+    "doc": "Changelog",
+    "title": "[3.4.0] - 2021-08-01",
+    "content": "Added . | Added image support for OG for Discord only. | . Changed . | Updated translations. | Dropped support for PHP 7.1 | . Fixed . | Fixed possible XSS and CSRF attacks. | . ",
+    "url": "/v3/changelog.html#340---2021-08-01",
+    
+    "relUrl": "/v3/changelog.html#340---2021-08-01"
+  },"16": {
+    "doc": "Changelog",
+    "title": "[3.3.5] - 2021-04-25",
+    "content": "Fixed . | Removed OG integration for discord. | . Changed . | Updated translations. | . ",
+    "url": "/v3/changelog.html#335---2021-04-25",
+    
+    "relUrl": "/v3/changelog.html#335---2021-04-25"
+  },"17": {
+    "doc": "Changelog",
+    "title": "[3.3.4] - 2021-03-07",
+    "content": "Added . | Login failed logging. | User identifier option for LDAP configurations. | . Fixed . | Fixed open graph meta tags for Discord. | Fixed custom html tags are not displayed back in the admin setting. | Fixed python plugin for newer version of Screencloud. | Fixed accented chars in email subject. | Fixed error on PHP 8. | . ",
+    "url": "/v3/changelog.html#334---2021-03-07",
+    
+    "relUrl": "/v3/changelog.html#334---2021-03-07"
+  },"18": {
+    "doc": "Changelog",
+    "title": "[3.3.3] - 2020-11-13",
+    "content": "Fixed . | Fixed issue with responsive menu on mobile. | . ",
+    "url": "/v3/changelog.html#333---2020-11-13",
+    
+    "relUrl": "/v3/changelog.html#333---2020-11-13"
+  },"19": {
+    "doc": "Changelog",
+    "title": "[3.3.2] - 2020-11-12",
+    "content": "Fixed . | Fixed switch not works for the first time for normal users. | . ",
+    "url": "/v3/changelog.html#332---2020-11-12",
+    
+    "relUrl": "/v3/changelog.html#332---2020-11-12"
+  },"20": {
+    "doc": "Changelog",
+    "title": "[3.3.1] - 2020-11-12",
+    "content": "Fixed . | Formatting error on the check for updates. | Fixed default view for normal users. | . ",
+    "url": "/v3/changelog.html#331---2020-11-12",
+    
+    "relUrl": "/v3/changelog.html#331---2020-11-12"
+  },"21": {
+    "doc": "Changelog",
+    "title": "[3.3.0] - 2020-11-12",
+    "content": "Added . | Enabled PHP 8 support. | Added Screencloud client support (https://screencloud.net). | OpenGraph image tag (issue #269). | Start adding unit tests. | . Changed . | The list mode is now available also for non-admin accounts (issue #226). | . Fixed . | Linux script strange response code in headless mode. | . Removed . | Dropped Telegram share button. | . ",
+    "url": "/v3/changelog.html#330---2020-11-12",
+    
+    "relUrl": "/v3/changelog.html#330---2020-11-12"
+  },"22": {
+    "doc": "Changelog",
+    "title": "[3.2.0] - 2020-09-05",
+    "content": "Added . | Added support to use Azure Blob Storage account as storage location. | Support for other S3-compatible storage endpoint. | Line number when showing text files. | . Fixed . | S3 driver file streaming not working properly. | Fixed Slack image preview. | . ",
+    "url": "/v3/changelog.html#320---2020-09-05",
+    
+    "relUrl": "/v3/changelog.html#320---2020-09-05"
+  },"23": {
+    "doc": "Changelog",
+    "title": "[3.1.4] - 2020-04-13",
+    "content": "Changed . | Now the migrate command resync the system quota for each user. | . Fixed . | Fixed error with the migrate command. | . ",
+    "url": "/v3/changelog.html#314---2020-04-13",
+    
+    "relUrl": "/v3/changelog.html#314---2020-04-13"
+  },"24": {
+    "doc": "Changelog",
+    "title": "[3.1.3] - 2020-04-13",
+    "content": "Changed . | Added changelog page. | Updated translations. | . ",
+    "url": "/v3/changelog.html#313---2020-04-13",
+    
+    "relUrl": "/v3/changelog.html#313---2020-04-13"
+  },"25": {
+    "doc": "Changelog",
+    "title": "[3.1.2] - 2020-04-12",
+    "content": "Changed . | Improved installer storage checks. | . Fixed . | Fixed upload table lost when updating very old instances. | . ",
+    "url": "/v3/changelog.html#312---2020-04-12",
+    
+    "relUrl": "/v3/changelog.html#312---2020-04-12"
+  },"26": {
+    "doc": "Changelog",
+    "title": "[3.1.1] - 2020-04-11",
+    "content": "Fixed . | Fixed error during a fresh installation with sqlite. | . ",
+    "url": "/v3/changelog.html#311---2020-04-11",
+    
+    "relUrl": "/v3/changelog.html#311---2020-04-11"
+  },"27": {
+    "doc": "Changelog",
+    "title": "[3.1] - 2020-04-10",
+    "content": "Added . | Added tagging system (add, delete, search of tagged files). | Added basic media auto-tagging on upload. | Added registration system. | Added password recovery system. | Added ability to export all media of an account. | Added ability to choose between default and raw url on copy. | Added hide by default option. | Added user disk quota. | Added reCAPTCHA login protection. | Added bulk delete. | Added account clean function. | Added user disk quota system. | Added notification option on account create. | Added LDAP authentication. | . Changed . | The theme is now re-applied after every system update. | Updated system settings page. | Updated translations. | Improved grid layout. | . Fixed . | Fixed bug html files raws are rendered in a browser. | Fixes and improvements. | . ",
+    "url": "/v3/changelog.html#31---2020-04-10",
+    
+    "relUrl": "/v3/changelog.html#31---2020-04-10"
+  },"28": {
+    "doc": "Changelog",
+    "title": "[3.0.2] - 2019-12-04",
+    "content": "Changed . | Updated translations. | . Fixed . | Fixed error with migrate command. | . ",
+    "url": "/v3/changelog.html#302---2019-12-04",
+    
+    "relUrl": "/v3/changelog.html#302---2019-12-04"
+  },"29": {
+    "doc": "Changelog",
+    "title": "[3.0.1] - 2019-11-25",
+    "content": "Changed . | Small installer update. | . Fixed . | Fixed error with older mysql versions. | Fixed config is compiled with the di container. | . ",
+    "url": "/v3/changelog.html#301---2019-11-25",
+    
+    "relUrl": "/v3/changelog.html#301---2019-11-25"
+  },"30": {
+    "doc": "Changelog",
+    "title": "[3.0] - 2019-11-23",
+    "content": "Added . | Added web upload. | Added ability to add custom HTML in &lt;head&gt; tag. | Added ability to show a preview of PDF files. | Added remember me functionality. | Added delete button on the preview page if the user is logged in. | New project icon (by @SerenaItalia). | The linux script can be used on headless systems. | Raw URL now accept file extensions. | Implemented SameSite XSS protection. | . Changed . | Upgraded from Slim3 to Slim 4. | Replaced videojs player with Plyr. | Improved installer. | Improved thumbnail generation. | Small fixes and improvements. | . ",
+    "url": "/v3/changelog.html#30---2019-11-23",
+    
+    "relUrl": "/v3/changelog.html#30---2019-11-23"
+  },"31": {
+    "doc": "Changelog",
+    "title": "[2.6.6] - 2019-10-23",
+    "content": "Added . | Ability to choose between releases and prereleases with the web updater. | . Changed . | Updated translations. | . ",
+    "url": "/v3/changelog.html#266---2019-10-23",
+    
+    "relUrl": "/v3/changelog.html#266---2019-10-23"
+  },"32": {
+    "doc": "Changelog",
+    "title": "[2.6.5] - 2019-09-17",
+    "content": "Changed . | Changed color to some buttons to address visibility with some themes. | . Fixed . | Fixed error after orphaned files removal #74. | Fixed update password not correctly removed from log files (#74). | . ",
+    "url": "/v3/changelog.html#265---2019-09-17",
+    
+    "relUrl": "/v3/changelog.html#265---2019-09-17"
+  },"33": {
+    "doc": "Changelog",
+    "title": "[2.6.4] - 2019-09-15",
+    "content": "Added . | Filter on displayable images. | . Changed . | The generated random strings are now more human readable. | . Fixed . | Fixed during upload error on php compiled for 32 bit. | Fixed icons on the installer page. | . ",
+    "url": "/v3/changelog.html#264---2019-09-15",
+    
+    "relUrl": "/v3/changelog.html#264---2019-09-15"
+  },"34": {
+    "doc": "Changelog",
+    "title": "[2.6.3] - 2019-09-14",
+    "content": "Fixed . | Fixed #67. | Fixed bad preload statement. | Fixed wrong redirect after install in subdirs. | . ",
+    "url": "/v3/changelog.html#263---2019-09-14",
+    
+    "relUrl": "/v3/changelog.html#263---2019-09-14"
+  },"35": {
+    "doc": "Changelog",
+    "title": "[2.6.2] - 2019-09-06",
+    "content": "Added . | Added method for cache busting when updating/change theme. | Added russian translation from Weblate. | . Changed . | Changed background default color. | Use the Font Awesome web font for better performances. | . ",
+    "url": "/v3/changelog.html#262---2019-09-06",
+    
+    "relUrl": "/v3/changelog.html#262---2019-09-06"
+  },"36": {
+    "doc": "Changelog",
+    "title": "[2.6.1] - 2019-09-04",
+    "content": "Added . | Added alert if required extensions are not loaded. | . Changed . | Improved shell commands. | Updated translations. | . Fixed . | Fixed bad redirects on the web installer (#62). | Fixed login page with dark themes. | . ",
+    "url": "/v3/changelog.html#261---2019-09-04",
+    
+    "relUrl": "/v3/changelog.html#261---2019-09-04"
+  },"37": {
+    "doc": "Changelog",
+    "title": "[2.6] - 2019-08-20",
+    "content": "Added . | Added support to use AWS S3, Google Cloud Storage, Dropbox and FTP(s) accounts as storage location. | Added german and norwegian translations from Weblate. | Added ability to force system language. | . Changed . | Improved lang detection. | . Fixed . | Fixed missing icon. | . ",
+    "url": "/v3/changelog.html#26---2019-08-20",
+    
+    "relUrl": "/v3/changelog.html#26---2019-08-20"
+  },"38": {
+    "doc": "Changelog",
+    "title": "[2.5.3] - 2019-05-12",
+    "content": "Changed . | Improved exception stacktrace logging. | . Fixed . | Fixed bad css loading on Firefox (#35). | Fixed wrong style for publish/unpublish button. | . ",
+    "url": "/v3/changelog.html#253---2019-05-12",
+    
+    "relUrl": "/v3/changelog.html#253---2019-05-12"
+  },"39": {
+    "doc": "Changelog",
+    "title": "[2.5.2] - 2019-05-09",
+    "content": "Added . | Added preloading for some resources to improve performances. | Added check for block execution on EOL and unsupported PHP versions. | . Changed . | Improved session handling. | Other minor improvements. | . Fixed . | Fixed telegram share not working. | Fix for big text file now are not rendered in the browser. | . ",
+    "url": "/v3/changelog.html#252---2019-05-09",
+    
+    "relUrl": "/v3/changelog.html#252---2019-05-09"
+  },"40": {
+    "doc": "Changelog",
+    "title": "[2.5.1] - 2019-04-10",
+    "content": "Changed . | Improved HTTP partial content implementation for large files. | . Fixed . | Fixed bad redirect if the theme folder is not writable. (#27) | . ",
+    "url": "/v3/changelog.html#251---2019-04-10",
+    
+    "relUrl": "/v3/changelog.html#251---2019-04-10"
+  },"41": {
+    "doc": "Changelog",
+    "title": "[2.5] - 2019-02-10",
+    "content": "Added . | Added partial content implementation (stream seeking on chromium based browsers). | [BETA] Added self update feature. | Added project favicon. | . Changed . | Updated project license to AGPL v3.0 (now releases ships with the new license). | Improved video.js alignment with large videos. | Optimized output zip release size. | Templates cleanup and optimizations. | Improved error handling. | . ",
+    "url": "/v3/changelog.html#25---2019-02-10",
+    
+    "relUrl": "/v3/changelog.html#25---2019-02-10"
+  },"42": {
+    "doc": "Changelog",
+    "title": "[2.4.1] - 2019-01-24",
+    "content": "Fixed . | Fixed error message when the file is too large. (#15) | Fixed button alignment. | . ",
+    "url": "/v3/changelog.html#241---2019-01-24",
+    
+    "relUrl": "/v3/changelog.html#241---2019-01-24"
+  },"43": {
+    "doc": "Changelog",
+    "title": "[2.4] - 2019-01-22",
+    "content": "Added . | Added function to remove orphaned files. | Multiple uploads sorting methods. | Switch between tab and gallery mode using an admin account. | Search in uploads. | . Changed . | Updated js dependencies. | Internal refactoring and improvements | . ",
+    "url": "/v3/changelog.html#24---2019-01-22",
+    
+    "relUrl": "/v3/changelog.html#24---2019-01-22"
+  },"44": {
+    "doc": "Changelog",
+    "title": "[2.3.1] - 2018-12-09",
+    "content": "Added . | Added checks during the installation wizard. | cURL and Wget can now directly download the file. | . Fixed . | Fixed english language. | Fixed forced background with dark themes. | . ",
+    "url": "/v3/changelog.html#231---2018-12-09",
+    
+    "relUrl": "/v3/changelog.html#231---2018-12-09"
+  },"45": {
+    "doc": "Changelog",
+    "title": "[2.3] - 2018-11-30",
+    "content": "Added . | Added overlay on user gallery images. | Added linux script to allow uploads from linux screenshot tools. | Enable audio player with video.js. | Font Awesome icon match the single file mime-type. | . Changed . | Improved image scaling in user gallery. | Video and audio now starts with volume at 50%. | Minor layout fixes. | . Fixed . | Fixed IT translation. | . ",
+    "url": "/v3/changelog.html#23---2018-11-30",
+    
+    "relUrl": "/v3/changelog.html#23---2018-11-30"
+  },"46": {
+    "doc": "Changelog",
+    "title": "[2.2] - 2018-11-20",
+    "content": "Added . | Added multi-language support. | . Fixed . | Improved routing. | Minor improvements and bug fixes. | Fixed HTTP/2 push is resetting the current session. | . ",
+    "url": "/v3/changelog.html#22---2018-11-20",
+    
+    "relUrl": "/v3/changelog.html#22---2018-11-20"
+  },"47": {
+    "doc": "Changelog",
+    "title": "[2.1] - 2018-11-20",
+    "content": "Added . | Added video.js support. | Allow e-mail login. | Support for ShareX deletion URL. | . Changed . | Improved theme style. | Improved page redirecting. | . Fixed . | Fixed HTTP/2 push preload. | . ",
+    "url": "/v3/changelog.html#21---2018-11-20",
+    
+    "relUrl": "/v3/changelog.html#21---2018-11-20"
+  },"48": {
+    "doc": "Changelog",
+    "title": "[2.0] - 2018-11-13",
+    "content": "Added . | Added install wizard (using the CLI is no longer required). | Added used space indicator per user. | Allow discord bot to display the preview. | Theme switcher on the web UI. | MySQL support. | . Changed . | Migrated from Flight to Slim 3 framework. | Improvements under the hood. | . ",
+    "url": "/v3/changelog.html#20---2018-11-13",
+    
+    "relUrl": "/v3/changelog.html#20---2018-11-13"
+  },"49": {
+    "doc": "Changelog",
+    "title": "[1.3] - 2018-10-14",
+    "content": "Added . | Added command to switch between bootswatch.com themes. | Added popover to write the telegram message when sharing. | Allow Facebook bots to display the preview. | . Changed . | Packaging improvements. | Updated some dependencies. | . ",
+    "url": "/v3/changelog.html#13---2018-10-14",
+    
+    "relUrl": "/v3/changelog.html#13---2018-10-14"
+  },"50": {
+    "doc": "Changelog",
+    "title": "[1.2] - 2018-05-01",
+    "content": "Added . | Added auto config generator for ShareX. | Show upload file size on the dashboard. | . Changed . | Previews are now scaled for better page load. | . Removed . | Removed HTTP2 push from the dashboard to improve loading time. | . Fixed . | Fixed insert for admin user (running php bin\\migrate --install). | . ",
+    "url": "/v3/changelog.html#12---2018-05-01",
+    
+    "relUrl": "/v3/changelog.html#12---2018-05-01"
+  },"51": {
+    "doc": "Changelog",
+    "title": "[1.1] - 2018-04-28",
+    "content": "Added . | Added logging. | Added share to Telegram. | . Changed . | Improved migrate system. | Updated Bootstrap theme. | . Fixed . | Fixed back to top when click delete or publish/unpublish. | Login redirect back to the requested page. | . ",
+    "url": "/v3/changelog.html#11---2018-04-28",
+    
+    "relUrl": "/v3/changelog.html#11---2018-04-28"
+  },"52": {
+    "doc": "Changelog",
+    "title": "[1.0] - 2018-04-28",
+    "content": "Added . | Initial version. | . ",
+    "url": "/v3/changelog.html#10---2018-04-28",
+    
+    "relUrl": "/v3/changelog.html#10---2018-04-28"
+  },"53": {
+    "doc": "Client Configuration",
+    "title": "Clients Configuration",
+    "content": " ",
+    "url": "/v3/clients.html#clients-configuration",
+    
+    "relUrl": "/v3/clients.html#clients-configuration"
+  },"54": {
+    "doc": "Client Configuration",
+    "title": "ShareX (Windows)",
+    "content": "Once you are logged in, just go in your profile settings and download the ShareX config file for your account. ",
+    "url": "/v3/clients.html#sharex-windows",
+    
+    "relUrl": "/v3/clients.html#sharex-windows"
+  },"55": {
+    "doc": "Client Configuration",
+    "title": "Screencloud (Windows, Mac and Linux)",
+    "content": "Once you are logged in, go in your profile account and click on the Screencloud button. Now open Screencloud, open “Preferences” &gt; “Online Services” tab &gt; click “More Services” &gt; and “Install from URL” and paste the URL copied from XBackBone, and all should work out-of-the-box. If for whatever reason you need to change the instance url or the token, just edit the settings of the XBackBone plugin. ",
+    "url": "/v3/clients.html#screencloud-windows-mac-and-linux",
+    
+    "relUrl": "/v3/clients.html#screencloud-windows-mac-and-linux"
+  },"56": {
+    "doc": "Client Configuration",
+    "title": "MagicCap (Mac and Linux)",
+    "content": "MagicCap supports the same file format used by ShareX. Just download the ShareX config file from your profile, and then on MagicCap open the Preferences &gt; Uploader settings and choose ShareX. Set the path to the file you have downloaded, and you are good to go! . ",
+    "url": "/v3/clients.html#magiccap-mac-and-linux",
+    
+    "relUrl": "/v3/clients.html#magiccap-mac-and-linux"
+  },"57": {
+    "doc": "Client Configuration",
+    "title": "uPic (Mac)",
+    "content": "This tool does not support plugins or custom configuration, but you can configure it manually: In preferences, you should add “Custom” host and configure it as follows: . | API URL: Your instance upload url, like http://example.com/upload | Request method: POST | File field: file | URL Path: [“url”] | In “Other fields”, in the body section, you should add the field token, with your upload token. | In “Other fields”, in the headers section, you should add the field Content-Type, with the value application/x-www-form-urlencoded. | . ",
+    "url": "/v3/clients.html#upic-mac",
+    
+    "relUrl": "/v3/clients.html#upic-mac"
+  },"58": {
+    "doc": "Client Configuration",
+    "title": "Bash Script (Linux, Mac, WSL)",
+    "content": "XBackBone can generate a script that allows you to share an item from any tool, even headless servers: . | Login into your account | Navigate to your profile and download the Linux script for your account. | Place the script where you want (ex. in your user home: /home/&lt;username&gt;). | Add execution permissions (chmod +x xbackbone_uploader_XXX.sh) | Run the script for the first time to create the desktop entry: ./xbackbone_uploader_XXX.sh -desktop-entry. | . Now, to upload a media, just use the right click on the file &gt; “Open with …” &gt; search XBackBone Uploader (XXX) in the app list. You can use this feature in combination with tools like Flameshot, just use the “Open with …” button once you have done the screenshot. The script requires xclip, curl, and notify-send on a desktop distribution. Note: XXX is the username of your XBackBone account. ",
+    "url": "/v3/clients.html#bash-script-linux-mac-wsl",
+    
+    "relUrl": "/v3/clients.html#bash-script-linux-mac-wsl"
+  },"59": {
+    "doc": "Client Configuration",
+    "title": "Client Configuration",
+    "content": " ",
+    "url": "/v3/clients.html",
+    
+    "relUrl": "/v3/clients.html"
+  },"60": {
+    "doc": "Common Issues",
+    "title": "Common Issues",
+    "content": "Error 404 after installation . If you have Apache web server, check if it’s reading the file .htaccess and the module mod_rewrite is enabled. [Discord, Telegram, …] is not showing the image/video preview of the link. If you use Cloudflare, check if the setting that blocks access to bots is active. If enabled, the bots of the respective platforms will not be able to access to download the preview. How to increase the upload max file size? . If uploads fail or stop part-way (especially for files around 1 GB or larger), it is usually due to PHP, web server, or reverse-proxy limits. | Update PHP limits (php.ini) . Make sure these values are high enough for the files you want to upload: . ```ini upload_max_filesize = 2G post_max_size = 2G max_execution_time = 600 max_input_time = 600 . | . ",
+    "url": "/v3/common_issues.html",
+    
+    "relUrl": "/v3/common_issues.html"
+  },"61": {
+    "doc": "Configuration",
+    "title": "Configuration",
+    "content": " ",
+    "url": "/v3/configuration.html",
+    
+    "relUrl": "/v3/configuration.html"
+  },"62": {
+    "doc": "Configuration",
+    "title": "Web Server",
+    "content": "Apache need the mod_rewrite extension to make XBackBone work properly. If you do not use Apache, or the Apache .htaccess is not enabled, set your web server so that the static/ folder is the only one accessible from the outside, otherwise even private uploads and logs will be accessible! . If you are using NGINX, you can find an example configuration nginx.conf in the project repository. ",
+    "url": "/v3/configuration.html#web-server",
+    
+    "relUrl": "/v3/configuration.html#web-server"
+  },"63": {
+    "doc": "Configuration",
+    "title": "Maintenance Mode",
+    "content": "Maintenance mode is automatically enabled during an upgrade using the upgrade manager. You can activate it manually by editing the config.php, and adding this line: . return array( ... 'maintenance' =&gt; true, ); . ",
+    "url": "/v3/configuration.html#maintenance-mode",
+    
+    "relUrl": "/v3/configuration.html#maintenance-mode"
+  },"64": {
+    "doc": "Configuration",
+    "title": "Database support",
+    "content": "Currently, is supported MySQL/MariaDB and SQLite3. For big installations, MySQL/MariaDB is recommended. Example config: . return array( ..., 'db' =&gt; array ( 'connection' =&gt; 'mysql', // sqlite or mysql 'dsn' =&gt; 'host=localhost;port=3306;dbname=xbackbone', // the path to db, if sqlite 'username' =&gt; 'xbackbone', // null, if sqlite 'password' =&gt; 's3cr3t', // null, if sqlite ), ); . ",
+    "url": "/v3/configuration.html#database-support",
+    
+    "relUrl": "/v3/configuration.html#database-support"
+  },"65": {
+    "doc": "Configuration",
+    "title": "LDAP Authentication",
+    "content": "Since the release 3.1, the LDAP integration can be configured. Edit the config.php, and add the following lines: This configuration requires anonymous LDAP access . return array( ... 'ldap' =&gt; array( 'enabled' =&gt; true, // enable it 'host' =&gt; 'ad.example.com', // set the ldap host 'port' =&gt; 389, // ldap port 'base_domain' =&gt; 'dc=example,dc=com', // the base_dn string 'user_domain' =&gt; 'ou=Users', // the user dn string 'rdn_attribute' =&gt; 'uid=', // the attribute to identify the user ), ); . The following configuration snippet enables authenticated LDAP user lookups . return array( ... 'ldap' =&gt; array( 'enabled' =&gt; true, // enable it 'schema' =&gt; 'ldap', // use 'ldap' or 'ldaps' Default is 'ldap' 'host' =&gt; 'ad.example.com', // set the ldap host 'port' =&gt; 389, // ldap port 'base_domain' =&gt; 'dc=example,dc=com', // the base_dn string 'search_filter' =&gt; '(&amp;(objectClass=user)(sAMAccountName=????))', // ???? is replaced with user provided username 'rdn_attribute' =&gt; 'sAMAccountName', // the attribute to use as username 'service_account_dn' =&gt; 'cn=xbackbone,cn=Users,dc=example,dc=com', // LDAP Service Account Full DN 'service_account_password' =&gt; 'examplepassword', ), ); . Enabling LDAP over TLS. Make sure to update port number. Merge with your current LDAP configuration. return array( ... 'ldap' =&gt; array( 'schema' =&gt; 'ldaps', //defaults to 'ldap' 'port' =&gt; 636, ), ); . Enabling StartTLS upgrade. Merge with your current LDAP configuration. return array( ... 'ldap' =&gt; array( ... 'useStartTLS' =&gt; true, //defaults to false ), ); . The ‘schema’ =&gt; ‘ldaps’ and ‘useStartTLS’=&gt; true configuration directives are mutually exclusive. Do no use them together. By activating this function, it will not be possible for users logging in via LDAP to reset the password from the application (for obvious reasons), and it will also be possible to bring existing users under LDAP authentication. ",
+    "url": "/v3/configuration.html#ldap-authentication",
+    
+    "relUrl": "/v3/configuration.html#ldap-authentication"
+  },"66": {
+    "doc": "Configuration",
+    "title": "Storage drivers",
+    "content": "XBackBone supports these storage drivers (with some configuration examples): . | Local Storage (default) return array( ... 'storage' =&gt; array ( 'driver' =&gt; 'local', 'path' =&gt; '/path/to/storage/folder', ), ); . | Amazon S3 return array( ... 'storage' =&gt; array ( 'driver' =&gt; 's3', 'key' =&gt; 'the-key', 'secret' =&gt; 'the-secret', 'region' =&gt; 'the-region', 'bucket' =&gt; 'bucket-name', 'path' =&gt; 'optional/path/prefix', ), ); . For any filesystem S3-compatible, it’s possible to specify an endpoint (for i.e. Minio) . return array( ... 'storage' =&gt; array ( 'driver' =&gt; 's3', 'endpoint' =&gt; 'my-custom-endpoint', 'key' =&gt; 'the-key', 'secret' =&gt; 'the-secret', 'region' =&gt; 'the-region', 'bucket' =&gt; 'bucket-name', 'path' =&gt; 'optional/path/prefix', ), ); . | Dropbox return array( ... 'storage' =&gt; array ( 'driver' =&gt; 'dropbox', 'token' =&gt; 'the-token', ), ); . | FTP(s) return array( ... 'storage' =&gt; array ( 'driver' =&gt; 'ftp', 'host' =&gt; 'ftp.example.com', 'port' =&gt; 21, 'username' =&gt; 'the-username', 'password' =&gt; 'the-password', 'path' =&gt; 'the/prefix/path/', 'passive' =&gt; true/false, 'ssl' =&gt; true/false, ), ); . | Google Cloud Storage return array( ... 'storage' =&gt; array ( 'driver' =&gt; 'google-cloud', 'project_id' =&gt; 'the-project-id', 'key_path' =&gt; 'the-key-path', 'bucket' =&gt; 'bucket-name', ), ); . | . ",
+    "url": "/v3/configuration.html#storage-drivers",
+    
+    "relUrl": "/v3/configuration.html#storage-drivers"
+  },"67": {
+    "doc": "Configuration",
+    "title": "Changing themes",
+    "content": "XBackBone supports all bootswatch.com themes. From the web UI: . | Navigate to the web interface as admin -&gt; System Menu -&gt; Choose a theme from the dropdown. | . From the CLI: . | Run the command php bin/theme to see the available themes. | Use the same command with the argument name (php bin/theme &lt;THEME-NAME&gt;) to choose a theme. | If you want to revert back to the original bootstrap theme, run the command php bin/theme default. | . Clear the browser cache once you have applied. ",
+    "url": "/v3/configuration.html#changing-themes",
+    
+    "relUrl": "/v3/configuration.html#changing-themes"
+  },"68": {
+    "doc": "Configuration",
+    "title": "Change app install name",
+    "content": "Add to the config.php file an array element like this: . return array( 'app_name' =&gt; 'This line will overwrite \"XBackBone\"', ... ); . ",
+    "url": "/v3/configuration.html#change-app-install-name",
+    
+    "relUrl": "/v3/configuration.html#change-app-install-name"
+  },"69": {
+    "doc": "Home",
+    "title": "Main Features",
+    "content": ". | Multiple clients supported: ShareX, Screencloud, uPic, … | Config generator for ShareX, Screencloud. | Low memory footprint. | Multiple backends support: Local storage, AWS S3, Google Cloud, Azure Blob Storage, Dropbox, FTP(s). | Web file upload. | Code uploads syntax highlighting. | Video and audio uploads webplayer. | PDF viewer. | Files preview page. | Bootswatch themes support. | Responsive theme for mobile use. | Multi language support. | User management, multi user features, roles and disk quota. | Public and private uploads. | Logging system. | Share to Telegram. | Linux supported via a per-user custom generated script (server and desktop). | Direct downloads using curl or wget commands. | Direct images links support on Discord, Telegram, Facebook, etc. | System updates without FTP or CLI. | Easy web installer. | LDAP authentication. | Registration system. | Automatic uploads tagging system. | Tag uploads with custom tags for categorization. | … and more. | . Demo GIF . ",
+    "url": "/v3/#main-features",
+    
+    "relUrl": "/v3/#main-features"
+  },"70": {
+    "doc": "Home",
+    "title": "Translations",
+    "content": "You can help translating the project on Weblate. ",
+    "url": "/v3/#translations",
+    
+    "relUrl": "/v3/#translations"
+  },"71": {
+    "doc": "Home",
+    "title": "Home",
+    "content": ". XBackBone is a simple and lightweight PHP file manager that support the instant sharing tool ShareX and *NIX systems. It supports uploading and displaying images, GIF, video, code, formatted text, pdf, and file downloading and uploading. Also have a web UI with multi user management, media gallery and search support. Download GitHub Sponsor . ",
+    "url": "/v3/",
+    
+    "relUrl": "/v3/"
+  },"72": {
+    "doc": "Installation",
+    "title": "Installation",
+    "content": "Prerequisites . XBackBone require PHP &gt;= 7.3, with installed the required extensions: . | php-sqlite3 for SQLite. | php-mysql for MariaDB/MySQL. | php-gd image manipualtion library. | php-json json file support. | php-intl internationalization functions. | php-fileinfo file related functions. | php-zip compressed files related functions. | (optional) php-ftp to use the FTP remote storage driver. | (optional) php-ldap to use LDAP authentication. | . ",
+    "url": "/v3/installation.html",
+    
+    "relUrl": "/v3/installation.html"
+  },"73": {
+    "doc": "Installation",
+    "title": "Web installation",
+    "content": ". | Download latest release from GitHub: Latest Release | Extract the release zip to your document root. | Navigate to the webspace root (ex. http://example.com/xbackbone, this should auto redirect your browser to the install page http://example.com/xbackbone/install/) | Follow the instructions. | . For futher and advanced configurations, see the configuration page. ",
+    "url": "/v3/installation.html#web-installation",
+    
+    "relUrl": "/v3/installation.html#web-installation"
+  },"74": {
+    "doc": "Installation",
+    "title": "Manual installation",
+    "content": ". | Download latest release from GitHub: Latest Release | Extract the release zip to your document root. | Copy and edit the config file: cp config.example.php config.php &amp;&amp; nano config.php . By default, XBackBone will use Sqlite3 as DB engine, and a storage dir in the main directory. You can leave these settings unchanged for a simple personal installation. You must set the base_url, or remove it for get dynamically the url from request (not recommended). | . return [ 'base_url' =&gt; 'https://example.com', // no trailing slash 'storage' =&gt; [ 'driver' =&gt; 'local', 'path' =&gt; 'absolute/path/to/storage', ], 'db' =&gt; [ 'connection' =&gt; 'sqlite', // current support for sqlite and mysql 'dsn' =&gt; 'absolute/path/to/resources/database/xbackbone.db', // if sqlite should be an absolute path 'username' =&gt; null, // username and password not needed for sqlite 'password' =&gt; null, ] ]; . | Finally, run the migrate script to setup the database | . php bin/migrate --install . | Delete the /install directory. | Now just login with admin/admin, be sure to change these credentials after your first login. | . For futher and advanced configurations, see the configuration page. ",
+    "url": "/v3/installation.html#manual-installation",
+    
+    "relUrl": "/v3/installation.html#manual-installation"
+  },"75": {
+    "doc": "Installation",
+    "title": "Docker deployment",
+    "content": "Alternatively, a docker container is available. Docker container . ",
+    "url": "/v3/installation.html#docker-deployment",
+    
+    "relUrl": "/v3/installation.html#docker-deployment"
+  },"76": {
+    "doc": "License & Credits",
+    "title": "License",
+    "content": "This software is licensed under the GNU Affero General Public License v3.0, available in this repository. As a “copyright notice” it is sufficient to keep the small footer at the bottom of the page, also to help other people to learn about this project! . ",
+    "url": "/v3/license.html#license",
+    
+    "relUrl": "/v3/license.html#license"
+  },"77": {
+    "doc": "License & Credits",
+    "title": "Built with",
+    "content": ". | Project logo by @Sere | Slim 3 since v2.0, and Slim 4 since v3.0 (https://www.slimframework.com/) and some great PHP packages (Flysystem, Intervention Image, Twig, etc) | FlightPHP, up to v1.x (http://flightphp.com/) | Bootstrap 4 (https://getbootstrap.com/) | Font Awesome 5 (http://fontawesome.com) | ClipboardJS (https://clipboardjs.com/) | HighlightJS (https://highlightjs.org/) | JQuery (https://jquery.com/) | Plyr.io (https://plyr.io/) | Dropzone.js (https://www.dropzonejs.com/) | . ",
+    "url": "/v3/license.html#built-with",
+    
+    "relUrl": "/v3/license.html#built-with"
+  },"78": {
+    "doc": "License & Credits",
+    "title": "License & Credits",
+    "content": " ",
+    "url": "/v3/license.html",
+    
+    "relUrl": "/v3/license.html"
+  },"79": {
+    "doc": "Sponsorship",
+    "title": "Sponsor this project",
+    "content": "You can give your contribution to this project thanks to a small sponsorship, through GitHub Sponsors, or as a single donation on PayPal. All those who make the recurring donations, the names or logos will be inserted in this page, if they wish. | | . | SergiX44 | . | GitHub Sponsors | . | PayPal for XBackBone | . ",
+    "url": "/v3/sponsor.html#sponsor-this-project",
+    
+    "relUrl": "/v3/sponsor.html#sponsor-this-project"
+  },"80": {
+    "doc": "Sponsorship",
+    "title": "Sponsors",
+    "content": ". | @philw95 | . ",
+    "url": "/v3/sponsor.html#sponsors",
+    
+    "relUrl": "/v3/sponsor.html#sponsors"
+  },"81": {
+    "doc": "Sponsorship",
+    "title": "Sponsorship",
+    "content": " ",
+    "url": "/v3/sponsor.html",
+    
+    "relUrl": "/v3/sponsor.html"
+  },"82": {
+    "doc": "Upgrading",
+    "title": "Upgrading",
+    "content": "The system updates can be applied via the web interface by an administrator, or manually via CLI. ",
+    "url": "/v3/upgrading.html",
+    
+    "relUrl": "/v3/upgrading.html"
+  },"83": {
+    "doc": "Upgrading",
+    "title": "Self-update (since v2.5)",
+    "content": ". | Navigate to the system page as administrator. | Click the check for update button, and finally the upgrade button. | Wait until the browser redirect to the install page. | Click the update button. | Done. | . ",
+    "url": "/v3/upgrading.html#self-update-since-v25",
+    
+    "relUrl": "/v3/upgrading.html#self-update-since-v25"
+  },"84": {
+    "doc": "Upgrading",
+    "title": "Manual update",
+    "content": ". | Download and extract the release zip to your document root, overwriting any file. | Navigate to the /install path (es: http://example.com/ -&gt; http://example.com/install/) | Click the update button. | Done. | . ",
+    "url": "/v3/upgrading.html#manual-update",
+    
+    "relUrl": "/v3/upgrading.html#manual-update"
+  },"85": {
+    "doc": "Upgrading",
+    "title": "CLI update",
+    "content": "If, for whatever reason, the web UI is not accessible, you can upgrade from CLI: . | Download and extract the release zip to your document root, overwriting any file. | Run the command php\\migrate. | Run the command php\\clean. | Done. | . Pre-release channel . From the system page, you can also choose to check from beta/RC releases, these are NOT considered stable enough for every day use, but only for testing purposes, take a backup before upgrading to these versions. ",
+    "url": "/v3/upgrading.html#cli-update",
+    
+    "relUrl": "/v3/upgrading.html#cli-update"
+  }
+}
