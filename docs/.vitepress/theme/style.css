@@ -63,3 +63,144 @@
 .VPHero .image-bg {
   opacity: 0.65;
 }
+
+/* ------------------------------------------------------------------ *
+ * Home page animations (on-brand, CSS-only).                         *
+ * Honors prefers-reduced-motion — see the opt-out at the end.        *
+ * ------------------------------------------------------------------ */
+
+@keyframes xbb-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Used only on the hero logo, which the theme centers with
+   translate(-50%, -50%) — keep that offset so it stays centered. */
+@keyframes xbb-pop-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Slowly rotating, breathing glow behind the logo — echoes the
+   multicolor "fan" of the brand mark. Keeps the bg blob centered. */
+@keyframes xbb-glow {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.18);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+    opacity: 0.55;
+  }
+}
+
+/* Staggered hero entrance. */
+.VPHero .name,
+.VPHero .text {
+  animation: xbb-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.VPHero .tagline {
+  animation: xbb-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+}
+
+.VPHero .actions {
+  animation: xbb-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
+}
+
+/* Logo: a single, subtle pop-in on load — no looping motion. */
+.VPHero .image-src {
+  animation: xbb-pop-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.VPHero .image-bg {
+  animation: xbb-glow 16s linear infinite;
+}
+
+/* Feature cards: staggered fade-up on load + a lift on hover. */
+.VPFeatures .item {
+  animation: xbb-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.VPFeatures .item:nth-child(1) { animation-delay: 0.05s; }
+.VPFeatures .item:nth-child(2) { animation-delay: 0.11s; }
+.VPFeatures .item:nth-child(3) { animation-delay: 0.17s; }
+.VPFeatures .item:nth-child(4) { animation-delay: 0.23s; }
+.VPFeatures .item:nth-child(5) { animation-delay: 0.29s; }
+.VPFeatures .item:nth-child(6) { animation-delay: 0.35s; }
+.VPFeatures .item:nth-child(7) { animation-delay: 0.41s; }
+.VPFeatures .item:nth-child(8) { animation-delay: 0.47s; }
+.VPFeatures .item:nth-child(n + 9) { animation-delay: 0.53s; }
+
+.VPFeatures .VPFeature {
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+}
+
+.VPFeatures .VPFeature:hover {
+  transform: translateY(-4px);
+  border-color: var(--vp-c-brand-2);
+  box-shadow: 0 12px 28px -12px var(--vp-c-brand-soft);
+}
+
+.VPFeatures .VPFeature .icon {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.VPFeatures .VPFeature:hover .icon {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+/* Hero buttons: subtle lift. */
+.VPHero .actions .VPButton {
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.VPHero .actions .VPButton:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .VPHero .name,
+  .VPHero .text,
+  .VPHero .tagline,
+  .VPHero .actions,
+  .VPHero .image-src,
+  .VPHero .image-bg,
+  .VPFeatures .item {
+    animation: none !important;
+  }
+
+  .VPFeatures .VPFeature,
+  .VPFeatures .VPFeature .icon,
+  .VPHero .actions .VPButton {
+    transition: none !important;
+  }
+
+  .VPFeatures .VPFeature:hover,
+  .VPHero .actions .VPButton:hover {
+    transform: none;
+  }
+}
