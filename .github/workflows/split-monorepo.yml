@@ -28,7 +28,7 @@ jobs:
           # splitsh-lite needs the full history to rebuild the subtree.
           fetch-depth: 0
           # Resolve the branch/tag tip rather than the pushed SHA so we include
-          # the production bundle the Build Assets job just committed to `next`.
+          # the production bundle the Build Assets job just committed to `master`.
           ref: ${{ github.ref_name }}
 
       # Push to the target branch when this is a branch push.

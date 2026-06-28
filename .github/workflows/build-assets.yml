@@ -1,12 +1,12 @@
 name: Build Assets
 
 # Compile the production Vite bundle for the core package and commit it back to
-# `next` whenever it differs. The committed bundle is what gets split into
+# `master` whenever it differs. The committed bundle is what gets split into
 # sergix44/xbb-core, so the package ships ready-to-serve assets and consumers
 # never need a Node toolchain.
 #
 # Triggers:
-#   - workflow_call    -> invoked by ci.yml on every push to `next`
+#   - workflow_call    -> invoked by ci.yml on every push to `master`
 #   - workflow_dispatch -> run on demand from the Actions tab
 on:
   workflow_call:

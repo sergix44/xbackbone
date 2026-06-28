@@ -1,12 +1,12 @@
 name: CI
 
 # Entry point for pushes. It wires the pipeline order:
-#   push to `next`  ->  Code Quality + Build Assets  ->  Split Monorepo
+#   push to `master`  ->  Code Quality + Build Assets  ->  Split Monorepo
 #   push of a tag   ->  Split Monorepo (mirror the release)
 on:
   push:
     branches:
-      - next
+      - master
     tags:
       - '*'
 
@@ -15,28 +15,28 @@ permissions:
   contents: write
 
 # Only the latest push per ref matters; supersede in-flight runs. Tags get their
-# own group (distinct ref), so releases are never cancelled by a push to `next`.
+# own group (distinct ref), so releases are never cancelled by a push to `master`.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # --- Branch pushes to `next` -------------------------------------------------
+  # --- Branch pushes to `master` -----------------------------------------------
   quality:
     name: Code Quality
-    if: ${{ github.ref == 'refs/heads/next' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     uses: ./.github/workflows/code-quality.yml
 
   assets:
     name: Build Assets
-    if: ${{ github.ref == 'refs/heads/next' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     uses: ./.github/workflows/build-assets.yml
 
   # Splits only after both finish successfully, and picks up the bundle that the
   # assets job just committed (split-monorepo checks out the branch tip).
   split:
     name: Split Monorepo
-    if: ${{ github.ref == 'refs/heads/next' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: [quality, assets]
     uses: ./.github/workflows/split-monorepo.yml
     secrets: inherit

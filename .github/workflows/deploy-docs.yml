@@ -9,7 +9,7 @@ name: Deploy docs
 
 on:
   push:
-    branches: [next]
+    branches: [master]
     paths:
       - 'docs/**'
       - '.github/workflows/deploy-docs.yml'

@@ -1,11 +1,11 @@
 name: Code Quality
 
 # Runs directly on pull requests, and is called by ci.yml (workflow_call) on
-# pushes to `next` so the monorepo split only happens once the suite is green.
+# pushes to `master` so the monorepo split only happens once the suite is green.
 on:
   pull_request:
     branches:
-      - next
+      - master
   workflow_call:
 
 defaults:

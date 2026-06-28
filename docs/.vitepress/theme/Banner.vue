@@ -7,7 +7,7 @@ import {withBase} from 'vitepress'
     <span class="xbb-banner__pill">Under Development</span>
     <span class="xbb-banner__text">
       You're reading the docs for the upcoming <strong>XBackBone&nbsp;4.x</strong>.
-      Version <strong>3.x</strong> docs are available <a :href="withBase('/v3')">here</a>.
+      Version <strong>3.x</strong> docs are available <a :href="withBase('/v3')" target="_blank">here</a>.
       <!-- Version <strong>3.x</strong> is now retired —    <a :href="withBase('/guide/legacy-import')">migrate your instance</a>.-->
     </span>
   </div>
