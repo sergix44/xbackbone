@@ -33,7 +33,7 @@ export default defineConfig({
   ],
 
   sitemap: {
-    hostname: 'https://docs.example.com',
+    hostname: 'https://xbackbone.app',
   },
 
   themeConfig: {
