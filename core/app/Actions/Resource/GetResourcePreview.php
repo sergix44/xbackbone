@@ -21,7 +21,6 @@ class GetResourcePreview
 
         // Small displayable images: resize on-demand, or serve the original when no size is requested.
         if ($resource->type === ResourceType::IMAGE && $resource->is_displayable) {
-
             if ($width === null && $height === null && $quality === null) {
                 return Storage::response($resource->storage_path, $resource->filename);
             }

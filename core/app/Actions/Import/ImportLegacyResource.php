@@ -15,7 +15,9 @@ use Throwable;
 
 class ImportLegacyResource
 {
-    public function __construct(protected Sqids $genId) {}
+    public function __construct(protected Sqids $genId)
+    {
+    }
 
     /**
      * Import a single legacy `uploads` row, plus its physical file, into a {@see Resource}.
@@ -65,7 +67,15 @@ class ImportLegacyResource
         $timestamp = $this->parseTimestamp($row->timestamp ?? null);
 
         return DB::transaction(function () use (
-            $row, $newUserId, $absolute, $fingerprint, $mime, $type, $extension, $timestamp, $withPreviews
+            $row,
+            $newUserId,
+            $absolute,
+            $fingerprint,
+            $mime,
+            $type,
+            $extension,
+            $timestamp,
+            $withPreviews
         ) {
             // Content-addressed deduplication: identical bytes are stored once and shared. A
             // duplicate may already carry a generated preview, which the new resource inherits.

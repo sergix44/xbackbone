@@ -15,7 +15,9 @@ use Sqids\Sqids;
 
 class StoreResource
 {
-    public function __construct(protected Sqids $genId) {}
+    public function __construct(protected Sqids $genId)
+    {
+    }
 
     public function __invoke(
         User $user,

@@ -6,7 +6,9 @@ use Mary\MaryServiceProvider;
 
 class MaryBootServiceProvider extends MaryServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     public function boot(): void
     {

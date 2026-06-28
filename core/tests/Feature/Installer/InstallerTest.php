@@ -161,8 +161,7 @@ describe('installer connection probes', function () {
 
 describe('installer finalize wiring', function () {
     it('finalizes and redirects to the login page', function () {
-        $spy = new class(app(CreateUser::class)) extends FinalizeInstallation
-        {
+        $spy = new class(app(CreateUser::class)) extends FinalizeInstallation {
             /** @var array<string, mixed> */
             public array $received = [];
 
@@ -198,8 +197,7 @@ describe('installer finalize wiring', function () {
     });
 
     it('jumps back to the offending step when finalize fails', function () {
-        $spy = new class(app(CreateUser::class)) extends FinalizeInstallation
-        {
+        $spy = new class(app(CreateUser::class)) extends FinalizeInstallation {
             public function __invoke(array $payload): User
             {
                 throw InstallationException::atStep(2, 'connection refused');

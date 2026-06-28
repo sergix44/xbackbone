@@ -19,7 +19,8 @@ class CustomMain extends Component
         public ?string $collapseText = 'Collapse',
         public ?string $collapseIcon = 'o-bars-3-bottom-right',
         public ?bool $collapsible = false,
-    ) {}
+    ) {
+    }
 
     public function render(): View|Closure|string
     {

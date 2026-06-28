@@ -39,7 +39,9 @@ class GenerateResourcePreview implements ShouldQueueAfterCommit
         VideoFramePreviewGenerator::class,
     ];
 
-    public function __construct(public Resource $resource) {}
+    public function __construct(public Resource $resource)
+    {
+    }
 
     public function handle(): void
     {

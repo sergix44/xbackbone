@@ -26,7 +26,9 @@ class ResourceFile
     /** @var list<string> */
     private array $tempPaths = [];
 
-    public function __construct(public readonly ResourceModel $resource) {}
+    public function __construct(public readonly ResourceModel $resource)
+    {
+    }
 
     /**
      * A readable stream to the original file. Closed automatically on cleanup().

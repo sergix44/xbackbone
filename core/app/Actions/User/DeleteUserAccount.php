@@ -8,7 +8,9 @@ use App\Models\User;
 
 class DeleteUserAccount
 {
-    public function __construct(private DeleteResource $deleteResource) {}
+    public function __construct(private DeleteResource $deleteResource)
+    {
+    }
 
     /**
      * Permanently delete a user together with everything they own.

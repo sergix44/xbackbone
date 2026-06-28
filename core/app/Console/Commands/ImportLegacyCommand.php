@@ -249,7 +249,15 @@ class ImportLegacyCommand extends Command
         $legacy->table('uploads')->orderBy('id')->chunk(
             (int) $this->option('chunk'),
             function ($rows) use (
-                $importResource, $userMap, $orphanOwnerId, $storageRoot, $onMissingFile, $withPreviews, $dryRun, &$counts, $bar
+                $importResource,
+                $userMap,
+                $orphanOwnerId,
+                $storageRoot,
+                $onMissingFile,
+                $withPreviews,
+                $dryRun,
+                &$counts,
+                $bar
             ): void {
                 foreach ($rows as $row) {
                     $ownerId = $this->resolveOwner($row, $userMap, $orphanOwnerId);
