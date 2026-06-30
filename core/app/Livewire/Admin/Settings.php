@@ -23,6 +23,8 @@ class Settings extends Component
 
     public string $defaultTheme = '';
 
+    public bool $apiDocsPublic = false;
+
     public array $themes = [];
 
     public function mount(string $tab = 'general'): void
@@ -32,6 +34,7 @@ class Settings extends Component
         if ($tab === 'general') {
             $this->signupEnabled = (bool) Feature::value('signup');
             $this->defaultTheme = (string) Feature::value('default-theme');
+            $this->apiDocsPublic = (bool) Feature::value('public-api-docs');
 
             $this->themes = collect(config('themes'))
                 ->map(fn ($theme, $key) => (object) ['id' => $theme, 'name' => $theme])
@@ -55,6 +58,17 @@ class Settings extends Component
     public function updateDefaultTheme(): void
     {
         Feature::activate('default-theme', $this->defaultTheme);
+
+        $this->success(__('Settings updated successfully!'));
+    }
+
+    public function updateApiDocsPublic(): void
+    {
+        if ($this->apiDocsPublic) {
+            Feature::activate('public-api-docs');
+        } else {
+            Feature::deactivate('public-api-docs');
+        }
 
         $this->success(__('Settings updated successfully!'));
     }

@@ -33,18 +33,21 @@ test('the settings page defaults to the general tab', function () {
     Livewire::test(Settings::class)
         ->assertSet('tab', 'general')
         ->assertSee('Enable user sign up')
-        ->assertSee('Default theme');
+        ->assertSee('Default theme')
+        ->assertSee('Make API documentation public');
 });
 
 test('the general tab reflects the current feature values', function () {
     Feature::activate('signup');
     Feature::activate('default-theme', 'aqua');
+    Feature::activate('public-api-docs');
 
     $this->actingAs(User::factory()->create(['is_admin' => true]));
 
     Livewire::test(Settings::class)
         ->assertSet('signupEnabled', true)
-        ->assertSet('defaultTheme', 'aqua');
+        ->assertSet('defaultTheme', 'aqua')
+        ->assertSet('apiDocsPublic', true);
 });
 
 test('an admin can enable and disable user sign up', function () {
@@ -61,6 +64,22 @@ test('an admin can enable and disable user sign up', function () {
         ->call('updateSignup');
 
     expect(Feature::value('signup'))->toBeFalse();
+});
+
+test('an admin can make the api documentation public and restrict it again', function () {
+    $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+    Livewire::test(Settings::class)
+        ->set('apiDocsPublic', true)
+        ->call('updateApiDocsPublic');
+
+    expect(Feature::value('public-api-docs'))->toBeTrue();
+
+    Livewire::test(Settings::class)
+        ->set('apiDocsPublic', false)
+        ->call('updateApiDocsPublic');
+
+    expect(Feature::value('public-api-docs'))->toBeFalse();
 });
 
 test('an admin can set the global default theme', function () {

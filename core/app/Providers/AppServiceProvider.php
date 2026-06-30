@@ -30,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('administrate', static fn (User $user) => $user->is_admin);
 
+        // Gates the Scramble API documentation. When the feature is public anyone
+        // may read it; otherwise it is restricted to authenticated users.
+        Gate::define('viewApiDocs', static fn (?User $user): bool => Feature::active('public-api-docs') || $user !== null);
+
         Password::defaults(function () {
             $rule = Password::min(8);
 

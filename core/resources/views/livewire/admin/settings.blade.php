@@ -78,6 +78,12 @@
                               wire:model="defaultTheme"
                               wire:change="updateDefaultTheme()"
                               inline/>
+
+                    <div class="divider mt-8">{{ __('API Documentation') }}</div>
+                    <x-toggle :label="__('Make API documentation public')"
+                              :hint="__('Allow anyone to view the API docs. When disabled, only logged in users can access them.')"
+                              wire:model="apiDocsPublic"
+                              wire:change="updateApiDocsPublic()"/>
                 </div>
             </div>
         @endif

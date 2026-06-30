@@ -9,6 +9,7 @@ use App\Actions\Resource\ToggleResourceVisibility;
 use App\Actions\Resource\UpdateResourceSettings;
 use App\Models\Resource;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
@@ -43,6 +44,16 @@ class Dashboard extends Component
 
     public bool $settingsHasPassword = false;
 
+    /* LISTING — persisted in the query string so filters survive a refresh/share. */
+    #[Url(except: '')]
+    public string $search = '';
+
+    #[Url(except: 'created_at')]
+    public string $sortColumn = 'created_at';
+
+    #[Url(except: 'desc')]
+    public string $sortDirection = 'desc';
+
     public function render()
     {
         return view('livewire.dashboard')->title('Gallery');
@@ -51,7 +62,53 @@ class Dashboard extends Component
     #[Computed]
     public function resources()
     {
+        // The Livewire update request carries the component snapshot, not query
+        // params; merge the listing state into it so ListResources resolves the
+        // same `filter`/`sort` vocabulary the REST API uses.
+        request()->merge([
+            'filter' => array_filter(['search' => $this->search], fn ($value) => $value !== ''),
+            'sort' => ($this->sortDirection === 'desc' ? '-' : '').$this->sortColumn,
+        ]);
+
         return app(ListResources::class)(auth()->user());
+    }
+
+    /**
+     * Columns offered in the "Sort by" dropdown, mapped to their display labels.
+     * Keys must match the allowed sorts in ListResources.
+     *
+     * @return array<string, string>
+     */
+    public function sortLabels(): array
+    {
+        return [
+            'created_at' => __('Date'),
+            'name' => __('Name'),
+            'size' => __('Size'),
+            'views' => __('Views'),
+            'downloads' => __('Downloads'),
+        ];
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function setSort(string $column): void
+    {
+        if (! array_key_exists($column, $this->sortLabels())) {
+            return;
+        }
+
+        $this->sortColumn = $column;
+        $this->resetPage();
+    }
+
+    public function toggleSortDirection(): void
+    {
+        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        $this->resetPage();
     }
 
     public function saveUpload(int $id): void
