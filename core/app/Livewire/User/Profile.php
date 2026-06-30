@@ -167,7 +167,7 @@ class Profile extends Component
     /**
      * Aggregate, display-ready statistics for the resources the user has uploaded.
      *
-     * @return array{media: string, size: string, views: string, downloads: string}
+     * @return array{media: string, size: string, views: string, downloads: string, quota: ?string, quota_unlimited: bool, quota_percent: ?int}
      */
     #[Computed]
     public function stats(): array
@@ -178,11 +178,18 @@ class Profile extends Component
             ->toBase()
             ->first();
 
+        $used = (int) $aggregate->size;
+        $unlimited = $this->user->hasUnlimitedQuota();
+        $quota = (int) $this->user->quota;
+
         return [
             'media' => number_format((int) $aggregate->media),
-            'size' => Helpers::humanizeBytes((int) $aggregate->size),
+            'size' => Helpers::humanizeBytes($used),
             'views' => number_format((int) $aggregate->views),
             'downloads' => number_format((int) $aggregate->downloads),
+            'quota' => $unlimited ? null : Helpers::humanizeBytes($quota),
+            'quota_unlimited' => $unlimited,
+            'quota_percent' => $unlimited ? null : ($quota > 0 ? min(100, (int) round($used / $quota * 100)) : 100),
         ];
     }
 

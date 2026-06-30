@@ -7,6 +7,7 @@ use App\Actions\Resource\ListResources;
 use App\Actions\Resource\StoreResource;
 use App\Actions\Resource\ToggleResourceVisibility;
 use App\Actions\Resource\UpdateResourceSettings;
+use App\Exceptions\QuotaExceededException;
 use App\Models\Resource;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -122,7 +123,14 @@ class Dashboard extends Component
             return;
         }
 
-        $resource = app(StoreResource::class)(auth()->user(), $file);
+        try {
+            $resource = app(StoreResource::class)(auth()->user(), $file);
+        } catch (QuotaExceededException $e) {
+            $this->error($e->getMessage());
+            $file->delete();
+
+            return;
+        }
 
         activity()
             ->performedOn($resource)
@@ -144,12 +152,18 @@ class Dashboard extends Component
             ]
         )->validate();
 
-        $resource = app(StoreResource::class)(
-            auth()->user(),
-            data: $validated['content'],
-            name: ($validated['name'] ?? null) ?: null,
-            mime: 'text/plain',
-        );
+        try {
+            $resource = app(StoreResource::class)(
+                auth()->user(),
+                data: $validated['content'],
+                name: ($validated['name'] ?? null) ?: null,
+                mime: 'text/plain',
+            );
+        } catch (QuotaExceededException $e) {
+            $this->error($e->getMessage());
+
+            return;
+        }
 
         activity()
             ->performedOn($resource)

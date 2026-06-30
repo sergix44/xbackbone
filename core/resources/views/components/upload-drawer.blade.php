@@ -6,6 +6,13 @@
 
     $maxUploadSize = $uploadLimits === [] ? 0 : min($uploadLimits);
     $maxUploadSizeHuman = $maxUploadSize > 0 ? \App\Support\Helpers::humanizeBytes($maxUploadSize) : null;
+
+    $quotaUnlimited = auth()->user()->hasUnlimitedQuota();
+    $quotaTotal = (int) auth()->user()->quota;
+    $quotaUsed = auth()->user()->storageUsed();
+    $quotaUsedHuman = \App\Support\Helpers::humanizeBytes($quotaUsed);
+    $quotaTotalHuman = $quotaUnlimited ? null : \App\Support\Helpers::humanizeBytes($quotaTotal);
+    $quotaPercent = (! $quotaUnlimited && $quotaTotal > 0) ? min(100, (int) round($quotaUsed / $quotaTotal * 100)) : null;
 @endphp
 
 <x-drawer
@@ -16,6 +23,26 @@
     title="Uploads"
 >
     <div x-data="uploads">
+        <div class="mb-4">
+            <div class="flex items-center justify-between text-xs text-base-content/70">
+                <span class="inline-flex items-center gap-1.5">
+                    <x-icon name="o-circle-stack" class="w-4 h-4"/>
+                    {{ __('Storage used') }}
+                </span>
+                <span class="font-semibold text-base-content">
+                    @if($quotaUnlimited)
+                        {{ $quotaUsedHuman }} <span class="opacity-60 font-normal">/ {{ __('Unlimited') }}</span>
+                    @else
+                        {{ $quotaUsedHuman }} <span class="opacity-60 font-normal">/ {{ $quotaTotalHuman }}</span>
+                    @endif
+                </span>
+            </div>
+            @unless($quotaUnlimited)
+                <progress class="progress {{ $quotaPercent >= 90 ? 'progress-error' : 'progress-primary' }} w-full mt-1"
+                          max="100" value="{{ $quotaPercent }}"></progress>
+            @endunless
+        </div>
+
         <x-tabs selected="files">
             <x-tab name="files" label="Files" icon="o-cloud-arrow-up">
                 <div id="drop-area"

@@ -141,6 +141,9 @@
                             <span class="inline-flex items-center gap-1.5 text-xs">
                                 <x-icon name="o-circle-stack" class="w-4 h-4 text-warning"/>
                                 <span class="font-semibold text-base-content">{{ $this->stats['size'] }}</span>
+                                @unless($this->stats['quota_unlimited'])
+                                    <span class="opacity-60">/ {{ $this->stats['quota'] }}</span>
+                                @endunless
                             </span>
                             <span class="inline-flex items-center gap-1.5 text-xs">
                                 <x-icon name="o-eye" class="w-4 h-4 text-info"/>
@@ -154,6 +157,18 @@
                             </span>
                         </x-slot:subtitle>
                     </x-avatar>
+                    @unless($this->stats['quota_unlimited'])
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between text-xs text-base-content/70 mb-1">
+                                <span>{{ __('Storage quota') }}</span>
+                                <span class="font-semibold text-base-content">
+                                    {{ $this->stats['size'] }} / {{ $this->stats['quota'] }} ({{ $this->stats['quota_percent'] }}%)
+                                </span>
+                            </div>
+                            <progress class="progress {{ $this->stats['quota_percent'] >= 90 ? 'progress-error' : 'progress-primary' }} w-full"
+                                      max="100" value="{{ $this->stats['quota_percent'] }}"></progress>
+                        </div>
+                    @endunless
                     <div class="divider mt-8">Profile</div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-input placeholder="Username" label="Username" type="text" wire:model="name" error-field="name" inline/>

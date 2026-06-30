@@ -2,6 +2,7 @@
 
 namespace App\Actions\Resource;
 
+use App\Exceptions\QuotaExceededException;
 use App\Jobs\GenerateResourcePreview;
 use App\Models\Properties\ResourceType;
 use App\Models\Resource;
@@ -35,13 +36,16 @@ class StoreResource
         $fingerprint = $file ? sha1_file($file->getRealPath()) : sha1($data);
         $type = $this->findType($file, $data, $mime);
 
-        return DB::transaction(function () use ($user, $file, $name, $data, $mime, $fingerprint, $type) {
+        // A link has no physical file, so it never consumes the user's storage quota.
+        $isLink = $type === ResourceType::LINK;
+        $incomingSize = $isLink ? 0 : (int) ($file?->getSize() ?? strlen((string) $data));
+
+        $this->ensureWithinQuota($user, $incomingSize);
+
+        return DB::transaction(function () use ($user, $file, $name, $data, $mime, $fingerprint, $type, $isLink) {
             // Content-addressed deduplication: an existing resource with the same fingerprint
             // already has the physical file (and possibly a preview) stored.
             $existing = Resource::query()->where('fingerprint', $fingerprint)->first();
-
-            // A link has no physical file, so the file-derived columns stay empty.
-            $isLink = $type === ResourceType::LINK;
 
             if ($isLink && ! $name) {
                 $name = parse_url($data, PHP_URL_HOST);
@@ -83,6 +87,20 @@ class StoreResource
 
             return $resource;
         });
+    }
+
+    private function ensureWithinQuota(User $user, int $incomingSize): void
+    {
+        // Unlimited quota or a zero-byte addition (e.g. a link) never consumes space.
+        if ($user->hasUnlimitedQuota() || $incomingSize <= 0) {
+            return;
+        }
+
+        $used = $user->storageUsed();
+
+        if (($used + $incomingSize) > $user->quota) {
+            throw new QuotaExceededException($user->quota, $used, $incomingSize);
+        }
     }
 
     private function findType(?UploadedFile $file, ?string $data, ?string $mime): ResourceType
