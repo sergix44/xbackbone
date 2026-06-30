@@ -12,6 +12,7 @@ use App\Livewire\Integrations;
 use App\Livewire\Preview;
 use App\Livewire\User\Profile;
 use App\Models\Resource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,13 +57,21 @@ Route::middleware([EnsureResourceAccessible::class, ServeSocialEmbed::class])->g
 
 /*
  * Legacy URL fallback. Old XBackBone links were /{userCode}/{code}[.ext]; resources imported from a
- * legacy instance keep their original code in `legacy_code`. This two-segment route is registered last
- * so it only catches old links the current single-segment routes above cannot, and permanently
- * redirects them to the current /{code} URL.
+ * legacy instance keep their original code in `legacy_code`. Registered as the framework fallback so
+ * it can never shadow a real route (e.g. Scramble's `docs/api`) regardless of route registration
+ * order, and only handles the old two-segment links nothing else matched, permanently redirecting
+ * them to the current /{code} URL.
  */
-Route::get('{legacyUserCode}/{legacyCode}', static function (string $legacyUserCode, string $legacyCode) {
+Route::fallback(static function (Request $request) {
+    // API 404s must keep their own (JSON) shape; never treat them as legacy links.
+    abort_if($request->is('api/*'), 404);
+
+    $segments = explode('/', $request->path());
+
+    abort_unless(count($segments) === 2, 404);
+
     $resource = Resource::query()
-        ->where('legacy_code', pathinfo($legacyCode, PATHINFO_FILENAME))
+        ->where('legacy_code', pathinfo($segments[1], PATHINFO_FILENAME))
         ->firstOrFail();
 
     return redirect()->route('preview', ['resource' => $resource->code], 301);
