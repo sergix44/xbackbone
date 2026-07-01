@@ -74,6 +74,7 @@ export default defineConfig({
         text: 'Clients',
         items: [
           { text: 'ShareX', link: '/clients/sharex' },
+          { text: 'Xerahs', link: '/clients/xerahs' },
           { text: 'ScreenCloud', link: '/clients/screencloud' },
           { text: 'Spectacle', link: '/clients/spectacle' },
           { text: 'CLI', link: '/clients/cli-scripts' },

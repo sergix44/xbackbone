@@ -19,6 +19,7 @@ Install the app, then point it at your server.
 | Client | Platforms | Status |
 | ------ | --------- | ------ |
 | [ShareX](/clients/sharex) | Windows | <Badge type="tip" text="Available" /> |
+| [Xerahs](/clients/xerahs) | Windows · macOS · Linux | <Badge type="tip" text="Available" /> |
 | [ScreenCloud](/clients/screencloud) | Windows · macOS · Linux | <Badge type="warning" text="In development" /> |
 
 ## Desktop & CLI
@@ -28,7 +29,7 @@ Drop-in scripts with native desktop or shell integration.
 | Client | Platforms | Status |
 | ------ | --------- | ------ |
 | [Spectacle (KDE)](/clients/spectacle) | Linux · KDE | <Badge type="warning" text="In development" /> |
-| [CLI script](/clients/cli-scripts) | Linux · macOS | <Badge type="warning" text="In development" /> |
+| [CLI script](/clients/cli-scripts) | Linux · macOS | <Badge type="tip" text="Available" /> |
 
 ## Programmatic access
 

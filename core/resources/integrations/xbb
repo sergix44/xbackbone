@@ -1,0 +1,451 @@
+#!/usr/bin/env bash
+#
+# xbackbone — command-line uploader for XBackBone.
+#
+# Uploads a file (or piped text) to your XBackBone instance and prints the resulting
+# links. Works on Linux and macOS. Only `curl` is required; `jq` is used when present
+# (with a plain sed/grep fallback), and clipboard / notification / screenshot helpers
+# are auto-detected and skipped when unavailable.
+#
+# Configuration is resolved in this order (first wins):
+#   1. command-line flags (--url, --token)
+#   2. environment variables (XBB_URL, XBB_TOKEN)
+#   3. config file: ${XDG_CONFIG_HOME:-$HOME/.config}/xbackbone/config  (KEY=value)
+#   4. values baked in when downloaded from the Integrations page
+#
+# Homepage: https://xbackbone.app
+
+XBB_VERSION="1.0.0"
+PROGNAME="${0##*/}"
+
+# --- baked-in defaults ------------------------------------------------------------
+# Replaced with your instance URL and personal token when downloaded from the
+# Integrations page. Left as-is (the sentinels below), the script falls back to the
+# environment / config file instead.
+XBB_URL_DEFAULT="@@XBB_URL@@"
+XBB_TOKEN_DEFAULT="@@XBB_TOKEN@@"
+
+CONFIG_FILE="${XBB_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/xbackbone/config}"
+
+# --- state ------------------------------------------------------------------------
+OUTPUT="rich"          # rich | json | plain
+PRIMARY="preview"      # preview | raw
+NAME=""
+OPT_URL=""
+OPT_TOKEN=""
+DELETE_URL=""
+SHOT_MODE=""           # "" | region | full
+DO_COPY=1
+DO_NOTIFY=1
+DO_OPEN=0
+SOURCES=()
+CLIP=()
+TMPFILES=()
+
+cleanup() {
+    if [ "${#TMPFILES[@]}" -gt 0 ]; then
+        rm -f "${TMPFILES[@]}" 2>/dev/null
+    fi
+}
+trap cleanup EXIT
+
+# --- helpers ----------------------------------------------------------------------
+die() {
+    local code="$1"
+    shift
+    printf '%s: %s\n' "$PROGNAME" "$*" >&2
+    exit "$code"
+}
+
+has() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+usage() {
+    cat <<EOF
+$PROGNAME $XBB_VERSION — upload files to XBackBone from the command line.
+
+USAGE:
+    $PROGNAME [options] <file> [file...]
+    <command> | $PROGNAME -            create a paste from stdin
+    $PROGNAME --screenshot             capture a region and upload it
+
+OPTIONS:
+    --json               print the raw API JSON response (pipe-friendly)
+    --plain              print only the resulting URL, one per line
+    --raw                use the direct/raw URL as the primary URL
+    --name <name>        set a custom name for the upload
+    --screenshot         capture a screen region and upload it
+    --screenshot-full    capture the full screen and upload it
+    --delete <url>       delete a previous upload via its deletion URL
+    --open               open the resulting URL in the default browser
+    --no-copy            do not copy the URL to the clipboard
+    --no-notify          do not show a desktop notification
+    --url <base>         XBackBone instance URL (overrides config/env)
+    --token <token>      API token (overrides config/env)
+    -h, --help           show this help and exit
+    -V, --version        show version and exit
+
+Rich output (the default) copies the URL to the clipboard and shows a desktop
+notification on desktop systems; --plain and --json stay silent for use in pipes.
+
+EXIT CODES: 0 ok · 2 usage · 3 missing config · 4 auth · 5 quota · 6 validation · 7 other
+EOF
+}
+
+human_size() {
+    awk -v b="${1:-0}" 'BEGIN {
+        if (b !~ /^[0-9]+$/) { print b; exit }
+        split("B,KB,MB,GB,TB,PB", u, ",")
+        i = 1
+        while (b >= 1024 && i < 6) { b /= 1024; i++ }
+        if (i == 1) { printf("%d %s\n", b, u[i]) } else { printf("%.1f %s\n", b, u[i]) }
+    }'
+}
+
+# Extract .data.<key> from a JSON response. Uses jq when available, otherwise a
+# best-effort match of the leaf key (the response keys are unique so nesting is moot).
+json_data() {
+    local body="$1" key="$2"
+    if has jq; then
+        printf '%s' "$body" | jq -r --arg k "$key" '.data[$k] // empty' 2>/dev/null
+        return
+    fi
+    printf '%s' "$body" | tr -d '\n' \
+        | grep -oE "\"$key\"[[:space:]]*:[[:space:]]*(\"[^\"]*\"|-?[0-9.]+|true|false|null)" \
+        | head -n1 \
+        | sed -E "s/^\"$key\"[[:space:]]*:[[:space:]]*//; s/^\"//; s/\"$//"
+}
+
+# Extract the top-level .message (present on error responses).
+json_message() {
+    local body="$1"
+    if has jq; then
+        printf '%s' "$body" | jq -r '.message // empty' 2>/dev/null
+        return
+    fi
+    printf '%s' "$body" | tr -d '\n' \
+        | grep -oE "\"message\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" \
+        | head -n1 \
+        | sed -E 's/^"message"[[:space:]]*:[[:space:]]*"//; s/"$//'
+}
+
+primary_url() {
+    local body="$1"
+    if [ "$PRIMARY" = "raw" ]; then
+        json_data "$body" "raw_url"
+    else
+        json_data "$body" "preview_ext_url"
+    fi
+}
+
+copy_clipboard() {
+    local text="$1"
+    case "$(uname -s)" in
+        Darwin)
+            has pbcopy && printf '%s' "$text" | pbcopy && return 0
+            ;;
+        *)
+            if [ -n "${WAYLAND_DISPLAY:-}" ] && has wl-copy; then
+                printf '%s' "$text" | wl-copy && return 0
+            fi
+            has xclip && printf '%s' "$text" | xclip -selection clipboard && return 0
+            has xsel && printf '%s' "$text" | xsel --clipboard --input && return 0
+            ;;
+    esac
+    return 1
+}
+
+notify() {
+    local title="$1" message="$2"
+    case "$(uname -s)" in
+        Darwin)
+            has terminal-notifier && terminal-notifier -title "$title" -message "$message" >/dev/null 2>&1 && return 0
+            has osascript && osascript -e "display notification \"$message\" with title \"$title\"" >/dev/null 2>&1 && return 0
+            ;;
+        *)
+            has notify-send && notify-send "$title" "$message" >/dev/null 2>&1 && return 0
+            ;;
+    esac
+    return 1
+}
+
+open_url() {
+    case "$(uname -s)" in
+        Darwin) has open && open "$1" >/dev/null 2>&1 ;;
+        *) has xdg-open && (xdg-open "$1" >/dev/null 2>&1 &) ;;
+    esac
+}
+
+take_screenshot() {
+    local mode="$1" tmp
+    tmp="$(mktemp "${TMPDIR:-/tmp}/xbb-shot-XXXXXX")" || die 7 "Could not create a temp file."
+    mv "$tmp" "$tmp.png"
+    tmp="$tmp.png"
+
+    case "$(uname -s)" in
+        Darwin)
+            if [ "$mode" = "region" ]; then screencapture -i "$tmp"; else screencapture "$tmp"; fi
+            ;;
+        *)
+            if [ -n "${WAYLAND_DISPLAY:-}" ] && has grim; then
+                if [ "$mode" = "region" ] && has slurp; then grim -g "$(slurp)" "$tmp"; else grim "$tmp"; fi
+            elif has spectacle; then
+                if [ "$mode" = "region" ]; then spectacle -rbno "$tmp"; else spectacle -fbno "$tmp"; fi
+            elif has maim; then
+                if [ "$mode" = "region" ]; then maim -s "$tmp"; else maim "$tmp"; fi
+            elif has scrot; then
+                if [ "$mode" = "region" ]; then scrot -s "$tmp"; else scrot "$tmp"; fi
+            elif has gnome-screenshot; then
+                if [ "$mode" = "region" ]; then gnome-screenshot -a -f "$tmp"; else gnome-screenshot -f "$tmp"; fi
+            elif has import; then
+                if [ "$mode" = "region" ]; then import "$tmp"; else import -window root "$tmp"; fi
+            else
+                rm -f "$tmp"
+                die 3 "No screenshot tool found (install grim+slurp, maim, scrot, spectacle, or gnome-screenshot)."
+            fi
+            ;;
+    esac
+
+    if [ ! -s "$tmp" ]; then
+        rm -f "$tmp"
+        die 7 "Screenshot cancelled or failed."
+    fi
+    printf '%s' "$tmp"
+}
+
+# --- configuration resolution -----------------------------------------------------
+resolve_config() {
+    local env_url="${XBB_URL:-}" env_token="${XBB_TOKEN:-}"
+    local cfg_url="" cfg_token=""
+
+    if [ -f "$CONFIG_FILE" ]; then
+        cfg_url="$(sed -nE 's/^[[:space:]]*XBB_URL[[:space:]]*=[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/p' "$CONFIG_FILE" | head -n1)"
+        cfg_token="$(sed -nE 's/^[[:space:]]*XBB_TOKEN[[:space:]]*=[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/p' "$CONFIG_FILE" | head -n1)"
+    fi
+
+    XBB_URL="${OPT_URL:-${env_url:-${cfg_url:-$XBB_URL_DEFAULT}}}"
+    TOKEN="${OPT_TOKEN:-${env_token:-${cfg_token:-$XBB_TOKEN_DEFAULT}}}"
+
+    # Split sentinels so the server's replacement never rewrites these comparisons.
+    case "$XBB_URL" in *"@@XBB_""URL@@"*) XBB_URL="" ;; esac
+    case "$TOKEN" in *"@@XBB_""TOKEN@@"*) TOKEN="" ;; esac
+
+    XBB_URL="${XBB_URL%/}"
+
+    [ -n "$XBB_URL" ] || die 3 "No instance URL set. Use --url, export XBB_URL, or download a pre-filled script from the Integrations page."
+    [ -n "$TOKEN" ] || die 3 "No API token set. Use --token, export XBB_TOKEN, or download a pre-filled script from the Integrations page."
+}
+
+# --- API calls --------------------------------------------------------------------
+_HTTP=""
+_BODY=""
+
+upload_one() {
+    local src="$1"
+    local curl_args
+    curl_args=(-sS -X POST
+        -H "Authorization: Bearer $TOKEN"
+        -H "Accept: application/json"
+        -w $'\n%{http_code}')
+
+    if [ "$src" = "-" ]; then
+        local content
+        content="$(cat)"
+        [ -n "$content" ] || die 2 "No input received on stdin."
+        curl_args+=(--form-string "data=$content")
+    else
+        [ -f "$src" ] || die 2 "File not found: $src"
+        curl_args+=(-F "file=@$src")
+    fi
+    [ -n "$NAME" ] && curl_args+=(--form-string "name=$NAME")
+
+    local resp
+    resp="$(curl "${curl_args[@]}" "$XBB_URL/api/v1/upload")" || die 7 "Network error contacting $XBB_URL."
+    _HTTP="${resp##*$'\n'}"
+    _BODY="${resp%$'\n'*}"
+}
+
+ensure_ok() {
+    local code="$1" body="$2" msg
+    case "$code" in
+        200 | 201) return 0 ;;
+    esac
+    msg="$(json_message "$body")"
+    case "$code" in
+        401 | 403) die 4 "Authentication failed${msg:+: $msg}" ;;
+        413) die 5 "${msg:-Storage quota exceeded.}" ;;
+        422) die 6 "${msg:-The upload was rejected (validation error).}" ;;
+        *) die 7 "Upload failed (HTTP $code)${msg:+: $msg}" ;;
+    esac
+}
+
+do_delete() {
+    local code
+    code="$(curl -sS -o /dev/null -w '%{http_code}' "$DELETE_URL")" || die 7 "Network error contacting the server."
+    case "$code" in
+        2* | 3*)
+            [ "$OUTPUT" = "rich" ] && printf 'Deleted.\n'
+            exit 0
+            ;;
+        401 | 403 | 404) die 4 "Deletion URL rejected (invalid, expired, or already deleted)." ;;
+        *) die 7 "Delete failed (HTTP $code)." ;;
+    esac
+}
+
+# --- output -----------------------------------------------------------------------
+setup_colors() {
+    if [ "$OUTPUT" = "rich" ] && [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+        C_RESET=$'\033[0m'; C_BOLD=$'\033[1m'; C_DIM=$'\033[2m'
+        C_GREEN=$'\033[32m'; C_CYAN=$'\033[36m'
+    else
+        C_RESET=""; C_BOLD=""; C_DIM=""; C_GREEN=""; C_CYAN=""
+    fi
+}
+
+render_rich() {
+    local body="$1"
+    local filename mime size ext raw del expires primary human
+    filename="$(json_data "$body" filename)"
+    mime="$(json_data "$body" mime)"
+    size="$(json_data "$body" size)"
+    ext="$(json_data "$body" extension)"
+    raw="$(json_data "$body" raw_url)"
+    del="$(json_data "$body" deletion_url)"
+    expires="$(json_data "$body" expires_at)"
+    primary="$(primary_url "$body")"
+    [ -n "$filename" ] || filename="paste.${ext:-txt}"
+    human="$(human_size "$size")"
+
+    printf '%s%s✔%s %s%s%s\n' "$C_GREEN" "$C_BOLD" "$C_RESET" "$C_BOLD" "$filename" "$C_RESET"
+    [ -n "$mime" ] && printf '  %sType%s     %s%s%s\n' "$C_DIM" "$C_RESET" "$mime" "${human:+ · }" "$human"
+    printf '  %sURL%s      %s%s%s\n' "$C_DIM" "$C_RESET" "$C_CYAN" "$primary" "$C_RESET"
+    [ -n "$raw" ] && [ "$raw" != "$primary" ] && printf '  %sRaw%s      %s\n' "$C_DIM" "$C_RESET" "$raw"
+    [ -n "$del" ] && printf '  %sDelete%s   %s%s%s\n' "$C_DIM" "$C_RESET" "$C_DIM" "$del" "$C_RESET"
+    [ -n "$expires" ] && [ "$expires" != "null" ] && printf '  %sExpires%s  %s\n' "$C_DIM" "$C_RESET" "$expires"
+
+    CLIP+=("$primary")
+}
+
+render_results() {
+    local count="${#SOURCES[@]}"
+    case "$OUTPUT" in
+        json)
+            if [ "$count" -eq 1 ]; then
+                printf '%s\n' "${RESULTS[0]}"
+            else
+                printf '[%s]\n' "$(IFS=,; printf '%s' "${RESULTS[*]}")"
+            fi
+            ;;
+        plain)
+            local body
+            for body in "${RESULTS[@]}"; do
+                printf '%s\n' "$(primary_url "$body")"
+            done
+            ;;
+        rich)
+            local body
+            for body in "${RESULTS[@]}"; do
+                render_rich "$body"
+            done
+            post_actions
+            ;;
+    esac
+}
+
+post_actions() {
+    [ "${#CLIP[@]}" -eq 0 ] && return 0
+    local joined
+    joined="$(printf '%s\n' "${CLIP[@]}")"
+
+    if [ "$DO_COPY" -eq 1 ]; then
+        copy_clipboard "$joined" 2>/dev/null && printf '%s(copied to clipboard)%s\n' "$C_DIM" "$C_RESET"
+    fi
+    if [ "$DO_NOTIFY" -eq 1 ]; then
+        if [ "${#CLIP[@]}" -eq 1 ]; then
+            notify "XBackBone" "${CLIP[0]}"
+        else
+            notify "XBackBone" "${#CLIP[@]} files uploaded"
+        fi
+    fi
+    if [ "$DO_OPEN" -eq 1 ]; then
+        open_url "${CLIP[0]}"
+    fi
+}
+
+# --- argument parsing -------------------------------------------------------------
+parse_args() {
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            --json) OUTPUT="json" ;;
+            --plain) OUTPUT="plain" ;;
+            --raw) PRIMARY="raw" ;;
+            --name) NAME="${2:?--name requires a value}"; shift ;;
+            --name=*) NAME="${1#*=}" ;;
+            --screenshot) SHOT_MODE="region" ;;
+            --screenshot-full) SHOT_MODE="full" ;;
+            --delete) DELETE_URL="${2:?--delete requires a URL}"; shift ;;
+            --delete=*) DELETE_URL="${1#*=}" ;;
+            --open) DO_OPEN=1 ;;
+            --no-copy) DO_COPY=0 ;;
+            --no-notify) DO_NOTIFY=0 ;;
+            --url) OPT_URL="${2:?--url requires a value}"; shift ;;
+            --url=*) OPT_URL="${1#*=}" ;;
+            --token) OPT_TOKEN="${2:?--token requires a value}"; shift ;;
+            --token=*) OPT_TOKEN="${1#*=}" ;;
+            -h | --help) usage; exit 0 ;;
+            -V | --version) printf '%s %s\n' "$PROGNAME" "$XBB_VERSION"; exit 0 ;;
+            -) SOURCES+=("-") ;;
+            --) shift; while [ "$#" -gt 0 ]; do SOURCES+=("$1"); shift; done; break ;;
+            -*) die 2 "Unknown option: $1 (try --help)" ;;
+            *) SOURCES+=("$1") ;;
+        esac
+        shift
+    done
+}
+
+# --- main -------------------------------------------------------------------------
+main() {
+    parse_args "$@"
+
+    has curl || die 3 "curl is required but was not found in PATH."
+
+    # Deleting only needs the self-contained signed URL, not the instance config.
+    if [ -n "$DELETE_URL" ]; then
+        do_delete
+    fi
+
+    # With no files and no screenshot, consume piped stdin as a paste.
+    if [ "${#SOURCES[@]}" -eq 0 ] && [ -z "$SHOT_MODE" ] && [ ! -t 0 ]; then
+        SOURCES+=("-")
+    fi
+
+    # Nothing to upload -> show usage (works without any configuration).
+    if [ "${#SOURCES[@]}" -eq 0 ] && [ -z "$SHOT_MODE" ]; then
+        usage >&2
+        exit 2
+    fi
+
+    resolve_config
+
+    if [ -n "$SHOT_MODE" ]; then
+        local shot
+        shot="$(take_screenshot "$SHOT_MODE")" || exit "$?"
+        TMPFILES+=("$shot")
+        SOURCES+=("$shot")
+    fi
+
+    setup_colors
+
+    RESULTS=()
+    local src
+    for src in "${SOURCES[@]}"; do
+        upload_one "$src"
+        ensure_ok "$_HTTP" "$_BODY"
+        RESULTS+=("$_BODY")
+    done
+
+    render_results
+}
+
+main "$@"

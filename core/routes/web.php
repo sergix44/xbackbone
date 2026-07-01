@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
     Route::livewire('dashboard', Dashboard::class)->name('dashboard');
     Route::livewire('integrations', Integrations::class)->name('integrations');
     Route::get('integrations/sharex', [IntegrationController::class, 'shareX'])->name('integrations.sharex');
+    Route::get('integrations/xerahs', [IntegrationController::class, 'xerahs'])->name('integrations.xerahs');
+    Route::get('integrations/cli', [IntegrationController::class, 'cli'])->name('integrations.cli');
     Route::livewire('settings/{tab?}', Settings::class)->name('admin.settings')
         ->whereIn('tab', ['general', 'users', 'statistics', 'updates'])
         ->can('administrate');

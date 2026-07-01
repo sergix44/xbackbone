@@ -7,10 +7,14 @@ use Illuminate\Support\Str;
 
 class GenerateSharexConfig
 {
-    public function __invoke(User $user): array
+    /**
+     * Build a ShareX custom-uploader (.sxcu) configuration. Shared by every
+     * ShareX-compatible client (ShareX, Xerahs, …); $client only names the token.
+     */
+    public function __invoke(User $user, string $client = 'ShareX'): array
     {
         $now = now()->format('Y-m-d_H:i:s');
-        $token = $user->createToken("ShareX-$now", ['resource:upload', 'resource:delete'])->plainTextToken;
+        $token = $user->createToken("$client-$now", ['resource:upload', 'resource:delete'])->plainTextToken;
 
         return [
             'Version' => '17.0.0',
