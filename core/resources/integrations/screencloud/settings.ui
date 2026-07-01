@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Dialog</class>
+    <widget class="QDialog" name="Dialog">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>360</width>
+                <height>125</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Upload Settings</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <widget class="QGroupBox" name="group_url">
+                    <property name="title">
+                        <string>Instance Settings</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_2">
+                        <item>
+                            <layout class="QFormLayout" name="formLayout">
+                                <item row="0" column="0">
+                                    <widget class="QLabel" name="label_token">
+                                        <property name="text">
+                                            <string>Token:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="0" column="1">
+                                    <widget class="QLineEdit" name="token">
+                                        <property name="text">
+                                            <string />
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="0">
+                                    <widget class="QLabel" name="label_host">
+                                        <property name="text">
+                                            <string>Host:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="1">
+                                    <widget class="QLineEdit" name="host">
+                                        <property name="placeholderText">
+                                            <string>http://example.com</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+            <item>
+                <widget class="QDialogButtonBox" name="buttonBox">
+                    <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="standardButtons">
+                        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+    <tabstops>
+        <tabstop>token</tabstop>
+        <tabstop>host</tabstop>
+        <tabstop>buttonBox</tabstop>
+    </tabstops>
+    <resources />
+    <connections>
+        <connection>
+            <sender>buttonBox</sender>
+            <signal>accepted()</signal>
+            <receiver>Dialog</receiver>
+            <slot>accept()</slot>
+            <hints />
+        </connection>
+        <connection>
+            <sender>buttonBox</sender>
+            <signal>rejected()</signal>
+            <receiver>Dialog</receiver>
+            <slot>reject()</slot>
+            <hints />
+        </connection>
+    </connections>
+</ui>

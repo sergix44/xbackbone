@@ -20,7 +20,7 @@ Install the app, then point it at your server.
 | ------ | --------- | ------ |
 | [ShareX](/clients/sharex) | Windows | <Badge type="tip" text="Available" /> |
 | [Xerahs](/clients/xerahs) | Windows · macOS · Linux | <Badge type="tip" text="Available" /> |
-| [ScreenCloud](/clients/screencloud) | Windows · macOS · Linux | <Badge type="warning" text="In development" /> |
+| [ScreenCloud](/clients/screencloud) | Windows · macOS · Linux | <Badge type="tip" text="Available" /> |
 
 ## Desktop & CLI
 

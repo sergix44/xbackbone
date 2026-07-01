@@ -27,8 +27,9 @@
                     'icon' => 'o-cloud-arrow-up',
                     'platforms' => ['Windows', 'macOS', 'Linux'],
                     'description' => 'Open-source screen capture and file sharing app available across every desktop platform.',
-                    'action' => 'Get extension',
+                    'action' => 'Copy install link',
                     'link' => 'https://screencloud.net',
+                    'copy' => \Illuminate\Support\Facades\URL::signedRoute('integrations.screencloud', ['user' => auth()->id()]),
                 ],
                 [
                     'name' => 'Spectacle',
@@ -108,7 +109,15 @@
                                 </p>
 
                                 <div class="card-actions">
-                                    @if(! empty($integration['route']))
+                                    @if(! empty($integration['copy']))
+                                        <div class="w-full" x-data="{ copied: false, link: @js($integration['copy']) }">
+                                            <x-button :label="$integration['action']" icon="o-clipboard-document" class="btn-primary btn-block"
+                                                      x-on:click="navigator.clipboard.writeText(link); copied = true; setTimeout(() => copied = false, 2000)"/>
+                                            <p class="mt-1.5 text-center text-xs text-success" x-show="copied" x-cloak>
+                                                Link copied — paste it into ScreenCloud
+                                            </p>
+                                        </div>
+                                    @elseif(! empty($integration['route']))
                                         <x-button :label="$integration['action']" icon="o-arrow-down-tray" class="btn-primary btn-block" :link="$integration['route']" no-wire-navigate/>
                                     @else
                                         <x-button :label="$integration['action']" icon="o-arrow-down-tray" class="btn-primary btn-block" disabled/>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Integration\GenerateCliScript;
+use App\Actions\Integration\GenerateScreenCloudPlugin;
 use App\Actions\Integration\GenerateSharexConfig;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -50,6 +52,20 @@ class IntegrationController extends Controller
         return response($script, 200, [
             'Content-Type' => 'text/x-shellscript; charset=utf-8',
             'Content-Disposition' => 'attachment; filename="xbb"',
+        ]);
+    }
+
+    /**
+     * Serve the ScreenCloud uploader plugin package. Fetched over a permanent signed
+     * URL (no session) so ScreenCloud can install it directly from the pasted link.
+     */
+    public function screenCloud(User $user, GenerateScreenCloudPlugin $generateScreenCloudPlugin): Response
+    {
+        $fileName = str($user->name)->slug().'-screencloud.zip';
+
+        return response($generateScreenCloudPlugin($user), 200, [
+            'Content-Type' => 'application/zip',
+            'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
         ]);
     }
 }

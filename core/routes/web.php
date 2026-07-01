@@ -44,6 +44,9 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
 
 Route::get('delete/{resource:code}', [ResourceController::class, 'delete'])->name('resource.delete')->middleware('signed');
 
+// Public signed URL: ScreenCloud installs the uploader plugin directly from the pasted link.
+Route::get('integrations/screencloud/{user}', [IntegrationController::class, 'screenCloud'])->name('integrations.screencloud')->middleware('signed');
+
 // Registered before the single-segment preview route below so it is not captured as a resource code.
 Route::get('oembed', [OembedController::class, 'show'])->name('oembed');
 
