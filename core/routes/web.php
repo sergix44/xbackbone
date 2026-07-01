@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
     Route::livewire('integrations', Integrations::class)->name('integrations');
     Route::get('integrations/sharex', [IntegrationController::class, 'shareX'])->name('integrations.sharex');
     Route::livewire('settings/{tab?}', Settings::class)->name('admin.settings')
-        ->whereIn('tab', ['general', 'users', 'statistics'])
+        ->whereIn('tab', ['general', 'users', 'statistics', 'updates'])
         ->can('administrate');
     Route::get('profile/export/download', [ExportController::class, 'download'])->name('user.profile.export');
     Route::livewire('profile/{tab?}', Profile::class)->name('user.profile')
