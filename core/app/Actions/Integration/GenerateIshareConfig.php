@@ -23,11 +23,9 @@ class GenerateIshareConfig
             'requestURL' => route('api.v1.upload'),
             'headers' => [
                 'Accept' => 'application/json',
-                // Unlike the ShareX config, the token needs no pipe-escaping: ishare parses plain JSON.
                 'Authorization' => 'Bearer '.$token,
             ],
             'fileFormName' => 'file',
-            'requestBodyType' => 'multipartFormData',
             'responseURL' => '{{data.preview_ext_url}}',
             'deletionURL' => '{{data.deletion_url}}',
             'deleteRequestType' => 'GET',

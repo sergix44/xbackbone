@@ -59,7 +59,7 @@ class IntegrationController extends Controller
             $config,
             200,
             ['Content-Disposition' => 'attachment; filename="'.$fileName.'"'],
-            JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+            JSON_PRETTY_PRINT
         );
     }
 
