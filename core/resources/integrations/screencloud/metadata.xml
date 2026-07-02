@@ -1,7 +1,7 @@
 <metadata>
-	<name>XBackBone Uploader 2.0</name>
-	<shortname>xbackbone2</shortname>
-	<className>XBackBoneUploader</className>
+	<name>@@SC_APP_NAME@@ Uploader 2.0</name>
+	<shortname>@@SC_SHORT_NAME@@</shortname>
+	<className>@@SC_CLASS_NAME@@</className>
 	<icon>icon.png</icon>
 	<version>2.0</version>
 </metadata>

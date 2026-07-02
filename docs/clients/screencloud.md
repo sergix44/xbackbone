@@ -13,7 +13,7 @@ straight from a link — no manual file editing.
 3. On the **ScreenCloud** card, click **Copy install link**.
 4. In ScreenCloud, open the uploader/plugin settings and choose to **install a plugin from a URL**,
    then paste the link. ScreenCloud downloads and installs the XBackBone uploader.
-5. Select **XBackBone Uploader** as your active uploader.
+5. Select the newly installed uploader (named after your instance, e.g. **XBackBone Uploader**) as your active uploader.
 
 That's it. Capture a screenshot in ScreenCloud and it uploads to your instance, with the share link
 ready to copy.
@@ -24,6 +24,10 @@ The install link is a **signed URL** that serves a small plugin package (`main.p
 `settings.ui`, `icon.png`, and a `config.json`) pre-filled with your instance URL and a personal API
 token. The plugin uploads to the [`/api/v1/upload`](/clients/api#upload) endpoint with your token as
 a `Bearer` credential and reads the resulting share URL from the response.
+
+The plugin's name, ScreenCloud identifier, and Python class are all derived from your instance's
+`APP_NAME`. This means each XBackBone instance generates its own distinct plugin, so you can install
+uploaders from several instances in ScreenCloud at once without one overwriting another.
 
 The token is granted the `resource:upload` and `resource:delete`
 [abilities](/clients/api#authentication). You can review or change the token and host later from the

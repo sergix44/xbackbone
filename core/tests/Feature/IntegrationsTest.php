@@ -151,11 +151,50 @@ test('serves a working ScreenCloud plugin over a signed url', function () {
     }
 
     $config = json_decode($zip->getFromName('config.json'), true);
+    $mainScript = $zip->getFromName('main.py');
+    $metadata = $zip->getFromName('metadata.xml');
     $zip->close();
     @unlink($path);
 
     expect($config['host'])->toBe(rtrim(config('app.url'), '/'));
     expect($config['token'])->not->toBeEmpty();
+
+    expect($mainScript)->toContain('class XBackBoneUploader:');
+    expect($mainScript)->toContain("'User-Agent': 'XBackBone/Screencloud-client'");
+    expect($mainScript)->not->toContain('@@SC_');
+
+    expect($metadata)->toContain('<name>XBackBone Uploader 2.0</name>');
+    expect($metadata)->toContain('<shortname>xbackbone</shortname>');
+    expect($metadata)->toContain('<className>XBackBoneUploader</className>');
+    expect($metadata)->not->toContain('@@SC_');
+});
+
+test('derives the ScreenCloud plugin name and class from the instance app name', function () {
+    config(['app.name' => "Acme Photo's Co."]);
+
+    $user = User::factory()->create();
+
+    $content = $this->get(URL::signedRoute('integrations.screencloud', ['user' => $user->id]))
+        ->assertOk()
+        ->getContent();
+
+    $path = tempnam(sys_get_temp_dir(), 'sctest');
+    file_put_contents($path, $content);
+
+    $zip = new ZipArchive;
+    expect($zip->open($path))->toBeTrue();
+
+    $mainScript = $zip->getFromName('main.py');
+    $metadata = $zip->getFromName('metadata.xml');
+    $zip->close();
+    @unlink($path);
+
+    expect($mainScript)->toContain('class AcmePhotosCoUploader:');
+    expect($mainScript)->toContain("'User-Agent': 'Acme Photo\\'s Co./Screencloud-client'");
+
+    expect($metadata)->toContain('<shortname>acmephotosco</shortname>');
+    expect($metadata)->toContain('<className>AcmePhotosCoUploader</className>');
+    expect($metadata)->toContain('<name>Acme Photo&apos;s Co. Uploader 2.0</name>');
 });
 
 test('issues a ScreenCloud token when the plugin is fetched', function () {
