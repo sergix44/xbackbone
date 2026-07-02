@@ -24,7 +24,8 @@
         "sergix44/imagezen": "^0.2.2",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-query-builder": "^6.3",
-        "sqids/sqids": "^0.4.1"
+        "sqids/sqids": "^0.4.1",
+        "ext-zip": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

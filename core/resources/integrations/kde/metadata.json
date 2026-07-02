@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Id": "xbackbone",
+        "Name": "Upload to @@APP_NAME@@",
+        "Description": "Upload files to @@APP_NAME@@",
+        "Icon": "xbackbone",
+        "Category": "Utilities",
+        "License": "Apache-2.0"
+    },
+    "X-Purpose-ActionDisplay": "Upload to @@APP_NAME@@",
+    "X-Purpose-PluginTypes": [
+        "Export"
+    ]
+}

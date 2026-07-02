@@ -20,6 +20,7 @@ test('integrations page renders all available integrations', function () {
         ->assertSee('https://screencloud.net')
         ->assertSee('https://apps.kde.org/spectacle/')
         ->assertSee('Copy install link')
+        ->assertSee('Download package')
         ->assertDontSee('Linux Desktop')
         ->assertDontSee('@js(');
 });
@@ -122,6 +123,56 @@ test('issues a CLI token to the user', function () {
 
 test('CLI script download requires authentication', function () {
     $this->get(route('integrations.cli'))
+        ->assertRedirect(route('login'));
+});
+
+test('downloads a working, self-contained KDE Share installer', function () {
+    $user = User::factory()->create();
+
+    $script = $this->actingAs($user)
+        ->get(route('integrations.kde'))
+        ->assertOk()
+        ->assertDownload('xbackbone-kde-install.sh')
+        ->getContent();
+
+    // Self-contained: shebang plus the embedded metadata, Python uploader and icons.
+    expect($script)->toContain('#!/usr/bin/env bash');
+    expect($script)->toContain('kpackage/Purpose/xbackbone');
+    expect($script)->toContain('"Name": "Upload to XBackBone"');
+    expect($script)->toContain('X-Purpose-PluginTypes');
+    expect($script)->toContain('/api/v1/upload');
+    expect($script)->toContain('def run_purpose_job');
+    expect($script)->toContain(base64_encode(file_get_contents(resource_path('integrations/kde/icons/xbackbone-32.png'))));
+
+    // Credentials baked in; no leftover template markers.
+    expect($script)->toContain(rtrim(config('app.url'), '/'));
+    expect($script)->not->toContain('@@');
+});
+
+test('derives the KDE installer menu name from the instance app name', function () {
+    config(['app.name' => "Acme Photo's Co."]);
+
+    $user = User::factory()->create();
+
+    $script = $this->actingAs($user)
+        ->get(route('integrations.kde'))
+        ->assertOk()
+        ->getContent();
+
+    expect($script)->toContain('"Name": "Upload to Acme Photo\'s Co."');
+    expect($script)->toContain('"X-Purpose-ActionDisplay": "Upload to Acme Photo\'s Co."');
+});
+
+test('issues a KDE token when the plugin is downloaded', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->get(route('integrations.kde'))->assertOk();
+
+    expect($user->tokens()->where('name', 'like', 'KDE-%')->count())->toBe(1);
+});
+
+test('KDE plugin download requires authentication', function () {
+    $this->get(route('integrations.kde'))
         ->assertRedirect(route('login'));
 });
 

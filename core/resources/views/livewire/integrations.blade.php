@@ -31,12 +31,19 @@
                     'link' => 'https://screencloud.net',
                     'copy' => \Illuminate\Support\Facades\URL::signedRoute('integrations.screencloud', ['user' => auth()->id()]),
                 ],
+            ],
+        ],
+        [
+            'label' => 'System integrations',
+            'hint' => 'Extend your desktop experience with seamless integration.',
+            'items' => [
                 [
-                    'name' => 'Spectacle',
+                    'name' => 'KDE',
                     'icon' => 'si.kde',
-                    'platforms' => ['Linux', 'KDE'],
-                    'description' => "KDE's built-in screenshot utility. An upload script with native KDE desktop integration for one-click sharing.",
-                    'action' => 'Download script',
+                    'platforms' => ['Linux'],
+                    'description' => "A Purpose plugin that adds an upload entry to the KDE Share menu in Spectacle, Dolphin and other apps.",
+                    'action' => 'Download package',
+                    'route' => route('integrations.kde'),
                     'link' => 'https://apps.kde.org/spectacle/',
                 ],
             ],

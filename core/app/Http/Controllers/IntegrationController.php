@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Integration\GenerateCliScript;
+use App\Actions\Integration\GenerateKdePlugin;
 use App\Actions\Integration\GenerateScreenCloudPlugin;
 use App\Actions\Integration\GenerateSharexConfig;
 use App\Models\User;
@@ -52,6 +53,18 @@ class IntegrationController extends Controller
         return response($script, 200, [
             'Content-Type' => 'text/x-shellscript; charset=utf-8',
             'Content-Disposition' => 'attachment; filename="xbb"',
+        ]);
+    }
+
+    /**
+     * Download the self-contained KDE "Share" (Purpose) plugin installer, pre-filled with the
+     * user's token, so the instance shows up under Share in Spectacle, Dolphin and other KDE apps.
+     */
+    public function kde(GenerateKdePlugin $generateKdePlugin): Response
+    {
+        return response($generateKdePlugin(auth()->user()), 200, [
+            'Content-Type' => 'text/x-shellscript; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="xbackbone-kde-install.sh"',
         ]);
     }
 

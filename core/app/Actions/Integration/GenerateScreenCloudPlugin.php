@@ -19,7 +19,7 @@ class GenerateScreenCloudPlugin
      */
     public function __invoke(User $user): string
     {
-        $token = $user->createToken('ScreenCloud-'.now()->format('Y-m-d_H:i:s'), ['resource:upload', 'resource:delete'])->plainTextToken;
+        $token = $user->createToken('ScreenCloud-'.now()->format('Y-m-d_H:i:s'), ['resource:upload'])->plainTextToken;
 
         $appName = config('app.name');
         $className = $this->classNameFor($appName);

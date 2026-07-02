@@ -1,27 +1,63 @@
-# Spectacle (KDE)
+# Spectacle & KDE Share menu
 
-<Badge type="tip" text="Linux" /> <Badge type="tip" text="KDE" /> <Badge type="warning" text="In development" />
+<Badge type="tip" text="Linux" /> <Badge type="tip" text="KDE" />
 
-::: warning In development
-The Spectacle / KDE integration is **not available yet**. This page describes how it will work
-once released. In the meantime you can upload to XBackBone from any tool using the
-[REST API](/clients/api) or the [CLI](/clients/cli-scripts) approach.
-:::
+XBackBone integrates with KDE's [Purpose](https://api.kde.org/frameworks/purpose/html/index.html)
+framework, which powers the **Share** menu across KDE. Once installed, an **Upload to
+XBackBone** entry appears in:
 
-[Spectacle](https://apps.kde.org/spectacle/) is KDE's built-in screenshot utility. The XBackBone
-integration will provide an upload script with native **KDE** desktop integration, so you can grab
-a screenshot and share it in one step.
+- **[Spectacle](https://apps.kde.org/spectacle/)** — after a capture, under **Export → Share**;
+- **Dolphin** — right-click a file → **Share**;
+- any other KDE app that offers the Share menu.
 
-## What it will do
+Picking it uploads the file to your instance and copies the share link to your clipboard.
 
-Once released, you'll download a script from the **Integrations** area, pre-filled with your
-instance URL and a personal upload token. Wiring it to a Spectacle "share" action or a custom
-shortcut means each capture is uploaded to XBackBone and the share link is copied to your clipboard
-automatically.
+The plugin is a small Python script (no compilation, no extra packages — just Python 3) and
+shares its configuration with the [CLI uploader](/clients/cli-scripts).
 
-## In the meantime
+## Install
 
-Until the dedicated script ships, you can upload from the command line today — see the
-[CLI](/clients/cli-scripts) page for a ready-to-adapt `curl` snippet, or the full
-[REST API](/clients/api) reference. You can bind that command to a Spectacle script or a KDE custom
-shortcut to approximate the final experience.
+1. Open the **Integrations** page in your XBackBone instance and click **Download package**
+   on the *KDE* card. You get a single, self-contained installer script, pre-filled with
+   your instance URL and a personal upload token.
+2. Run it:
+
+   ```sh
+   bash xbackbone-kde-install.sh
+   ```
+
+3. **Restart Spectacle** (and Dolphin). Purpose rescans its plugins on startup.
+
+The installer embeds the plugin, the Python uploader and the icons — nothing else to
+download. It writes your credentials to `~/.config/xbackbone/config` (`XBB_URL` /
+`XBB_TOKEN`) — the same file the [CLI uploader](/clients/cli-scripts) uses, so both
+integrations share one configuration. An existing config is backed up to `config.bak`.
+
+## Use it
+
+- **Spectacle:** take a screenshot, then choose **Export → Share → Upload to XBackBone**.
+- **Dolphin:** right-click any file → **Share → Upload to XBackBone**.
+
+The resulting link is copied to your clipboard (when `wl-copy` or `xclip` is available).
+
+## Uninstall
+
+Re-run the installer with `--uninstall`:
+
+```sh
+bash xbackbone-kde-install.sh --uninstall
+```
+
+This removes the plugin and its icons; your `~/.config/xbackbone/config` is left untouched.
+
+## Troubleshooting
+
+- **The entry doesn't appear:** restart the KDE app so Purpose rescans, and make sure
+  `~/.local/share/kpackage/Purpose/xbackbone/contents/code/main.py` is executable.
+- **"XBackBone is not configured":** re-run the installer, or create
+  `~/.config/xbackbone/config` with `XBB_URL` and `XBB_TOKEN` lines.
+- **Debug an upload directly:**
+  `~/.local/share/kpackage/Purpose/xbackbone/contents/code/main.py --selftest /path/to/file`
+  uploads a file and prints the URL, bypassing the Share menu.
+- **Check the logs:** every upload is logged to
+  `~/.local/state/xbackbone/kde-plugin.log` (successes, errors, and the target URL).
