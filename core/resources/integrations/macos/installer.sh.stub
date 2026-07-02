@@ -68,8 +68,13 @@ XBB_SHARE_EOF
     chmod +x "$SHARE_BIN"
 
     # 3. The Shortcut: decode, convert to a binary plist, then sign so it can be imported.
-    local tmp
-    tmp="$(mktemp -t xbackbone-shortcut)"
+    #    `shortcuts sign` dispatches on the input's file extension and rejects anything not
+    #    named *.shortcut (or *.wflow) with "isn't in the correct format" — the plist content
+    #    is irrelevant. BSD mktemp can't set a suffix, so stage the file inside a temp dir under
+    #    a fixed .shortcut name rather than passing a bare mktemp path.
+    local tmpdir tmp
+    tmpdir="$(mktemp -d -t xbackbone-shortcut)"
+    tmp="$tmpdir/shortcut.shortcut"
     printf '%s' "@@SHORTCUT_PLIST_B64@@" | base64 -D >"$tmp"
     plutil -convert binary1 "$tmp" 2>/dev/null || true
 
@@ -82,7 +87,7 @@ XBB_SHARE_EOF
         echo "If the import is blocked, open the Shortcuts app → Settings → Advanced and enable"
         echo "\"Allow Untrusted Shortcuts\", then re-run this installer."
     fi
-    rm -f "$tmp"
+    rm -rf "$tmpdir"
 
     open "$SHORTCUT_FILE"
 

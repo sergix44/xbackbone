@@ -113,7 +113,8 @@ test('downloads a working ishare uploader config', function () {
 
     expect($config['requestURL'])->toBe(route('api.v1.upload'));
     expect($config['fileFormName'])->toBe('file');
-    expect($config['requestBodyType'])->toBe('multipartFormData');
+    // requestBodyType is omitted deliberately — ishare defaults it to multipartFormData.
+    expect($config)->not->toHaveKey('requestBodyType');
     expect($config['headers']['Accept'])->toBe('application/json');
     expect($config['headers']['Authorization'])->toStartWith('Bearer ');
     expect($config['responseURL'])->toBe('{{data.preview_ext_url}}');
@@ -242,6 +243,13 @@ test('downloads a working, self-contained macOS Share installer', function () {
     expect($script)->toContain('shortcuts sign --mode anyone');
     expect($script)->toContain('Allow Untrusted Shortcuts');
     expect($script)->toContain('plutil -convert binary1');
+
+    // Regression: `shortcuts sign` rejects any input not named *.shortcut ("isn't in the correct
+    // format"), so the file handed to it must carry that extension — staged in a temp dir since
+    // BSD mktemp can't set a suffix. A bare `mktemp` path (no extension) silently breaks signing.
+    expect($script)->toContain('mktemp -d -t xbackbone-shortcut');
+    expect($script)->toContain('$tmpdir/shortcut.shortcut');
+    expect($script)->toContain('shortcuts sign --mode anyone --input "$tmp"');
     expect($script)->toContain('Upload to XBackBone');
     expect($script)->toContain(base64_encode(file_get_contents(resource_path('integrations/xbb'))));
 
