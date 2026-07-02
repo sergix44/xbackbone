@@ -29,9 +29,9 @@ The plugin's name, ScreenCloud identifier, and Python class are all derived from
 `APP_NAME`. This means each XBackBone instance generates its own distinct plugin, so you can install
 uploaders from several instances in ScreenCloud at once without one overwriting another.
 
-The token is granted the `resource:upload` and `resource:delete`
-[abilities](/clients/api#authentication). You can review or change the token and host later from the
-plugin's **Upload Settings** dialog inside ScreenCloud.
+The token is granted only the `resource:upload` [ability](/clients/api#authentication) — enough to
+upload new resources; the ScreenCloud plugin has no built-in way to delete them. You can review or
+change the token and host later from the plugin's **Upload Settings** dialog inside ScreenCloud.
 
 ::: warning Keep your install link private
 The link lets anyone who has it install a plugin carrying an upload token for your account — treat

@@ -28,8 +28,9 @@ versions, update ishare first (a reinstall may be needed after the 2.0.0 breakin
 The generated `.iscu` is a standard ishare custom uploader, pre-filled with your instance URL and a
 personal API token. It targets the [`/api/v1/upload`](/clients/api#upload) endpoint as a
 `multipart/form-data` upload, and builds the result and deletion links from the response using
-ishare's `{{property}}` placeholders — the share link from `{{data.preview_ext_url}}` and the
-per-upload deletion link from `{{data.deletion_url}}`.
+ishare's <code v-pre>{{property}}</code> placeholders — the share link from
+<code v-pre>{{data.preview_ext_url}}</code> and the per-upload deletion link from
+<code v-pre>{{data.deletion_url}}</code>.
 
 On download, XBackBone mints a token granted the `resource:upload` and `resource:delete`
 [abilities](/clients/api#authentication) — enough to upload new resources and remove ones you

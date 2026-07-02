@@ -1,6 +1,6 @@
 # macOS Share sheet
 
-<Badge type="tip" text="macOS" /> <Badge type="warning" text="In development" />
+<Badge type="tip" text="macOS" /> <Badge type="tip" text="Available" />
 
 XBackBone integrates with the macOS **Share sheet** through a
 [Shortcut](https://support.apple.com/guide/shortcuts-mac/welcome/mac) (Comandi Rapidi). Once
@@ -71,3 +71,11 @@ shortcut, so also delete the **Upload to XBackBone** shortcut in the Shortcuts a
 - **Debug an upload directly:**
   `~/Library/Application\ Support/XBackBone/xbb /path/to/file` uploads a file and prints the URL,
   bypassing the Share sheet.
+
+## See also
+
+- [ishare](/clients/ishare) — a dedicated macOS screen capture app, if you'd rather have a full
+  uploader UI than a Share sheet entry.
+- [CLI script](/clients/cli-scripts) — the `xbb` uploader this shortcut runs under the hood, and
+  the config the two share.
+- [REST API](/clients/api) — the endpoint the shortcut uploads to, for use from any tool.

@@ -1,6 +1,6 @@
 # Spectacle & KDE Share menu
 
-<Badge type="tip" text="Linux" /> <Badge type="tip" text="KDE" />
+<Badge type="tip" text="Linux" /> <Badge type="tip" text="KDE" /> <Badge type="tip" text="Available" />
 
 XBackBone integrates with KDE's [Purpose](https://api.kde.org/frameworks/purpose/html/index.html)
 framework, which powers the **Share** menu across KDE. Once installed, an **Upload to
@@ -61,3 +61,9 @@ This removes the plugin and its icons; your `~/.config/xbackbone/config` is left
   uploads a file and prints the URL, bypassing the Share menu.
 - **Check the logs:** every upload is logged to
   `~/.local/state/xbackbone/kde-plugin.log` (successes, errors, and the target URL).
+
+## See also
+
+- [CLI script](/clients/cli-scripts) — the `xbb` uploader this plugin runs under the hood, and
+  the config the two share.
+- [REST API](/clients/api) — the endpoint the plugin uploads to, for use from any tool.
