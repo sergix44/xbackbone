@@ -2,6 +2,7 @@
 
 namespace App\Actions\Resource;
 
+use App\Events\Resource\ResourceSettingsUpdated;
 use App\Models\Resource;
 use Illuminate\Support\Carbon;
 
@@ -33,6 +34,8 @@ class UpdateResourceSettings
         }
 
         $resource->save();
+
+        event(new ResourceSettingsUpdated($resource, $resource->user));
 
         return $resource;
     }

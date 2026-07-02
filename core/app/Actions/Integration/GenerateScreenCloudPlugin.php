@@ -2,6 +2,7 @@
 
 namespace App\Actions\Integration;
 
+use App\Actions\Token\IssueIntegrationToken;
 use App\Models\User;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -9,6 +10,8 @@ use ZipArchive;
 
 class GenerateScreenCloudPlugin
 {
+    public function __construct(private IssueIntegrationToken $issueIntegrationToken) {}
+
     /**
      * Build a ScreenCloud uploader plugin package (ZIP) for the given user, with a
      * freshly issued personal token and the instance URL baked into its config.json.
@@ -19,7 +22,7 @@ class GenerateScreenCloudPlugin
      */
     public function __invoke(User $user): string
     {
-        $token = $user->createToken('ScreenCloud-'.now()->format('Y-m-d_H:i:s'), ['resource:upload'])->plainTextToken;
+        $token = ($this->issueIntegrationToken)($user, 'ScreenCloud-'.now()->format('Y-m-d_H:i:s'), ['resource:upload'])->plainTextToken;
 
         $appName = config('app.name');
         $className = $this->classNameFor($appName);

@@ -70,7 +70,7 @@ class ResourceController extends Controller
      */
     public function delete(Resource $resource, DeleteResource $deleteResource): RedirectResponse
     {
-        $deleteResource($resource);
+        $deleteResource($resource, auth()->user());
 
         return redirect()->route('dashboard');
     }

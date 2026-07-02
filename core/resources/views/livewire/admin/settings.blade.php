@@ -4,6 +4,7 @@
             <x-menu-item title="General Settings" icon="o-cog-6-tooth" :link="route('admin.settings')" exact/>
             <x-menu-item title="User Management" icon="o-users" :link="route('admin.settings', ['tab' => 'users'])"/>
             <x-menu-item title="Statistics" icon="o-chart-bar" :link="route('admin.settings', ['tab' => 'statistics'])"/>
+            <x-menu-item title="Activity Log" icon="o-clipboard-document-list" :link="route('admin.settings', ['tab' => 'activity'])"/>
             <x-menu-item title="Updates" icon="o-arrow-up-circle" :link="route('admin.settings', ['tab' => 'updates'])"/>
         </x-menu>
     </div>
@@ -12,6 +13,8 @@
             <livewire:admin.user-management/>
         @elseif($tab === 'updates')
             <livewire:admin.updates/>
+        @elseif($tab === 'activity')
+            <livewire:activity-log/>
         @elseif($tab === 'statistics')
             @php
                 $breakdownHeaders = [

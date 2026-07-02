@@ -2,11 +2,14 @@
 
 namespace App\Actions\Integration;
 
+use App\Actions\Token\IssueIntegrationToken;
 use App\Models\User;
 use Illuminate\Support\Str;
 
 class GenerateCliScript
 {
+    public function __construct(private IssueIntegrationToken $issueIntegrationToken) {}
+
     /**
      * Build a ready-to-run CLI uploader script for the given user, with the instance
      * URL and a freshly issued personal token baked into its configuration sentinels.
@@ -14,7 +17,7 @@ class GenerateCliScript
     public function __invoke(User $user): string
     {
         $now = now()->format('Y-m-d_H:i:s');
-        $token = $user->createToken("CLI-$now", ['resource:upload', 'resource:delete'])->plainTextToken;
+        $token = ($this->issueIntegrationToken)($user, "CLI-$now", ['resource:upload', 'resource:delete'])->plainTextToken;
 
         $template = file_get_contents(resource_path('integrations/xbb'));
 

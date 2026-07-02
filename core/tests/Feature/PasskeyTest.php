@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
 use Laravel\Passkeys\Contracts\PasskeyUser;
+use Laravel\Passkeys\Events\PasskeyRegistered;
 use Laravel\Passkeys\Passkey;
 use Livewire\Livewire;
 
@@ -81,6 +82,12 @@ test('a user can delete their own passkey', function () {
         ->assertHasNoErrors();
 
     $this->assertDatabaseMissing('passkeys', ['id' => $passkey->id]);
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'passkey.removed',
+        'subject_id' => $passkey->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('a user cannot delete a passkey belonging to someone else', function () {
@@ -94,4 +101,18 @@ test('a user cannot delete a passkey belonging to someone else', function () {
         ->call('deletePasskey', $passkey->id);
 
     $this->assertDatabaseHas('passkeys', ['id' => $passkey->id]);
+    $this->assertDatabaseMissing('activity_log', ['description' => 'passkey.removed']);
+});
+
+test('registering a passkey logs passkey.added', function () {
+    $user = User::factory()->create();
+    $passkey = makePasskey($user);
+
+    event(new PasskeyRegistered($user, $passkey));
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'passkey.added',
+        'subject_id' => $passkey->id,
+        'causer_id' => $user->id,
+    ]);
 });

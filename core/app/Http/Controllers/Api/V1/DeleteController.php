@@ -16,7 +16,7 @@ class DeleteController extends Controller
             403
         );
 
-        $deleteResource($resource);
+        $deleteResource($resource, auth()->user());
 
         return response()->noContent();
     }

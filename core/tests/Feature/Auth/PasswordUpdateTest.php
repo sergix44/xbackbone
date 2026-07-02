@@ -19,6 +19,12 @@ test('password can be updated', function () {
         ->assertHasNoErrors();
 
     expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'user.password_changed',
+        'subject_id' => $user->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('correct password must be provided to update password', function () {

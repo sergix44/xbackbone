@@ -2,10 +2,13 @@
 
 namespace App\Actions\Integration;
 
+use App\Actions\Token\IssueIntegrationToken;
 use App\Models\User;
 
 class GenerateIshareConfig
 {
+    public function __construct(private IssueIntegrationToken $issueIntegrationToken) {}
+
     /**
      * Build an ishare custom-uploader (.iscu) configuration, per the spec 2.0.0+.
      *
@@ -16,7 +19,7 @@ class GenerateIshareConfig
      */
     public function __invoke(User $user): array
     {
-        $token = $user->createToken('ishare-'.now()->format('Y-m-d_H:i:s'), ['resource:upload', 'resource:delete'])->plainTextToken;
+        $token = ($this->issueIntegrationToken)($user, 'ishare-'.now()->format('Y-m-d_H:i:s'), ['resource:upload', 'resource:delete'])->plainTextToken;
 
         return [
             'name' => config('app.name').' - '.$user->name,

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Admin;
 
+use App\Events\User\UserCreated;
 use App\Models\Properties\UserStatus;
 use App\Models\User;
 
@@ -19,7 +20,7 @@ class CreateUser
      *
      * @param  array{name: string, email: string, password: string, is_admin: bool, status: UserStatus, quota: int}  $attributes
      */
-    public function __invoke(array $attributes): User
+    public function __invoke(array $attributes, ?User $causer = null): User
     {
         $user = new User;
 
@@ -32,6 +33,8 @@ class CreateUser
         $user->email_verified_at = now();
 
         $user->save();
+
+        event(new UserCreated($user, $causer));
 
         return $user;
     }

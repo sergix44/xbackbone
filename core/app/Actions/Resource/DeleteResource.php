@@ -2,13 +2,15 @@
 
 namespace App\Actions\Resource;
 
+use App\Events\Resource\ResourceDeleted;
 use App\Models\Resource;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DeleteResource
 {
-    public function __invoke(Resource $resource): void
+    public function __invoke(Resource $resource, ?User $causer = null): void
     {
         DB::transaction(function () use ($resource) {
             // Files are content-addressed and shared between duplicates: only remove the
@@ -23,6 +25,8 @@ class DeleteResource
 
             $resource->delete();
         });
+
+        event(new ResourceDeleted($resource, $causer));
     }
 
     private function isLastReference(Resource $resource): bool

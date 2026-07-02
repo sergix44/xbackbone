@@ -2,10 +2,13 @@
 
 namespace App\Actions\Integration;
 
+use App\Actions\Token\IssueIntegrationToken;
 use App\Models\User;
 
 class GenerateMacosShortcut
 {
+    public function __construct(private IssueIntegrationToken $issueIntegrationToken) {}
+
     /**
      * Build a self-contained macOS "Share" installer for the given user.
      *
@@ -16,7 +19,7 @@ class GenerateMacosShortcut
      */
     public function __invoke(User $user): string
     {
-        $token = $user->createToken('macOS-'.now()->format('Y-m-d_H:i:s'), ['resource:upload', 'resource:delete'])->plainTextToken;
+        $token = ($this->issueIntegrationToken)($user, 'macOS-'.now()->format('Y-m-d_H:i:s'), ['resource:upload', 'resource:delete'])->plainTextToken;
 
         $base = resource_path('integrations/macos');
 

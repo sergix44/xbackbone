@@ -4,6 +4,7 @@
             <x-menu-item title="Profile" icon="o-user-circle" :link="route('user.profile')" exact/>
             <x-menu-item title="Tokens" icon="o-command-line" :link="route('user.profile', ['tab' => 'tokens'])"/>
             <x-menu-item title="Passkeys" icon="o-finger-print" :link="route('user.profile', ['tab' => 'passkeys'])"/>
+            <x-menu-item title="Activity" icon="o-clock" :link="route('user.profile', ['tab' => 'activity'])"/>
             <x-menu-item title="Export Data" icon="o-arrow-right-start-on-rectangle" :link="route('user.profile', ['tab' => 'export'])"/>
             <x-menu-item title="Delete Account" icon="o-user-minus" class="text-red-500" :link="route('user.profile', ['tab' => 'delete'])"/>
         </x-menu>
@@ -80,6 +81,8 @@
                     </div>
                 </div>
             </div>
+        @elseif($tab === 'activity')
+            <livewire:activity-log :causer-id="$user->id"/>
         @elseif($tab === 'export')
             <div class="card bg-base-100">
                 <div class="card-body">

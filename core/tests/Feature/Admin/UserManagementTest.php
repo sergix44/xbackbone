@@ -52,7 +52,8 @@ test('the list can be searched by name or email', function () {
 });
 
 test('an admin can create a user with role, status and quota', function () {
-    $this->actingAs(User::factory()->admin()->create());
+    $admin = User::factory()->admin()->create();
+    $this->actingAs($admin);
 
     Livewire::test(UserManagement::class)
         ->call('openCreate')
@@ -75,6 +76,12 @@ test('an admin can create a user with role, status and quota', function () {
     expect($user->quota)->toBe(100 * 1024 * 1024);
     expect($user->email_verified_at)->not->toBeNull();
     expect(Hash::check('password123', $user->password))->toBeTrue();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'user.created',
+        'subject_id' => $user->id,
+        'causer_id' => $admin->id,
+    ]);
 });
 
 test('an unlimited quota is stored as -1', function () {
@@ -141,6 +148,12 @@ test('an admin can edit a user without changing the password', function () {
     expect($user->email)->toBe('updated@example.com');
     expect($user->status)->toBe(UserStatus::DISABLED);
     expect($user->password)->toBe($originalPassword);
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'user.updated',
+        'subject_id' => $user->id,
+        'causer_id' => $admin->id,
+    ]);
 });
 
 test('editing a user keeps their own email valid', function () {
@@ -171,6 +184,12 @@ test('an admin can delete a user and their resources', function () {
 
     expect(User::query()->find($victim->id))->toBeNull();
     expect(Resource::query()->where('user_id', $victim->id)->count())->toBe(0);
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'user.deleted',
+        'subject_id' => $victim->id,
+        'causer_id' => $admin->id,
+    ]);
 });
 
 test('an admin cannot delete their own account from the panel', function () {

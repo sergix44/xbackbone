@@ -136,8 +136,7 @@ class UserManagement extends Component
         ];
 
         if ($this->editingId === null) {
-            $user = $createUser($attributes);
-            $event = 'user.created';
+            $user = $createUser($attributes, auth()->user());
             $message = __('User created successfully!');
         } else {
             $user = User::query()->findOrFail($this->editingId);
@@ -149,15 +148,9 @@ class UserManagement extends Component
                 return;
             }
 
-            $user = $updateUser($user, $attributes);
-            $event = 'user.updated';
+            $user = $updateUser($user, $attributes, auth()->user());
             $message = __('User updated successfully!');
         }
-
-        activity()
-            ->performedOn($user)
-            ->causedBy(auth()->user())
-            ->log($event);
 
         $this->showUserModal = false;
         unset($this->users);
@@ -193,12 +186,7 @@ class UserManagement extends Component
             return;
         }
 
-        $deleteUserAccount($user);
-
-        activity()
-            ->performedOn($user)
-            ->causedBy(auth()->user())
-            ->log('user.deleted');
+        $deleteUserAccount($user, auth()->user());
 
         $this->confirmingDelete = false;
         $this->deletingId = null;

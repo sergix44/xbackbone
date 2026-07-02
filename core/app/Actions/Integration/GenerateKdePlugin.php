@@ -2,10 +2,13 @@
 
 namespace App\Actions\Integration;
 
+use App\Actions\Token\IssueIntegrationToken;
 use App\Models\User;
 
 class GenerateKdePlugin
 {
+    public function __construct(private IssueIntegrationToken $issueIntegrationToken) {}
+
     /**
      * Build a self-contained KDE "Share" (Purpose) plugin installer for the given user.
      *
@@ -16,7 +19,7 @@ class GenerateKdePlugin
      */
     public function __invoke(User $user): string
     {
-        $token = $user->createToken('KDE-'.now()->format('Y-m-d_H:i:s'), ['resource:upload'])->plainTextToken;
+        $token = ($this->issueIntegrationToken)($user, 'KDE-'.now()->format('Y-m-d_H:i:s'), ['resource:upload'])->plainTextToken;
 
         $base = resource_path('integrations/kde');
 

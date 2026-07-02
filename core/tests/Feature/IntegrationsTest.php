@@ -62,7 +62,14 @@ test('issues a ShareX token to the user', function () {
 
     $this->actingAs($user)->get(route('integrations.sharex'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', '%sharex%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', '%sharex%')->first();
+    expect($token)->not->toBeNull();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('ShareX config download requires authentication', function () {
@@ -93,7 +100,14 @@ test('issues a Xerahs token to the user', function () {
 
     $this->actingAs($user)->get(route('integrations.xerahs'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', 'Xerahs-%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', 'Xerahs-%')->first();
+    expect($token)->not->toBeNull();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('Xerahs config download requires authentication', function () {
@@ -142,7 +156,14 @@ test('issues an ishare token to the user', function () {
 
     $this->actingAs($user)->get(route('integrations.ishare'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', 'ishare-%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', 'ishare-%')->first();
+    expect($token)->not->toBeNull();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('ishare config download requires authentication', function () {
@@ -170,7 +191,14 @@ test('issues a CLI token to the user', function () {
 
     $this->actingAs($user)->get(route('integrations.cli'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', 'CLI-%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', 'CLI-%')->first();
+    expect($token)->not->toBeNull();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('CLI script download requires authentication', function () {
@@ -220,7 +248,14 @@ test('issues a KDE token when the plugin is downloaded', function () {
 
     $this->actingAs($user)->get(route('integrations.kde'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', 'KDE-%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', 'KDE-%')->first();
+    expect($token)->not->toBeNull();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('KDE plugin download requires authentication', function () {
@@ -276,7 +311,14 @@ test('issues a macOS token when the installer is downloaded', function () {
 
     $this->actingAs($user)->get(route('integrations.macos'))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', 'macOS-%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', 'macOS-%')->first();
+    expect($token)->not->toBeNull();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('macOS installer download requires authentication', function () {
@@ -361,5 +403,13 @@ test('issues a ScreenCloud token when the plugin is fetched', function () {
 
     $this->get(URL::signedRoute('integrations.screencloud', ['user' => $user->id]))->assertOk();
 
-    expect($user->tokens()->where('name', 'like', 'ScreenCloud-%')->count())->toBe(1);
+    $token = $user->tokens()->where('name', 'like', 'ScreenCloud-%')->first();
+    expect($token)->not->toBeNull();
+
+    // Anonymous, signed route: the causer is the route-bound user, not auth()->user().
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'token.created',
+        'subject_id' => $token->id,
+        'causer_id' => $user->id,
+    ]);
 });

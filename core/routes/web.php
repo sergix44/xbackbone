@@ -38,11 +38,11 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
     Route::get('integrations/kde', [IntegrationController::class, 'kde'])->name('integrations.kde');
     Route::get('integrations/macos', [IntegrationController::class, 'macos'])->name('integrations.macos');
     Route::livewire('settings/{tab?}', Settings::class)->name('admin.settings')
-        ->whereIn('tab', ['general', 'users', 'statistics', 'updates'])
+        ->whereIn('tab', ['general', 'users', 'statistics', 'activity', 'updates'])
         ->can('administrate');
     Route::get('profile/export/download', [ExportController::class, 'download'])->name('user.profile.export');
     Route::livewire('profile/{tab?}', Profile::class)->name('user.profile')
-        ->whereIn('tab', ['profile', 'tokens', 'passkeys', 'export', 'delete']);
+        ->whereIn('tab', ['profile', 'tokens', 'passkeys', 'activity', 'export', 'delete']);
 });
 
 Route::get('delete/{resource:code}', [ResourceController::class, 'delete'])->name('resource.delete')->middleware('signed');

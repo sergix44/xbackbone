@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Actions\Token\RevokeToken;
 use App\Actions\User\DeleteUserAccount;
 use App\Models\Properties\ResourceType;
 use App\Models\User;
@@ -11,6 +12,7 @@ use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Laravel\Passkeys\Actions\DeletePasskey;
 use Laravel\Passkeys\Passkey;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -111,7 +113,7 @@ class Profile extends Component
         $this->success(__('A new verification link has been sent to your email address.'));
     }
 
-    public function revokeSelectedTokens(): void
+    public function revokeSelectedTokens(RevokeToken $revokeToken): void
     {
         if (empty($this->selectedTokens)) {
             $this->warning(__('No tokens selected.'));
@@ -121,9 +123,7 @@ class Profile extends Component
 
         $this->user->tokens
             ->whereIn('id', $this->selectedTokens)
-            ->each(function ($token) {
-                $token->delete();
-            });
+            ->each(fn ($token) => $revokeToken($token, $this->user));
 
         $this->user = $this->user->refresh();
         $this->selectedTokens = [];
@@ -145,9 +145,13 @@ class Profile extends Component
      * Delete one of the current user's passkeys. Scoping the query through the
      * relation guarantees a user can only ever delete their own passkey.
      */
-    public function deletePasskey(int $passkeyId): void
+    public function deletePasskey(int $passkeyId, DeletePasskey $deletePasskey): void
     {
-        $this->user->passkeys()->whereKey($passkeyId)->delete();
+        $passkey = $this->user->passkeys()->whereKey($passkeyId)->first();
+
+        if ($passkey) {
+            $deletePasskey($this->user, $passkey);
+        }
 
         unset($this->passkeys);
         $this->success(__('Passkey removed successfully!'));
@@ -209,7 +213,7 @@ class Profile extends Component
         Session::invalidate();
         Session::regenerateToken();
 
-        $deleteUserAccount($user);
+        $deleteUserAccount($user, $user);
 
         return $this->redirect(route('login'));
     }

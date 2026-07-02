@@ -33,6 +33,11 @@ test('new users can register', function () {
         ->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'auth.registered',
+        'causer_id' => User::where('email', 'test@example.com')->value('id'),
+    ]);
 });
 
 test('new users can not register with mismatched password confirmation', function () {

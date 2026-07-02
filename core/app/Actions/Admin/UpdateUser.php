@@ -2,6 +2,7 @@
 
 namespace App\Actions\Admin;
 
+use App\Events\User\UserUpdated;
 use App\Models\Properties\UserStatus;
 use App\Models\User;
 
@@ -16,7 +17,7 @@ class UpdateUser
      *
      * @param  array{name: string, email: string, password: ?string, is_admin: bool, status: UserStatus, quota: int}  $attributes
      */
-    public function __invoke(User $user, array $attributes): User
+    public function __invoke(User $user, array $attributes, ?User $causer = null): User
     {
         $user->name = $attributes['name'];
         $user->email = $attributes['email'];
@@ -29,6 +30,8 @@ class UpdateUser
         }
 
         $user->save();
+
+        event(new UserUpdated($user, $causer));
 
         return $user;
     }

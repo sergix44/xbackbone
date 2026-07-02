@@ -29,6 +29,12 @@ test('deleting the account removes the user, their files and their tokens', func
         ->and(Resource::find($resource->id))->toBeNull()
         ->and(PersonalAccessToken::count())->toBe(0);
     Storage::assertMissing($resource->storage_path);
+
+    $this->assertDatabaseHas('activity_log', [
+        'description' => 'user.deleted',
+        'subject_id' => $user->id,
+        'causer_id' => $user->id,
+    ]);
 });
 
 test('deleting the account keeps a file still referenced by another user', function () {

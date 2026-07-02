@@ -62,6 +62,12 @@ test('password can be reset with valid token', function () {
             ->assertRedirect('/login')
             ->assertSessionHas('status', 'Your password has been reset.');
 
+        $this->assertDatabaseHas('activity_log', [
+            'description' => 'user.password_changed',
+            'subject_id' => $user->id,
+            'causer_id' => $user->id,
+        ]);
+
         return true;
     });
 });

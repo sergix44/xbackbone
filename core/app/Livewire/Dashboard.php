@@ -132,11 +132,6 @@ class Dashboard extends Component
             return;
         }
 
-        activity()
-            ->performedOn($resource)
-            ->causedBy(auth()->user())
-            ->log('resource.uploaded');
-
         $this->success('Upload successful!', $resource->preview_ext_url);
 
         $file->delete();
@@ -165,11 +160,6 @@ class Dashboard extends Component
             return;
         }
 
-        activity()
-            ->performedOn($resource)
-            ->causedBy(auth()->user())
-            ->log('resource.uploaded');
-
         $this->showUploadDrawer = false;
 
         unset($this->resources);
@@ -190,11 +180,6 @@ class Dashboard extends Component
             name: $validated['linkName'] ?: null,
         );
 
-        activity()
-            ->performedOn($resource)
-            ->causedBy(auth()->user())
-            ->log('resource.uploaded');
-
         $this->reset('linkUrl', 'linkName');
         $this->showUploadDrawer = false;
 
@@ -214,11 +199,6 @@ class Dashboard extends Component
         }
 
         app(ToggleResourceVisibility::class)($resource);
-
-        activity()
-            ->performedOn($resource)
-            ->causedBy(auth()->user())
-            ->log($resource->is_private ? 'resource.hidden' : 'resource.published');
 
         unset($this->resources);
 
@@ -271,11 +251,6 @@ class Dashboard extends Component
             'remove_password' => $this->settingsRemovePassword,
         ]);
 
-        activity()
-            ->performedOn($resource)
-            ->causedBy(auth()->user())
-            ->log('resource.updated');
-
         $this->showSettingsModal = false;
 
         unset($this->resources);
@@ -299,12 +274,7 @@ class Dashboard extends Component
             return;
         }
 
-        app(DeleteResource::class)($resource);
-
-        activity()
-            ->performedOn($resource)
-            ->causedBy(auth()->user())
-            ->log('resource.deleted');
+        app(DeleteResource::class)($resource, auth()->user());
 
         $this->confirmingDelete = false;
         $this->deletingId = null;

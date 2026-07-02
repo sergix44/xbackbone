@@ -2,6 +2,7 @@
 
 namespace App\Actions\Resource;
 
+use App\Events\Resource\ResourceUploaded;
 use App\Exceptions\QuotaExceededException;
 use App\Jobs\GenerateResourcePreview;
 use App\Models\Properties\ResourceType;
@@ -42,7 +43,7 @@ class StoreResource
 
         $this->ensureWithinQuota($user, $incomingSize);
 
-        return DB::transaction(function () use ($user, $file, $name, $data, $mime, $fingerprint, $type, $isLink) {
+        $resource = DB::transaction(function () use ($user, $file, $name, $data, $mime, $fingerprint, $type, $isLink) {
             // Content-addressed deduplication: an existing resource with the same fingerprint
             // already has the physical file (and possibly a preview) stored.
             $existing = Resource::query()->where('fingerprint', $fingerprint)->first();
@@ -87,6 +88,10 @@ class StoreResource
 
             return $resource;
         });
+
+        event(new ResourceUploaded($resource, $user));
+
+        return $resource;
     }
 
     private function ensureWithinQuota(User $user, int $incomingSize): void
