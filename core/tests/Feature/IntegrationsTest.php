@@ -11,6 +11,7 @@ test('integrations page renders all available integrations', function () {
         ->assertSee('ShareX')
         ->assertSee('Xerahs')
         ->assertSee('ScreenCloud')
+        ->assertSee('ishare')
         ->assertSee('Spectacle')
         ->assertSee('macOS')
         ->assertSee('Capture apps')
@@ -19,6 +20,7 @@ test('integrations page renders all available integrations', function () {
         ->assertSee('https://getsharex.com/')
         ->assertSee('https://xerahs.com')
         ->assertSee('https://screencloud.net')
+        ->assertSee('https://isharemac.app/')
         ->assertSee('https://apps.kde.org/spectacle/')
         ->assertSee('Copy install link')
         ->assertSee('Download package')
@@ -96,6 +98,54 @@ test('issues a Xerahs token to the user', function () {
 
 test('Xerahs config download requires authentication', function () {
     $this->get(route('integrations.xerahs'))
+        ->assertRedirect(route('login'));
+});
+
+test('downloads a working ishare uploader config', function () {
+    $user = User::factory()->create(['name' => 'Jane Doe']);
+
+    $response = $this->actingAs($user)
+        ->get(route('integrations.ishare'))
+        ->assertOk()
+        ->assertDownload('jane-doe-ishare.iscu');
+
+    $config = $response->json();
+
+    expect($config['requestURL'])->toBe(route('api.v1.upload'));
+    expect($config['fileFormName'])->toBe('file');
+    expect($config['requestBodyType'])->toBe('multipartFormData');
+    expect($config['headers']['Accept'])->toBe('application/json');
+    expect($config['headers']['Authorization'])->toStartWith('Bearer ');
+    expect($config['responseURL'])->toBe('{{data.preview_ext_url}}');
+    expect($config['deletionURL'])->toBe('{{data.deletion_url}}');
+    expect($config['deleteRequestType'])->toBe('GET');
+    // ishare parses plain JSON, so the Sanctum pipe must be left intact (unescaped).
+    expect($config['headers']['Authorization'])->toContain('|');
+});
+
+test('names the ishare uploader after the instance and user', function () {
+    config(['app.name' => 'Acme Shots']);
+
+    $user = User::factory()->create(['name' => 'Jane Doe']);
+
+    $config = $this->actingAs($user)
+        ->get(route('integrations.ishare'))
+        ->assertOk()
+        ->json();
+
+    expect($config['name'])->toBe('Acme Shots - Jane Doe');
+});
+
+test('issues an ishare token to the user', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->get(route('integrations.ishare'))->assertOk();
+
+    expect($user->tokens()->where('name', 'like', 'ishare-%')->count())->toBe(1);
+});
+
+test('ishare config download requires authentication', function () {
+    $this->get(route('integrations.ishare'))
         ->assertRedirect(route('login'));
 });
 

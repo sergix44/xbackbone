@@ -31,6 +31,15 @@
                     'link' => 'https://screencloud.net',
                     'copy' => \Illuminate\Support\Facades\URL::signedRoute('integrations.screencloud', ['user' => auth()->id()]),
                 ],
+                [
+                    'name' => 'ishare',
+                    'icon' => 'o-viewfinder-circle',
+                    'platforms' => ['macOS'],
+                    'description' => 'A clean, unbloated screen capture and file sharing utility for macOS with custom uploader support.',
+                    'action' => 'Download config',
+                    'route' => route('integrations.ishare'),
+                    'link' => 'https://isharemac.app/',
+                ],
             ],
         ],
         [

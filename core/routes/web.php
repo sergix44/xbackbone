@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth', 'verified']], static function () {
     Route::livewire('integrations', Integrations::class)->name('integrations');
     Route::get('integrations/sharex', [IntegrationController::class, 'shareX'])->name('integrations.sharex');
     Route::get('integrations/xerahs', [IntegrationController::class, 'xerahs'])->name('integrations.xerahs');
+    Route::get('integrations/ishare', [IntegrationController::class, 'ishare'])->name('integrations.ishare');
     Route::get('integrations/cli', [IntegrationController::class, 'cli'])->name('integrations.cli');
     Route::get('integrations/kde', [IntegrationController::class, 'kde'])->name('integrations.kde');
     Route::get('integrations/macos', [IntegrationController::class, 'macos'])->name('integrations.macos');

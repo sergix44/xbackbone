@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Integration\GenerateCliScript;
+use App\Actions\Integration\GenerateIshareConfig;
 use App\Actions\Integration\GenerateKdePlugin;
 use App\Actions\Integration\GenerateMacosShortcut;
 use App\Actions\Integration\GenerateScreenCloudPlugin;
@@ -35,6 +36,24 @@ class IntegrationController extends Controller
         $user = auth()->user();
         $config = $generateSharexConfig($user, $client);
         $fileName = str($user->name)->slug()."-$suffix.sxcu";
+
+        return response()->json(
+            $config,
+            200,
+            ['Content-Disposition' => 'attachment; filename="'.$fileName.'"'],
+            JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * Download a ready-to-import ishare custom uploader (.iscu) configuration, the macOS
+     * counterpart to the ShareX config.
+     */
+    public function ishare(GenerateIshareConfig $generateIshareConfig): JsonResponse
+    {
+        $user = auth()->user();
+        $config = $generateIshareConfig($user);
+        $fileName = str($user->name)->slug().'-ishare.iscu';
 
         return response()->json(
             $config,
