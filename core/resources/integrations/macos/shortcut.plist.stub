@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>WFWorkflowClientVersion</key>
+	<string>2038.0.3</string>
+	<key>WFWorkflowClientRelease</key>
+	<string>2.2</string>
+	<key>WFWorkflowMinimumClientVersion</key>
+	<integer>900</integer>
+	<key>WFWorkflowMinimumClientVersionString</key>
+	<string>900</string>
+	<key>WFWorkflowName</key>
+	<string>@@SHORTCUT_NAME@@</string>
+	<key>WFWorkflowIcon</key>
+	<dict>
+		<key>WFWorkflowIconStartColor</key>
+		<integer>463140863</integer>
+		<key>WFWorkflowIconGlyphNumber</key>
+		<integer>59511</integer>
+	</dict>
+	<key>WFWorkflowImportQuestions</key>
+	<array/>
+	<key>WFWorkflowTypes</key>
+	<array>
+		<string>ActionExtension</string>
+	</array>
+	<key>WFWorkflowInputContentItemClasses</key>
+	<array>
+		<string>WFGenericFileContentItem</string>
+		<string>WFImageContentItem</string>
+		<string>WFAVAssetContentItem</string>
+		<string>WFPDFContentItem</string>
+		<string>WFRichTextContentItem</string>
+		<string>WFStringContentItem</string>
+		<string>WFURLContentItem</string>
+		<string>WFSafariWebPageContentItem</string>
+	</array>
+	<key>WFWorkflowActions</key>
+	<array>
+		<dict>
+			<key>WFWorkflowActionIdentifier</key>
+			<string>is.workflow.actions.runshellscript</string>
+			<key>WFWorkflowActionParameters</key>
+			<dict>
+				<key>Input</key>
+				<dict>
+					<key>Value</key>
+					<dict>
+						<key>Type</key>
+						<string>ExtensionInput</string>
+					</dict>
+					<key>WFSerializationType</key>
+					<string>WFTextTokenAttachment</string>
+				</dict>
+				<key>InputType</key>
+				<string>stdin</string>
+				<key>Script</key>
+				<string>&quot;$HOME/Library/Application Support/XBackBone/xbb-share&quot; &quot;$@&quot;</string>
+				<key>Shell</key>
+				<string>/bin/bash</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -29,6 +29,7 @@ Drop-in scripts with native desktop or shell integration.
 | Client | Platforms | Status |
 | ------ | --------- | ------ |
 | [Spectacle (KDE)](/clients/spectacle) | Linux · KDE | <Badge type="warning" text="In development" /> |
+| [macOS (Share sheet)](/clients/macos) | macOS | <Badge type="warning" text="In development" /> |
 | [CLI script](/clients/cli-scripts) | Linux · macOS | <Badge type="tip" text="Available" /> |
 
 ## Programmatic access

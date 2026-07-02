@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Integration\GenerateCliScript;
 use App\Actions\Integration\GenerateKdePlugin;
+use App\Actions\Integration\GenerateMacosShortcut;
 use App\Actions\Integration\GenerateScreenCloudPlugin;
 use App\Actions\Integration\GenerateSharexConfig;
 use App\Models\User;
@@ -65,6 +66,18 @@ class IntegrationController extends Controller
         return response($generateKdePlugin(auth()->user()), 200, [
             'Content-Type' => 'text/x-shellscript; charset=utf-8',
             'Content-Disposition' => 'attachment; filename="xbackbone-kde-install.sh"',
+        ]);
+    }
+
+    /**
+     * Download the self-contained macOS "Share" installer, pre-filled with the user's token, so a
+     * Shortcut that uploads to the instance appears in the macOS Share sheet.
+     */
+    public function macos(GenerateMacosShortcut $generateMacosShortcut): Response
+    {
+        return response($generateMacosShortcut(auth()->user()), 200, [
+            'Content-Type' => 'text/x-shellscript; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="xbackbone-macos-install.sh"',
         ]);
     }
 

@@ -77,6 +77,7 @@ export default defineConfig({
           { text: 'Xerahs', link: '/clients/xerahs' },
           { text: 'ScreenCloud', link: '/clients/screencloud' },
           { text: 'Spectacle', link: '/clients/spectacle' },
+          { text: 'macOS', link: '/clients/macos' },
           { text: 'CLI', link: '/clients/cli-scripts' },
           { text: 'REST API', link: '/clients/api' },
         ],

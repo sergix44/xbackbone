@@ -46,6 +46,15 @@
                     'route' => route('integrations.kde'),
                     'link' => 'https://apps.kde.org/spectacle/',
                 ],
+                [
+                    'name' => 'macOS',
+                    'icon' => 'si.apple',
+                    'platforms' => ['macOS'],
+                    'description' => 'A Shortcut that adds an upload entry to the macOS Share sheet, the Services menu and the Shortcuts app.',
+                    'action' => 'Download installer',
+                    'route' => route('integrations.macos'),
+                    'link' => 'https://support.apple.com/guide/shortcuts-mac/welcome/mac',
+                ],
             ],
         ],
         [

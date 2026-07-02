@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+#
+# Self-contained installer for the XBackBone macOS "Share" integration.
+#
+# Adds an "@@SHORTCUT_NAME@@" entry to the macOS Share sheet (and the Services menu and the
+# Shortcuts app) via a Shortcut that uploads the shared files to your instance and copies the
+# resulting link to your clipboard. It bundles the xbb uploader inline, so this single file is
+# everything you need. Requires only a stock macOS.
+#
+# Re-run with --uninstall to remove it.
+#
+set -euo pipefail
+
+XBB_URL="@@XBB_URL@@"
+XBB_TOKEN="@@XBB_TOKEN@@"
+SHORTCUT_NAME="@@SHORTCUT_NAME@@"
+
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+CONFIG_FILE="$CONFIG_HOME/xbackbone/config"
+SUPPORT_DIR="$HOME/Library/Application Support/XBackBone"
+XBB_BIN="$SUPPORT_DIR/xbb"
+SHARE_BIN="$SUPPORT_DIR/xbb-share"
+SHORTCUT_FILE="$SUPPORT_DIR/@@SHORTCUT_FILE@@.shortcut"
+
+uninstall() {
+    rm -rf "$SUPPORT_DIR"
+    echo "Removed the XBackBone uploader from $SUPPORT_DIR."
+    echo "Your config ($CONFIG_FILE) was left untouched."
+    echo "To finish, open the Shortcuts app and delete the \"$SHORTCUT_NAME\" shortcut"
+    echo "(macOS provides no way to remove an imported shortcut from the command line)."
+}
+
+install() {
+    command -v curl >/dev/null 2>&1 || { echo "curl is required but was not found." >&2; exit 1; }
+
+    # 1. Credentials, shared with the xbb CLI uploader. Never silently clobber an existing config.
+    mkdir -p "$(dirname "$CONFIG_FILE")"
+    if [ -f "$CONFIG_FILE" ]; then
+        cp -f "$CONFIG_FILE" "$CONFIG_FILE.bak"
+        echo "Existing config found; backed up to $CONFIG_FILE.bak"
+    fi
+    ( umask 077; printf 'XBB_URL=%s\nXBB_TOKEN=%s\n' "$XBB_URL" "$XBB_TOKEN" >"$CONFIG_FILE" )
+
+    # 2. The bundled xbb uploader (base64, -D is the macOS decode flag) and the Share-sheet
+    #    bridge that the Shortcut calls.
+    mkdir -p "$SUPPORT_DIR"
+    printf '%s' "@@XBB_SCRIPT_B64@@" | base64 -D >"$XBB_BIN"
+    chmod +x "$XBB_BIN"
+
+    cat >"$SHARE_BIN" <<'XBB_SHARE_EOF'
+#!/bin/bash
+# Bridges the macOS Share sheet / Shortcut to the xbb uploader: collects the shared items (as
+# arguments or from stdin) and surfaces failures as a notification, since a Shortcut has no
+# visible stderr. Success feedback (clipboard + notification) comes from xbb's own rich output.
+export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+XBB="$HOME/Library/Application Support/XBackBone/xbb"
+files=("$@")
+if [ "${#files[@]}" -eq 0 ]; then
+    while IFS= read -r line; do
+        [ -n "$line" ] && files+=("$line")
+    done
+fi
+[ "${#files[@]}" -eq 0 ] && exit 0
+if ! err="$("$XBB" "${files[@]}" 2>&1 >/dev/null)"; then
+    /usr/bin/osascript -e "display notification \"${err:-Upload failed}\" with title \"XBackBone\"" >/dev/null 2>&1 || true
+fi
+XBB_SHARE_EOF
+    chmod +x "$SHARE_BIN"
+
+    # 3. The Shortcut: decode, convert to a binary plist, then sign so it can be imported.
+    local tmp
+    tmp="$(mktemp -t xbackbone-shortcut)"
+    printf '%s' "@@SHORTCUT_PLIST_B64@@" | base64 -D >"$tmp"
+    plutil -convert binary1 "$tmp" 2>/dev/null || true
+
+    if command -v shortcuts >/dev/null 2>&1 && \
+       shortcuts sign --mode anyone --input "$tmp" --output "$SHORTCUT_FILE" 2>/dev/null; then
+        echo "Signed the shortcut."
+    else
+        cp -f "$tmp" "$SHORTCUT_FILE"
+        echo "Could not sign automatically (offline or not signed into iCloud)."
+        echo "If the import is blocked, open the Shortcuts app → Settings → Advanced and enable"
+        echo "\"Allow Untrusted Shortcuts\", then re-run this installer."
+    fi
+    rm -f "$tmp"
+
+    open "$SHORTCUT_FILE"
+
+    echo "Credentials written to $CONFIG_FILE"
+    echo "In the Shortcuts app, click \"Add Shortcut\" to finish."
+    echo "Then share any file: the Share menu (or right-click → Share) → \"$SHORTCUT_NAME\"."
+}
+
+if [ "${1:-}" = "--uninstall" ]; then
+    uninstall
+else
+    install
+fi

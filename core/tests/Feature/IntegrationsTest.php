@@ -12,6 +12,7 @@ test('integrations page renders all available integrations', function () {
         ->assertSee('Xerahs')
         ->assertSee('ScreenCloud')
         ->assertSee('Spectacle')
+        ->assertSee('macOS')
         ->assertSee('Capture apps')
         ->assertSee('CLI scripts')
         ->assertSee('portable shell uploader')
@@ -173,6 +174,55 @@ test('issues a KDE token when the plugin is downloaded', function () {
 
 test('KDE plugin download requires authentication', function () {
     $this->get(route('integrations.kde'))
+        ->assertRedirect(route('login'));
+});
+
+test('downloads a working, self-contained macOS Share installer', function () {
+    $user = User::factory()->create();
+
+    $script = $this->actingAs($user)
+        ->get(route('integrations.macos'))
+        ->assertOk()
+        ->assertDownload('xbackbone-macos-install.sh')
+        ->getContent();
+
+    // Self-contained: shebang plus the embedded uploader, shortcut and signing flow.
+    expect($script)->toContain('#!/usr/bin/env bash');
+    expect($script)->toContain('Library/Application Support/XBackBone');
+    expect($script)->toContain('shortcuts sign --mode anyone');
+    expect($script)->toContain('Allow Untrusted Shortcuts');
+    expect($script)->toContain('plutil -convert binary1');
+    expect($script)->toContain('Upload to XBackBone');
+    expect($script)->toContain(base64_encode(file_get_contents(resource_path('integrations/xbb'))));
+
+    // Credentials baked in; no leftover template markers.
+    expect($script)->toContain(rtrim(config('app.url'), '/'));
+    expect($script)->not->toContain('@@');
+});
+
+test('derives the macOS shortcut name from the instance app name', function () {
+    config(['app.name' => "Acme Photo's Co."]);
+
+    $user = User::factory()->create();
+
+    $script = $this->actingAs($user)
+        ->get(route('integrations.macos'))
+        ->assertOk()
+        ->getContent();
+
+    expect($script)->toContain('SHORTCUT_NAME="Upload to Acme Photo\'s Co."');
+});
+
+test('issues a macOS token when the installer is downloaded', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->get(route('integrations.macos'))->assertOk();
+
+    expect($user->tokens()->where('name', 'like', 'macOS-%')->count())->toBe(1);
+});
+
+test('macOS installer download requires authentication', function () {
+    $this->get(route('integrations.macos'))
         ->assertRedirect(route('login'));
 });
 
