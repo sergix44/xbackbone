@@ -53,8 +53,8 @@
 					<key>WFSerializationType</key>
 					<string>WFTextTokenAttachment</string>
 				</dict>
-				<key>InputType</key>
-				<string>stdin</string>
+				<key>InputMode</key>
+				<string>as arguments</string>
 				<key>Script</key>
 				<string>&quot;$HOME/Library/Application Support/XBackBone/xbb-share&quot; &quot;$@&quot;</string>
 				<key>Shell</key>
