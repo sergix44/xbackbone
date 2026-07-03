@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace XBB\Livewire\Admin;
 
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
-use App\Support\Helpers;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
+use XBB\Support\Helpers;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 use Livewire\Attributes\Computed;

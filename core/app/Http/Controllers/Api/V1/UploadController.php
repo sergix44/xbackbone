@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace XBB\Http\Controllers\Api\V1;
 
-use App\Actions\Resource\StoreResource;
-use App\Exceptions\QuotaExceededException;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\UploadResourceRequest;
-use App\Http\Resources\Api\V1\ResourceResource;
+use XBB\Actions\Resource\StoreResource;
+use XBB\Exceptions\QuotaExceededException;
+use XBB\Http\Controllers\Controller;
+use XBB\Http\Requests\Api\V1\UploadResourceRequest;
+use XBB\Http\Resources\Api\V1\ResourceResource;
 
 class UploadController extends Controller
 {

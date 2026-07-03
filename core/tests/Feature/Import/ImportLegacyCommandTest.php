@@ -1,10 +1,10 @@
 <?php
 
-use App\Jobs\GenerateResourcePreview;
-use App\Models\Properties\ResourceType;
-use App\Models\Properties\UserStatus;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Jobs\GenerateResourcePreview;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Hashing\Argon2IdHasher;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;

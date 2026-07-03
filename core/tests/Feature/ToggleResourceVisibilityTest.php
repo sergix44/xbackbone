@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\Resource\ToggleResourceVisibility;
-use App\Livewire\Dashboard;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Actions\Resource\ToggleResourceVisibility;
+use XBB\Livewire\Dashboard;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 test('the action toggles the private flag', function () {

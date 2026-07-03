@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace XBB\Console\Commands;
 
 use Illuminate\Console\Command;
 

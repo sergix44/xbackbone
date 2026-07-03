@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Installer\Actions;
+namespace XBB\Installer\Actions;
 
-use App\Console\Commands\ImportLegacyCommand;
-use App\Installer\Support\DatabaseConfig;
+use XBB\Console\Commands\ImportLegacyCommand;
+use XBB\Installer\Support\DatabaseConfig;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 

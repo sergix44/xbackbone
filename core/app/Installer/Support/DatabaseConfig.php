@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Installer\Support;
+namespace XBB\Installer\Support;
 
 /**
  * Translates the wizard's database payload into a Laravel connection config

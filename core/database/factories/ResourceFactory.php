@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceFactory extends Factory

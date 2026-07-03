@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\Auth\Login;
-use App\Models\User;
+use XBB\Livewire\Auth\Login;
+use XBB\Models\User;
 use Livewire\Livewire;
 use Spatie\Activitylog\Models\Activity;
 

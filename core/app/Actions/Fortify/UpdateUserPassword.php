@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace XBB\Actions\Fortify;
 
-use App\Events\User\UserPasswordChanged;
-use App\Models\User;
+use XBB\Events\User\UserPasswordChanged;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;

@@ -1,10 +1,10 @@
 <?php
 
-use App\Actions\Resource\Previews\VideoFramePreviewGenerator;
-use App\Jobs\GenerateResourcePreview;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Actions\Resource\Previews\VideoFramePreviewGenerator;
+use XBB\Jobs\GenerateResourcePreview;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Queue;

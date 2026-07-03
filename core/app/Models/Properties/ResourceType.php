@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Properties;
+namespace XBB\Models\Properties;
 
 use Illuminate\Support\Str;
 

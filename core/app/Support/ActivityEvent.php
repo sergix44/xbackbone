@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Support;
+namespace XBB\Support;
 
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;

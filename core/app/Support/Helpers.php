@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Support;
+namespace XBB\Support;
 
-use App\Models\User;
+use XBB\Models\User;
 use Laravel\Pennant\Feature;
 
 class Helpers

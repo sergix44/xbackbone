@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Events\Resource\ResourceDeleted;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Events\Resource\ResourceDeleted;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

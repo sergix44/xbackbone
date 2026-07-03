@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Events\Resource\ResourceSettingsUpdated;
-use App\Models\Resource;
+use XBB\Events\Resource\ResourceSettingsUpdated;
+use XBB\Models\Resource;
 use Illuminate\Support\Carbon;
 
 class UpdateResourceSettings

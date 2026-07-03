@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\User\DeleteUserAccount;
-use App\Livewire\Dashboard;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Actions\User\DeleteUserAccount;
+use XBB\Livewire\Dashboard;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;

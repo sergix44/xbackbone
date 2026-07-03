@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Listeners;
+namespace XBB\Listeners;
 
-use App\Events\Resource\ResourceDeleted;
-use App\Events\Resource\ResourceSettingsUpdated;
-use App\Events\Resource\ResourceUploaded;
-use App\Events\Resource\ResourceVisibilityToggled;
+use XBB\Events\Resource\ResourceDeleted;
+use XBB\Events\Resource\ResourceSettingsUpdated;
+use XBB\Events\Resource\ResourceUploaded;
+use XBB\Events\Resource\ResourceVisibilityToggled;
 
 class LogResourceActivity
 {

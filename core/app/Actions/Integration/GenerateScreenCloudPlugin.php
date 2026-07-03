@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Integration;
+namespace XBB\Actions\Integration;
 
-use App\Actions\Token\IssueIntegrationToken;
-use App\Models\User;
+use XBB\Actions\Token\IssueIntegrationToken;
+use XBB\Models\User;
 use Illuminate\Support\Str;
 use RuntimeException;
 use ZipArchive;
@@ -74,7 +74,7 @@ class GenerateScreenCloudPlugin
         $safe = preg_replace('/[^A-Za-z0-9_]/', '', Str::studly(Str::ascii($appName))) ?: 'XBackBone';
 
         if (preg_match('/^[0-9]/', $safe)) {
-            $safe = 'App'.$safe;
+            $safe = 'Xbb'.$safe;
         }
 
         return $safe.'Uploader';

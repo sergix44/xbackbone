@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use XBB\Models\User;
 
 return [
 

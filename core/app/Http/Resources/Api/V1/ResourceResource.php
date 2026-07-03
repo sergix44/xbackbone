@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Api\V1;
+namespace XBB\Http\Resources\Api\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\Resource
+ * @mixin \XBB\Models\Resource
  */
 class ResourceResource extends JsonResource
 {

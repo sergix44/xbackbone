@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace XBB\Listeners;
 
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
@@ -54,7 +54,7 @@ class LogAuthActivity
      * `Login`/`Logout`/`Failed`/`Registered` type their `$user` property as the
      * `Authenticatable` interface, not `Model`, so it must be narrowed before use
      * with Spatie's `Model`-typed `causedBy()`/`performedOn()`. In this app the
-     * `web` guard's provider is always `App\Models\User` (an Eloquent `Model`).
+     * `web` guard's provider is always `XBB\Models\User` (an Eloquent `Model`).
      */
     private function toModel(?Authenticatable $user): ?Model
     {

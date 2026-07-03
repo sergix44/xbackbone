@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\Dashboard;
-use App\Models\User;
+use XBB\Livewire\Dashboard;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 test('the upload drawer wires a clipboard paste handler that opens the drawer and uploads', function () {

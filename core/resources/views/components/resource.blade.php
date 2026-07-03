@@ -14,7 +14,7 @@
             <div class="inline-flex gap-0.5 shrink-0 ml-1">
                 <x-button icon="m-link" class="btn-ghost btn-xs btn-square text-success"
                           tooltip="{{ __('Copy link') }}" @click="$clipboard('{{$resource?->preview_ext_url}}')"/>
-                @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+                @if($resource->type === \XBB\Models\Properties\ResourceType::LINK)
                     <x-button icon="m-arrow-top-right-on-square" class="btn-ghost btn-xs btn-square text-info"
                               tooltip="{{ __('Open link') }}" :link="$resource->raw_url" no-wire-navigate external/>
                 @else
@@ -36,7 +36,7 @@
     </div>
     <figure>
         <a href="{{ $resource?->preview_ext_url }}" wire:navigate class="block w-full aspect-video bg-base-200 overflow-hidden">
-            @if($resource->has_preview || ($resource->type === \App\Models\Properties\ResourceType::IMAGE && $resource->is_displayable))
+            @if($resource->has_preview || ($resource->type === \XBB\Models\Properties\ResourceType::IMAGE && $resource->is_displayable))
                 <img src="{{ $resource->thumbnail_url }}?w=400" alt="{{ $resource->filename }}"
                      class="w-full h-full object-cover" loading="lazy"/>
             @elseif($resource->preview_is_pending)
@@ -63,7 +63,7 @@
         <div class="flex justify-between items-center gap-2 text-xs text-base-content/50">
             <span class="flex items-center gap-1 min-w-0">
                 <span class="font-mono truncate">
-                    @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+                    @if($resource->type === \XBB\Models\Properties\ResourceType::LINK)
                         {{ parse_url($resource->data, PHP_URL_HOST) ?? __('Link') }}
                     @else
                         {{ $resource?->size_human_readable ?? '0' }}

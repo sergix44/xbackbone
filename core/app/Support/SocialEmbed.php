@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Support;
+namespace XBB\Support;
 
-use App\Http\Middleware\ServeSocialEmbed;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Http\Middleware\ServeSocialEmbed;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 /**
  * Builds the OpenGraph / Twitter-Card metadata that lets third-party clients

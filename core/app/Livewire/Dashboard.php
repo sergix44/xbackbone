@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire;
+namespace XBB\Livewire;
 
-use App\Actions\Resource\DeleteResource;
-use App\Actions\Resource\ListResources;
-use App\Actions\Resource\StoreResource;
-use App\Actions\Resource\ToggleResourceVisibility;
-use App\Actions\Resource\UpdateResourceSettings;
-use App\Exceptions\QuotaExceededException;
-use App\Models\Resource;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Actions\Resource\ListResources;
+use XBB\Actions\Resource\StoreResource;
+use XBB\Actions\Resource\ToggleResourceVisibility;
+use XBB\Actions\Resource\UpdateResourceSettings;
+use XBB\Exceptions\QuotaExceededException;
+use XBB\Models\Resource;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;

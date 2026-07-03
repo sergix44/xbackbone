@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\Resource\DeleteResource;
-use App\Livewire\Dashboard;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Livewire\Dashboard;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 

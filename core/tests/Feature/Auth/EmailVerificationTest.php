@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\Auth\VerifyEmail;
-use App\Models\User;
+use XBB\Livewire\Auth\VerifyEmail;
+use XBB\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;

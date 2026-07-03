@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Providers;
+namespace XBB\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Livewire\Auth\ConfirmPassword;
-use App\Livewire\Auth\ForgotPassword;
-use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
-use App\Livewire\Auth\ResetPassword;
-use App\Livewire\Auth\VerifyEmail;
+use XBB\Actions\Fortify\CreateNewUser;
+use XBB\Actions\Fortify\ResetUserPassword;
+use XBB\Actions\Fortify\UpdateUserPassword;
+use XBB\Actions\Fortify\UpdateUserProfileInformation;
+use XBB\Livewire\Auth\ConfirmPassword;
+use XBB\Livewire\Auth\ForgotPassword;
+use XBB\Livewire\Auth\Login;
+use XBB\Livewire\Auth\Register;
+use XBB\Livewire\Auth\ResetPassword;
+use XBB\Livewire\Auth\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;

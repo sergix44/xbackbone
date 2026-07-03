@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions\User;
+namespace XBB\Actions\User;
 
-use App\Actions\Resource\DeleteResource;
-use App\Events\User\UserDeleted;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Events\User\UserDeleted;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 class DeleteUserAccount
 {

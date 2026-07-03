@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions\Import;
+namespace XBB\Actions\Import;
 
-use App\Actions\Resource\StoreResource;
-use App\Jobs\GenerateResourcePreview;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Actions\Resource\StoreResource;
+use XBB\Jobs\GenerateResourcePreview;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +28,7 @@ class ImportLegacyResource
      * @param  object  $row  A legacy `uploads` row (id, user_id, code, filename, storage_path, published, timestamp).
      * @param  int  $newUserId  The resolved owner id in the current application.
      * @param  string  $onMissingFile  Behaviour when the physical file is absent: 'skip' or 'fail'.
-     * @return array{resource: \App\Models\Resource|null, action: 'created'|'skipped-duplicate'|'skipped-missing'|'would-create'}
+     * @return array{resource: \XBB\Models\Resource|null, action: 'created'|'skipped-duplicate'|'skipped-missing'|'would-create'}
      */
     public function __invoke(
         object $row,

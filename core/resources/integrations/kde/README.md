@@ -45,7 +45,7 @@ Activity is logged to `$XDG_STATE_HOME/xbackbone/kde-plugin.log` (usually
 ## Layout of this directory
 
 These are the *sources* of the plugin. The downloadable installer is assembled from them by
-`App\Actions\Integration\GenerateKdePlugin`, which fills `installer.sh.stub` with the
+`XBB\Actions\Integration\GenerateKdePlugin`, which fills `installer.sh.stub` with the
 instance name, a fresh token, the uploader, and the base64-encoded icons.
 
 - `metadata.json` — Purpose plugin metadata (`@@APP_NAME@@` is replaced at generation time).

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exceptions;
+namespace XBB\Exceptions;
 
-use App\Support\Helpers;
+use XBB\Support\Helpers;
 use RuntimeException;
 
 class QuotaExceededException extends RuntimeException

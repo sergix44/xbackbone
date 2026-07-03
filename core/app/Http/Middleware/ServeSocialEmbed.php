@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace XBB\Http\Middleware;
 
-use App\Models\Resource;
-use App\Support\SocialEmbed;
+use XBB\Models\Resource;
+use XBB\Support\SocialEmbed;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

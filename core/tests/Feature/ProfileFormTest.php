@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\User\Profile;
-use App\Models\User;
+use XBB\Livewire\User\Profile;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 test('an invalid email surfaces a validation error', function () {

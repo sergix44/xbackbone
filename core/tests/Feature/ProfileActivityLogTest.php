@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\User\Profile;
-use App\Models\User;
+use XBB\Livewire\User\Profile;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 test('updating the profile logs user.profile_updated', function () {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Installer\Actions;
+namespace XBB\Installer\Actions;
 
-use App\Actions\Admin\CreateUser;
-use App\Installer\Exceptions\InstallationException;
-use App\Installer\Support\DatabaseConfig;
-use App\Installer\Support\InstallationState;
-use App\Installer\Support\StorageConfig;
-use App\Models\Properties\UserStatus;
-use App\Models\User;
+use XBB\Actions\Admin\CreateUser;
+use XBB\Installer\Exceptions\InstallationException;
+use XBB\Installer\Support\DatabaseConfig;
+use XBB\Installer\Support\InstallationState;
+use XBB\Installer\Support\StorageConfig;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\User;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;

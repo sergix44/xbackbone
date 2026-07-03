@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace XBB\Http\Middleware;
 
-use App\Models\Resource;
+use XBB\Models\Resource;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

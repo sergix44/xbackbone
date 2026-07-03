@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace XBB\Http\Controllers\Api\V1;
 
-use App\Actions\Resource\DeleteResource;
-use App\Http\Controllers\Controller;
-use App\Models\Resource;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Http\Controllers\Controller;
+use XBB\Models\Resource;
 use Illuminate\Http\Response;
 
 class DeleteController extends Controller

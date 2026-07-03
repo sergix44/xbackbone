@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Pagination\AbstractPaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;

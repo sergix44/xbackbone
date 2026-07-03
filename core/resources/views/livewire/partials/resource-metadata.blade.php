@@ -7,7 +7,7 @@
         <div class="text-xs uppercase opacity-60">Type</div>
         <div class="font-mono truncate" title="{{ $resource->mime }}">{{ $resource->mime ?? '—' }}</div>
     </div>
-    @if($resource->type === \App\Models\Properties\ResourceType::IMAGE)
+    @if($resource->type === \XBB\Models\Properties\ResourceType::IMAGE)
         <div>
             <div class="text-xs uppercase opacity-60">Dimensions</div>
             <div class="font-mono" x-text="naturalWidth ? `${naturalWidth} × ${naturalHeight}` : '—'">—</div>

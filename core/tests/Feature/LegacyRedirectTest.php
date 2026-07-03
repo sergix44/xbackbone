@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Resource;
+use XBB\Models\Resource;
 use Illuminate\Http\Request;
 
 it('redirects a legacy two-segment URL to the current preview URL', function () {

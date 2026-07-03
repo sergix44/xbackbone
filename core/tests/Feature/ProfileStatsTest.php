@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\User\Profile;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Livewire\User\Profile;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 test('the profile header aggregates real statistics for the authenticated user', function () {

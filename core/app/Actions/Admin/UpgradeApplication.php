@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions\Admin;
+namespace XBB\Actions\Admin;
 
-use App\Support\Updater;
+use XBB\Support\Updater;
 use Illuminate\Support\Facades\Process;
 use RuntimeException;
 

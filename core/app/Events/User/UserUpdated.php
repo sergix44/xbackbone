@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Events\User;
+namespace XBB\Events\User;
 
-use App\Models\User;
+use XBB\Models\User;
 
 class UserUpdated
 {

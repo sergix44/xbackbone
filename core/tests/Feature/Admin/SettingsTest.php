@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\Admin\Settings;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Livewire\Admin\Settings;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Laravel\Pennant\Feature;
 use Livewire\Livewire;
 

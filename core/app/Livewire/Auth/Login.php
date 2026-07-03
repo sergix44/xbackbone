@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace XBB\Livewire\Auth;
 
-use App\Livewire\Forms\LoginForm;
+use XBB\Livewire\Forms\LoginForm;
 use Laravel\Fortify\Fortify;
 use Livewire\Component;
 use Mary\Traits\Toast;

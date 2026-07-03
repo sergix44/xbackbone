@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace XBB\Providers;
 
 use Mary\MaryServiceProvider;
 

@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 test('an expired resource preview returns 404 for a guest', function () {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 

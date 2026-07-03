@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions\Resource\Previews;
+namespace XBB\Actions\Resource\Previews;
 
 // Aliased to avoid colliding with the `resource` pseudo-type used in this
 // class's PHPDoc (PHP type names are case-insensitive, so an imported
 // `Resource` would otherwise shadow `resource` for static analysis).
-use App\Models\Resource as ResourceModel;
+use XBB\Models\Resource as ResourceModel;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use RuntimeException;

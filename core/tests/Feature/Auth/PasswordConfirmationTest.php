@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Livewire\Auth\ConfirmPassword;
-use App\Models\User;
+use XBB\Livewire\Auth\ConfirmPassword;
+use XBB\Models\User;
 
 use function Pest\Laravel\actingAs;
 

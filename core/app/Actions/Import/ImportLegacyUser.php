@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Import;
+namespace XBB\Actions\Import;
 
-use App\Actions\Admin\CreateUser;
-use App\Models\Properties\UserStatus;
-use App\Models\User;
+use XBB\Actions\Admin\CreateUser;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

@@ -1,8 +1,8 @@
 <?php
 
-use App\Livewire\Auth\Login;
-use App\Livewire\Dashboard;
-use App\Models\User;
+use XBB\Livewire\Auth\Login;
+use XBB\Livewire\Dashboard;
+use XBB\Models\User;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');

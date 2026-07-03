@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace XBB\Livewire\Admin;
 
-use App\Actions\Admin\CheckForUpdate;
-use App\Support\Updater;
+use XBB\Actions\Admin\CheckForUpdate;
+use XBB\Support\Updater;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Process;
 use Livewire\Component;

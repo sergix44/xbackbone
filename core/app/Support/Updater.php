@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace XBB\Support;
 
 use Composer\InstalledVersions;
 use Illuminate\Support\Facades\Cache;

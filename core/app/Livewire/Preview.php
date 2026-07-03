@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire;
+namespace XBB\Livewire;
 
-use App\Actions\Resource\RecordResourceView;
-use App\Models\Resource;
+use XBB\Actions\Resource\RecordResourceView;
+use XBB\Models\Resource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;

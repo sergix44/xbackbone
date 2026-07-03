@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\Admin\CheckForUpdate;
-use App\Livewire\Admin\Updates;
-use App\Models\User;
-use App\Support\Updater;
+use XBB\Actions\Admin\CheckForUpdate;
+use XBB\Livewire\Admin\Updates;
+use XBB\Models\User;
+use XBB\Support\Updater;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;

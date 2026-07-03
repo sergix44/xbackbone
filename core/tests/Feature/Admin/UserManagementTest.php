@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\Admin\UserManagement;
-use App\Models\Properties\UserStatus;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Livewire\Admin\UserManagement;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 

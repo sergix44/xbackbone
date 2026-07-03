@@ -47,7 +47,7 @@ to run scripts.
 ## Layout of this directory
 
 These are the *sources* of the integration. The downloadable installer is assembled from them
-by `App\Actions\Integration\GenerateMacosShortcut`, which fills `installer.sh.stub` with the
+by `XBB\Actions\Integration\GenerateMacosShortcut`, which fills `installer.sh.stub` with the
 instance name, a fresh token, the base64-encoded `xbb` uploader, and the base64-encoded shortcut
 plist (with the instance name substituted).
 

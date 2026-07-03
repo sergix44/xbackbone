@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Integration;
+namespace XBB\Actions\Integration;
 
-use App\Actions\Token\IssueIntegrationToken;
-use App\Models\User;
+use XBB\Actions\Token\IssueIntegrationToken;
+use XBB\Models\User;
 use Illuminate\Support\Str;
 
 class GenerateSharexConfig

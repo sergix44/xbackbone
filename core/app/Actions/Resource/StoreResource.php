@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Events\Resource\ResourceUploaded;
-use App\Exceptions\QuotaExceededException;
-use App\Jobs\GenerateResourcePreview;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Events\Resource\ResourceUploaded;
+use XBB\Exceptions\QuotaExceededException;
+use XBB\Jobs\GenerateResourcePreview;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

@@ -1,8 +1,8 @@
 <?php
 
-use App\Livewire\ActivityLog;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Livewire\ActivityLog;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 /**

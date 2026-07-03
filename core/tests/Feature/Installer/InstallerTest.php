@@ -1,11 +1,11 @@
 <?php
 
-use App\Actions\Admin\CreateUser;
-use App\Installer\Actions\FinalizeInstallation;
-use App\Installer\Exceptions\InstallationException;
-use App\Installer\Livewire\Installer;
-use App\Installer\Support\InstallationState;
-use App\Models\User;
+use XBB\Actions\Admin\CreateUser;
+use XBB\Installer\Actions\FinalizeInstallation;
+use XBB\Installer\Exceptions\InstallationException;
+use XBB\Installer\Livewire\Installer;
+use XBB\Installer\Support\InstallationState;
+use XBB\Models\User;
 use Livewire\Livewire;
 
 /**

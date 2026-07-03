@@ -1,8 +1,8 @@
 <?php
 
-use App\Installer\Actions\FinalizeInstallation;
-use App\Installer\Support\InstallationState;
-use App\Models\User;
+use XBB\Installer\Actions\FinalizeInstallation;
+use XBB\Installer\Support\InstallationState;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace XBB\Models;
 
-use App\Models\Properties\ResourceType;
-use App\Support\Helpers;
+use XBB\Models\Properties\ResourceType;
+use XBB\Support\Helpers;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Installer\Support;
+namespace XBB\Installer\Support;
 
 /**
  * Tracks whether the application has completed the first-run web installer.

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Installer\Actions;
+namespace XBB\Installer\Actions;
 
-use App\Installer\Support\StorageConfig;
+use XBB\Installer\Support\StorageConfig;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;

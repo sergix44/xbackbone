@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace XBB\Http\Controllers;
 
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;

@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\User\Profile;
-use App\Models\User;
+use XBB\Livewire\User\Profile;
+use XBB\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
 use Laravel\Passkeys\Contracts\PasskeyUser;

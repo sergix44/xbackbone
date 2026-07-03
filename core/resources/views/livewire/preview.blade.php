@@ -1,7 +1,7 @@
 @section('menu-items')
     <x-button label="Copy link" icon="o-link" class="btn-sm btn-soft btn-success" @click="$clipboard('{{ $resource->preview_ext_url }}')"/>
     @unless($this->locked)
-        @if($resource->type === \App\Models\Properties\ResourceType::LINK)
+        @if($resource->type === \XBB\Models\Properties\ResourceType::LINK)
             <x-button label="Open link" icon="o-arrow-top-right-on-square" class="btn-sm btn-soft btn-primary" link="{{ $resource->raw_url }}" external no-wire-navigate/>
         @else
             <x-button label="Download" icon="o-cloud-arrow-down" class="btn-sm btn-soft btn-info" link="{{ $resource->download_url }}" external no-wire-navigate/>
@@ -12,7 +12,7 @@
 
 @push('head')
     @include('partials.social-embed', [
-        'embed' => \App\Support\SocialEmbed::forResource($resource, $this->locked),
+        'embed' => \XBB\Support\SocialEmbed::forResource($resource, $this->locked),
     ])
 @endpush
 
@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-@elseif($resource->type === \App\Models\Properties\ResourceType::LINK)
+@elseif($resource->type === \XBB\Models\Properties\ResourceType::LINK)
     {{-- Link: an interstitial showing the destination before redirecting to it. --}}
     <div class="flex justify-center items-center min-h-[calc(100dvh-8rem)]">
         <div class="card @container bg-base-100 w-full max-w-2xl shadow-sm">
@@ -60,7 +60,7 @@
         {{-- MEDIA: fills the available space above the fold --}}
         <div class="flex items-center justify-center w-full min-h-[calc(100dvh-8rem)]">
             @switch($resource->type)
-                @case(\App\Models\Properties\ResourceType::IMAGE)
+                @case(\XBB\Models\Properties\ResourceType::IMAGE)
                     <a href="{{ $resource->raw_url }}" target="_blank">
                         <img x-ref="media" src="{{ $resource->raw_url }}"
                              alt="{{ $resource->filename ?? $resource->code }}"
@@ -68,7 +68,7 @@
                     </a>
                     @break
 
-                @case(\App\Models\Properties\ResourceType::VIDEO)
+                @case(\XBB\Models\Properties\ResourceType::VIDEO)
                     <div x-ref="media"
                          class="rounded-box overflow-hidden shadow-sm bg-black">
                         <div x-data="plyrPlayer()">
@@ -79,7 +79,7 @@
                     </div>
                     @break
 
-                @case(\App\Models\Properties\ResourceType::PDF)
+                @case(\XBB\Models\Properties\ResourceType::PDF)
                     <object x-ref="media"
                             type="{{ $resource->mime }}"
                             data="{{ $resource->raw_url }}"
@@ -93,7 +93,7 @@
                     </object>
                     @break
 
-                @case(\App\Models\Properties\ResourceType::TEXT)
+                @case(\XBB\Models\Properties\ResourceType::TEXT)
                     @if($this->textTooLarge)
                         <div x-ref="media" class="flex flex-col items-center gap-4 p-8 opacity-70">
                             <x-icon name="o-document-text" class="w-24 h-24"/>
@@ -120,7 +120,7 @@
                     @endif
                     @break
 
-                @case(\App\Models\Properties\ResourceType::AUDIO)
+                @case(\XBB\Models\Properties\ResourceType::AUDIO)
                     <div x-ref="media" class="w-full max-w-7xl">
                         <div x-data="wavesurferPlayer('{{ $resource->raw_url }}')"
                              class="card bg-base-100 shadow-xl">

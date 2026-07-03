@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

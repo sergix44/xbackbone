@@ -1,9 +1,9 @@
 <?php
 
-use App\Installer\InstallerServiceProvider;
-use App\Providers\AppServiceProvider;
-use App\Providers\FortifyServiceProvider;
-use App\Providers\MaryBootServiceProvider;
+use XBB\Installer\InstallerServiceProvider;
+use XBB\Providers\AppServiceProvider;
+use XBB\Providers\FortifyServiceProvider;
+use XBB\Providers\MaryBootServiceProvider;
 
 return [
     InstallerServiceProvider::class,

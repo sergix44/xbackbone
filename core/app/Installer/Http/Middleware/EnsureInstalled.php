@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Installer\Http\Middleware;
+namespace XBB\Installer\Http\Middleware;
 
-use App\Installer\Support\InstallationState;
+use XBB\Installer\Support\InstallationState;
 use Closure;
 use Illuminate\Http\Request;
 use Livewire\Mechanisms\HandleRequests\EndpointResolver;

@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\Dashboard;
-use App\Models\Resource;
-use App\Models\User;
-use App\Support\Helpers;
+use XBB\Livewire\Dashboard;
+use XBB\Models\Resource;
+use XBB\Models\User;
+use XBB\Support\Helpers;
 use Livewire\Livewire;
 
 test('the upload drawer shows the maximum upload size', function () {

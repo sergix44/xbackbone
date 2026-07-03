@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Installer\Exceptions;
+namespace XBB\Installer\Exceptions;
 
 use RuntimeException;
 use Throwable;

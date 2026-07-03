@@ -1,8 +1,8 @@
 <?php
 
-use App\Livewire\Preview;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Livewire\Preview;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 

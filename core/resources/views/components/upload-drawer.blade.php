@@ -1,17 +1,17 @@
 @php
     $uploadLimits = array_filter([
-        \App\Support\Helpers::iniSizeToBytes((string) ini_get('upload_max_filesize')),
-        \App\Support\Helpers::iniSizeToBytes((string) ini_get('post_max_size')),
+        \XBB\Support\Helpers::iniSizeToBytes((string) ini_get('upload_max_filesize')),
+        \XBB\Support\Helpers::iniSizeToBytes((string) ini_get('post_max_size')),
     ]);
 
     $maxUploadSize = $uploadLimits === [] ? 0 : min($uploadLimits);
-    $maxUploadSizeHuman = $maxUploadSize > 0 ? \App\Support\Helpers::humanizeBytes($maxUploadSize) : null;
+    $maxUploadSizeHuman = $maxUploadSize > 0 ? \XBB\Support\Helpers::humanizeBytes($maxUploadSize) : null;
 
     $quotaUnlimited = auth()->user()->hasUnlimitedQuota();
     $quotaTotal = (int) auth()->user()->quota;
     $quotaUsed = auth()->user()->storageUsed();
-    $quotaUsedHuman = \App\Support\Helpers::humanizeBytes($quotaUsed);
-    $quotaTotalHuman = $quotaUnlimited ? null : \App\Support\Helpers::humanizeBytes($quotaTotal);
+    $quotaUsedHuman = \XBB\Support\Helpers::humanizeBytes($quotaUsed);
+    $quotaTotalHuman = $quotaUnlimited ? null : \XBB\Support\Helpers::humanizeBytes($quotaTotal);
     $quotaPercent = (! $quotaUnlimited && $quotaTotal > 0) ? min(100, (int) round($quotaUsed / $quotaTotal * 100)) : null;
 @endphp
 

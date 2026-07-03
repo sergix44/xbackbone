@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Resource\Previews;
+namespace XBB\Actions\Resource\Previews;
 
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Exception\ExecutableNotFoundException;
 use FFMpeg\FFMpeg;

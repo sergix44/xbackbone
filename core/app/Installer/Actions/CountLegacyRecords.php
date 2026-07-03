@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Installer\Actions;
+namespace XBB\Installer\Actions;
 
 use Illuminate\Support\Facades\DB;
 use Throwable;

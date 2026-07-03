@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use XBB\Models\User;
 use Illuminate\Support\Facades\URL;
 
 test('integrations page renders all available integrations', function () {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace XBB\Actions\Fortify;
 
-use App\Events\User\UserProfileUpdated;
-use App\Models\User;
+use XBB\Events\User\UserProfileUpdated;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;

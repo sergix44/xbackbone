@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace XBB\Models;
 
-use App\Models\Properties\ResourceType;
-use App\Models\Properties\UserStatus;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Properties\UserStatus;
 use Illuminate\Auth\MustVerifyEmail as ImplementMustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     }
 
     /**
-     * @return HasMany<\App\Models\Resource, $this>
+     * @return HasMany<\XBB\Models\Resource, $this>
      */
     public function resources(): HasMany
     {

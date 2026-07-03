@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace XBB\Console\Commands;
 
-use App\Actions\Import\ImportLegacyResource;
-use App\Actions\Import\ImportLegacyUser;
-use App\Models\User;
+use XBB\Actions\Import\ImportLegacyResource;
+use XBB\Actions\Import\ImportLegacyUser;
+use XBB\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;

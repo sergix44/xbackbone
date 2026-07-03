@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire;
+namespace XBB\Livewire;
 
-use App\Models\User;
+use XBB\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Component;

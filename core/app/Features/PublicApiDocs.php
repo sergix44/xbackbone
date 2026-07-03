@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Features;
+namespace XBB\Features;
 
 class PublicApiDocs
 {

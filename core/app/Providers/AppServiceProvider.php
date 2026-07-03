@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace XBB\Providers;
 
-use App\Models\User;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace XBB\Livewire\Admin;
 
-use App\Actions\Admin\CreateUser;
-use App\Actions\Admin\UpdateUser;
-use App\Actions\User\DeleteUserAccount;
-use App\Models\Properties\ResourceType;
-use App\Models\Properties\UserStatus;
-use App\Models\User;
+use XBB\Actions\Admin\CreateUser;
+use XBB\Actions\Admin\UpdateUser;
+use XBB\Actions\User\DeleteUserAccount;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;

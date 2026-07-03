@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Installer\Livewire;
+namespace XBB\Installer\Livewire;
 
-use App\Installer\Actions\CountLegacyRecords;
-use App\Installer\Actions\FinalizeInstallation;
-use App\Installer\Actions\TestDatabaseConnection;
-use App\Installer\Actions\TestStorageDisk;
-use App\Installer\Exceptions\InstallationException;
-use App\Installer\Support\DatabaseDriver;
-use App\Installer\Support\StorageDriver;
+use XBB\Installer\Actions\CountLegacyRecords;
+use XBB\Installer\Actions\FinalizeInstallation;
+use XBB\Installer\Actions\TestDatabaseConnection;
+use XBB\Installer\Actions\TestStorageDisk;
+use XBB\Installer\Exceptions\InstallationException;
+use XBB\Installer\Support\DatabaseDriver;
+use XBB\Installer\Support\StorageDriver;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Computed;

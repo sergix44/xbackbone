@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Livewire\Auth\Register;
-use App\Models\User;
+use XBB\Livewire\Auth\Register;
+use XBB\Models\User;
 use Laravel\Pennant\Feature;
 use Livewire\Livewire;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Listeners;
+namespace XBB\Listeners;
 
-use App\Events\User\UserCreated;
-use App\Events\User\UserDeleted;
-use App\Events\User\UserPasswordChanged;
-use App\Events\User\UserProfileUpdated;
-use App\Events\User\UserUpdated;
+use XBB\Events\User\UserCreated;
+use XBB\Events\User\UserDeleted;
+use XBB\Events\User\UserPasswordChanged;
+use XBB\Events\User\UserProfileUpdated;
+use XBB\Events\User\UserUpdated;
 
 class LogUserActivity
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace XBB\Http\Controllers;
 
-use App\Actions\Integration\GenerateCliScript;
-use App\Actions\Integration\GenerateIshareConfig;
-use App\Actions\Integration\GenerateKdePlugin;
-use App\Actions\Integration\GenerateMacosShortcut;
-use App\Actions\Integration\GenerateScreenCloudPlugin;
-use App\Actions\Integration\GenerateSharexConfig;
-use App\Models\User;
+use XBB\Actions\Integration\GenerateCliScript;
+use XBB\Actions\Integration\GenerateIshareConfig;
+use XBB\Actions\Integration\GenerateKdePlugin;
+use XBB\Actions\Integration\GenerateMacosShortcut;
+use XBB\Actions\Integration\GenerateScreenCloudPlugin;
+use XBB\Actions\Integration\GenerateSharexConfig;
+use XBB\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 

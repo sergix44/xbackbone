@@ -1,11 +1,11 @@
 <?php
 
-use App\Actions\Resource\StoreResource;
-use App\Exceptions\QuotaExceededException;
-use App\Livewire\Dashboard;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Actions\Resource\StoreResource;
+use XBB\Exceptions\QuotaExceededException;
+use XBB\Livewire\Dashboard;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;

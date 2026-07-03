@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\User;
+namespace XBB\Livewire\User;
 
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Actions\Token\RevokeToken;
-use App\Actions\User\DeleteUserAccount;
-use App\Models\Properties\ResourceType;
-use App\Models\User;
-use App\Support\Helpers;
+use XBB\Actions\Fortify\UpdateUserPassword;
+use XBB\Actions\Fortify\UpdateUserProfileInformation;
+use XBB\Actions\Token\RevokeToken;
+use XBB\Actions\User\DeleteUserAccount;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\User;
+use XBB\Support\Helpers;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;

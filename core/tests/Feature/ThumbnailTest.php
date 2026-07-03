@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Resource;
+use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {

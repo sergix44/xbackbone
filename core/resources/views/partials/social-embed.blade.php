@@ -1,4 +1,4 @@
-{{-- OpenGraph / Twitter-Card tags. $embed is built by App\Support\SocialEmbed. --}}
+{{-- OpenGraph / Twitter-Card tags. $embed is built by XBB\Support\SocialEmbed. --}}
 <meta property="og:site_name" content="{{ $embed['siteName'] }}">
 <meta property="og:type" content="{{ $embed['ogType'] }}">
 <meta property="og:title" content="{{ $embed['title'] }}">

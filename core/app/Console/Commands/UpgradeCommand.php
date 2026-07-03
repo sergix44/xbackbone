@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace XBB\Console\Commands;
 
-use App\Actions\Admin\CheckForUpdate;
-use App\Actions\Admin\UpgradeApplication;
-use App\Support\Updater;
+use XBB\Actions\Admin\CheckForUpdate;
+use XBB\Actions\Admin\UpgradeApplication;
+use XBB\Support\Updater;
 use Illuminate\Console\Command;
 use Throwable;
 

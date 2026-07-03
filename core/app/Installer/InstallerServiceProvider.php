@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Installer;
+namespace XBB\Installer;
 
-use App\Installer\Http\Middleware\EnsureInstalled;
-use App\Installer\Http\Middleware\RedirectIfInstalled;
-use App\Installer\Livewire\Installer;
-use App\Installer\Support\InstallationState;
+use XBB\Installer\Http\Middleware\EnsureInstalled;
+use XBB\Installer\Http\Middleware\RedirectIfInstalled;
+use XBB\Installer\Livewire\Installer;
+use XBB\Installer\Support\InstallationState;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 

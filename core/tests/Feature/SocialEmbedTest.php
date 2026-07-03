@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Middleware\ServeSocialEmbed;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
-use App\Support\SocialEmbed;
+use XBB\Http\Middleware\ServeSocialEmbed;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Support\SocialEmbed;
 use Illuminate\Support\Facades\Storage;
 
 /*

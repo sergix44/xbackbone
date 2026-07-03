@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace XBB\Http\Controllers;
 
-use App\Actions\Resource\DeleteResource;
-use App\Actions\Resource\GetResourcePreview;
-use App\Actions\Resource\RecordResourceDownload;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Actions\Resource\GetResourcePreview;
+use XBB\Actions\Resource\RecordResourceDownload;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

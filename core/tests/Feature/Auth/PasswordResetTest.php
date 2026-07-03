@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Livewire\Auth\ForgotPassword;
-use App\Models\User;
+use XBB\Livewire\Auth\ForgotPassword;
+use XBB\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 
@@ -36,7 +36,7 @@ test('reset password screen can be rendered', function () {
         $response = $this->get('/reset-password/'.$notification->token);
 
         $response
-            ->assertSeeLivewire(\App\Livewire\Auth\ResetPassword::class)
+            ->assertSeeLivewire(\XBB\Livewire\Auth\ResetPassword::class)
             ->assertStatus(200);
 
         return true;

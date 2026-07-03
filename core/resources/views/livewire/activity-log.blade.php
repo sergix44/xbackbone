@@ -1,6 +1,6 @@
 <div>
     @php
-        $categoryOptions = collect(\App\Support\ActivityEvent::categories())
+        $categoryOptions = collect(\XBB\Support\ActivityEvent::categories())
             ->map(fn ($label, $value) => ['id' => $value, 'name' => $label])
             ->prepend(['id' => '', 'name' => __('All activity')])
             ->values()
@@ -21,7 +21,7 @@
             <div class="mt-4 flex flex-col gap-2">
                 @forelse($this->activities as $activity)
                     @php
-                        $meta = \App\Support\ActivityEvent::describe($activity->description);
+                        $meta = \XBB\Support\ActivityEvent::describe($activity->description);
                         [$textClass, $bgClass] = match ($meta['color']) {
                             'success' => ['text-success', 'bg-success/10'],
                             'error' => ['text-error', 'bg-error/10'],
@@ -30,8 +30,8 @@
                             'primary' => ['text-primary', 'bg-primary/10'],
                             default => ['text-base-content/70', 'bg-base-300'],
                         };
-                        $subjectLabel = \App\Support\ActivityEvent::subjectLabel($activity);
-                        $subjectUrl = \App\Support\ActivityEvent::subjectUrl($activity);
+                        $subjectLabel = \XBB\Support\ActivityEvent::subjectLabel($activity);
+                        $subjectUrl = \XBB\Support\ActivityEvent::subjectUrl($activity);
                         $email = $activity->properties?->get('email');
                     @endphp
                     <div class="flex items-center gap-3 rounded-lg border border-base-300 px-4 py-3">

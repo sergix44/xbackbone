@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace XBB\Listeners;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

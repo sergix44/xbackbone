@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Jobs;
+namespace XBB\Jobs;
 
-use App\Actions\Resource\Previews\PdfPreviewGenerator;
-use App\Actions\Resource\Previews\PreviewGenerator;
-use App\Actions\Resource\Previews\RasterImagePreviewGenerator;
-use App\Actions\Resource\Previews\ResourceFile;
-use App\Actions\Resource\Previews\SvgPreviewGenerator;
-use App\Actions\Resource\Previews\VideoFramePreviewGenerator;
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Actions\Resource\Previews\PdfPreviewGenerator;
+use XBB\Actions\Resource\Previews\PreviewGenerator;
+use XBB\Actions\Resource\Previews\RasterImagePreviewGenerator;
+use XBB\Actions\Resource\Previews\ResourceFile;
+use XBB\Actions\Resource\Previews\SvgPreviewGenerator;
+use XBB\Actions\Resource\Previews\VideoFramePreviewGenerator;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;

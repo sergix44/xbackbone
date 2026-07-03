@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use XBB\Models\User;
 
 test('the settings menu item is visible to administrators', function () {
     $admin = User::factory()->admin()->create();

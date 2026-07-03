@@ -39,17 +39,17 @@
                 @scope('cell_status', $user)
                     @php
                         $statusClass = match($user->status) {
-                            \App\Models\Properties\UserStatus::ENABLED => 'badge-success',
-                            \App\Models\Properties\UserStatus::DISABLED => 'badge-error',
-                            \App\Models\Properties\UserStatus::API_ONLY => 'badge-info',
-                            \App\Models\Properties\UserStatus::SSO_ONLY => 'badge-warning',
+                            \XBB\Models\Properties\UserStatus::ENABLED => 'badge-success',
+                            \XBB\Models\Properties\UserStatus::DISABLED => 'badge-error',
+                            \XBB\Models\Properties\UserStatus::API_ONLY => 'badge-info',
+                            \XBB\Models\Properties\UserStatus::SSO_ONLY => 'badge-warning',
                         };
                     @endphp
                     <x-badge :value="$user->status->label()" class="{{ $statusClass }} badge-soft"/>
                 @endscope
 
                 @scope('cell_quota', $user)
-                    {{ $user->quota < 0 ? __('Unlimited') : \App\Support\Helpers::humanizeBytes((int) $user->quota) }}
+                    {{ $user->quota < 0 ? __('Unlimited') : \XBB\Support\Helpers::humanizeBytes((int) $user->quota) }}
                 @endscope
 
                 @scope('cell_media_count', $user)

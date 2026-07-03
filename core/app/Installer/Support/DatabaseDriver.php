@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Installer\Support;
+namespace XBB\Installer\Support;
 
 enum DatabaseDriver: string
 {

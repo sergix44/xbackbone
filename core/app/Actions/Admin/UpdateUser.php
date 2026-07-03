@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Admin;
+namespace XBB\Actions\Admin;
 
-use App\Events\User\UserUpdated;
-use App\Models\Properties\UserStatus;
-use App\Models\User;
+use XBB\Events\User\UserUpdated;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\User;
 
 class UpdateUser
 {

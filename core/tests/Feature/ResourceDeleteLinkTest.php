@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Resource;
+use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
 
 test('a signed deletion url deletes the resource', function () {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace XBB\Livewire\Auth;
 
 use Illuminate\Auth\Events\Registered;
 use Laravel\Fortify\Contracts\CreatesNewUsers;

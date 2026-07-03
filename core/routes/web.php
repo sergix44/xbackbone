@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\ExportController;
-use App\Http\Controllers\IntegrationController;
-use App\Http\Controllers\OembedController;
-use App\Http\Controllers\ResourceController;
-use App\Http\Middleware\EnsureResourceAccessible;
-use App\Http\Middleware\ServeSocialEmbed;
-use App\Livewire\Admin\Settings;
-use App\Livewire\Dashboard;
-use App\Livewire\Integrations;
-use App\Livewire\Preview;
-use App\Livewire\User\Profile;
-use App\Models\Resource;
+use XBB\Http\Controllers\ExportController;
+use XBB\Http\Controllers\IntegrationController;
+use XBB\Http\Controllers\OembedController;
+use XBB\Http\Controllers\ResourceController;
+use XBB\Http\Middleware\EnsureResourceAccessible;
+use XBB\Http\Middleware\ServeSocialEmbed;
+use XBB\Livewire\Admin\Settings;
+use XBB\Livewire\Dashboard;
+use XBB\Livewire\Integrations;
+use XBB\Livewire\Preview;
+use XBB\Livewire\User\Profile;
+use XBB\Models\Resource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

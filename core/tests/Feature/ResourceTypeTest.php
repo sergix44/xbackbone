@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Properties\ResourceType;
+use XBB\Models\Properties\ResourceType;
 
 dataset('textual mimes', [
     'plain text' => ['text/plain'],

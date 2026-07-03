@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Livewire\User\Profile;
-use App\Models\User;
+use XBB\Livewire\User\Profile;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 

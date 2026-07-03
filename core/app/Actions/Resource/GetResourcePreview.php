@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
 use SergiX44\ImageZen\Draws\Constraint;
 use SergiX44\ImageZen\Draws\Position;

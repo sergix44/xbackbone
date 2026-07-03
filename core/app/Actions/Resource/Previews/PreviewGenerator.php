@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions\Resource\Previews;
+namespace XBB\Actions\Resource\Previews;
 
-use App\Models\Resource;
+use XBB\Models\Resource;
 use SergiX44\ImageZen\Image;
 
 interface PreviewGenerator

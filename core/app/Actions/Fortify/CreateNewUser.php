@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace XBB\Actions\Fortify;
 
-use App\Models\User;
+use XBB\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;

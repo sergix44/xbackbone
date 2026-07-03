@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace XBB\Actions\Fortify;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Validation\Rules\Password;

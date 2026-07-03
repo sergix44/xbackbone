@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace XBB\Http\Controllers;
 
-use App\Models\Properties\ResourceType;
-use App\Models\Resource;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

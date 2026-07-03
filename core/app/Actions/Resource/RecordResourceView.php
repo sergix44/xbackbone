@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Models\Resource;
+use XBB\Models\Resource;
 
 class RecordResourceView
 {

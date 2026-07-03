@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use XBB\Models\User;
 use Laravel\Pennant\Feature;
 
 test('guests cannot view the api docs while they are restricted', function () {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Resource;
+namespace XBB\Actions\Resource;
 
-use App\Events\Resource\ResourceVisibilityToggled;
-use App\Models\Resource;
+use XBB\Events\Resource\ResourceVisibilityToggled;
+use XBB\Models\Resource;
 
 class ToggleResourceVisibility
 {

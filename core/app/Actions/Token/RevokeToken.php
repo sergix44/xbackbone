@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Token;
+namespace XBB\Actions\Token;
 
-use App\Events\Token\TokenRevoked;
-use App\Models\User;
+use XBB\Events\Token\TokenRevoked;
+use XBB\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class RevokeToken

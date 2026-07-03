@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners;
+namespace XBB\Listeners;
 
-use App\Events\Token\TokenCreated;
-use App\Events\Token\TokenRevoked;
+use XBB\Events\Token\TokenCreated;
+use XBB\Events\Token\TokenRevoked;
 
 class LogTokenActivity
 {

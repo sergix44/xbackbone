@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Events\Resource;
+namespace XBB\Events\Resource;
 
-use App\Models\Resource;
-use App\Models\User;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 class ResourceUploaded
 {
