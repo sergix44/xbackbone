@@ -1,9 +1,9 @@
 <?php
 
-use XBB\Livewire\Auth\Login;
-use XBB\Models\User;
 use Livewire\Livewire;
 use Spatie\Activitylog\Models\Activity;
+use XBB\Livewire\Auth\Login;
+use XBB\Models\User;
 
 test('a successful login logs auth.login', function () {
     $user = User::factory()->create();
@@ -16,6 +16,7 @@ test('a successful login logs auth.login', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'auth.login',
+        'event' => 'auth.login',
         'causer_id' => $user->id,
     ]);
 });
@@ -27,6 +28,7 @@ test('logging out logs auth.logout', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'auth.logout',
+        'event' => 'auth.logout',
         'causer_id' => $user->id,
     ]);
 });
@@ -41,6 +43,7 @@ test('a failed login attempt logs auth.failed without leaking the password', fun
 
     $activity = Activity::query()->where('description', 'auth.failed')->firstOrFail();
 
+    expect($activity->event)->toBe('auth.failed');
     expect($activity->causer_id)->toBe($user->id);
     expect($activity->properties->get('email'))->toBe($user->email);
     expect($activity->properties->has('password'))->toBeFalse();
@@ -63,5 +66,6 @@ test('repeated failed logins trigger auth.lockout', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'auth.lockout',
+        'event' => 'auth.lockout',
     ]);
 });

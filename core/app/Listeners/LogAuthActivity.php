@@ -14,12 +14,12 @@ class LogAuthActivity
 {
     public function handleLogin(Login $event): void
     {
-        activity()->causedBy($this->toModel($event->user))->log('auth.login');
+        activity()->causedBy($this->toModel($event->user))->event('auth.login')->log('auth.login');
     }
 
     public function handleLogout(Logout $event): void
     {
-        activity()->causedBy($this->toModel($event->user))->log('auth.logout');
+        activity()->causedBy($this->toModel($event->user))->event('auth.logout')->log('auth.logout');
     }
 
     public function handleRegistered(Registered $event): void
@@ -30,13 +30,14 @@ class LogAuthActivity
             return;
         }
 
-        activity()->performedOn($user)->causedBy($user)->log('auth.registered');
+        activity()->performedOn($user)->causedBy($user)->event('auth.registered')->log('auth.registered');
     }
 
     public function handleLockout(Lockout $event): void
     {
         activity()
             ->withProperties(['email' => $event->request->input('email')])
+            ->event('auth.lockout')
             ->log('auth.lockout');
     }
 
@@ -47,6 +48,7 @@ class LogAuthActivity
         activity()
             ->causedBy($this->toModel($event->user))
             ->withProperties(['email' => $event->credentials['email'] ?? null])
+            ->event('auth.failed')
             ->log('auth.failed');
     }
 

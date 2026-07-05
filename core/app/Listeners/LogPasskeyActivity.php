@@ -11,12 +11,14 @@ class LogPasskeyActivity
 {
     public function handlePasskeyRegistered(PasskeyRegistered $event): void
     {
-        activity()->performedOn($event->passkey)->causedBy($this->toModel($event->user))->log('passkey.added');
+        activity()->performedOn($event->passkey)->causedBy($this->toModel($event->user))
+            ->event('passkey.added')->log('passkey.added');
     }
 
     public function handlePasskeyDeleted(PasskeyDeleted $event): void
     {
-        activity()->performedOn($event->passkey)->causedBy($this->toModel($event->user))->log('passkey.removed');
+        activity()->performedOn($event->passkey)->causedBy($this->toModel($event->user))
+            ->event('passkey.removed')->log('passkey.removed');
     }
 
     /**

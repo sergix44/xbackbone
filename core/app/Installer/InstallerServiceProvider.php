@@ -2,12 +2,13 @@
 
 namespace XBB\Installer;
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use XBB\Installer\Http\Middleware\EnsureInstalled;
 use XBB\Installer\Http\Middleware\RedirectIfInstalled;
 use XBB\Installer\Livewire\Installer;
 use XBB\Installer\Support\InstallationState;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
 
 class InstallerServiceProvider extends ServiceProvider
 {
@@ -45,6 +46,14 @@ class InstallerServiceProvider extends ServiceProvider
         // The guard checks the installation state per request, so it is safe to
         // attach unconditionally; it is a no-op once the app is installed.
         Route::prependMiddlewareToGroup('web', EnsureInstalled::class);
+
+        // Livewire only re-runs a route's middleware on the initial page load.
+        // Without this, a snapshot captured from /install before setup finishes
+        // could be replayed against the Livewire update endpoint afterwards,
+        // since that shared endpoint never revisits the installer route's
+        // middleware. Marking the guard "persistent" makes Livewire re-check it
+        // on every subsequent request tied to a snapshot from /install.
+        Livewire::addPersistentMiddleware([RedirectIfInstalled::class]);
 
         if (! InstallationState::isInstalled() && ! $this->app->runningUnitTests()) {
             $this->ensureRuntimeDirectories();

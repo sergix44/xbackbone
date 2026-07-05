@@ -1,9 +1,7 @@
 <div>
     @php
-        $categoryOptions = collect(\XBB\Support\ActivityEvent::categories())
-            ->map(fn ($label, $value) => ['id' => $value, 'name' => $label])
+        $categoryOptions = collect(\XBB\Support\ActivityCategory::options())
             ->prepend(['id' => '', 'name' => __('All activity')])
-            ->values()
             ->all();
     @endphp
 
@@ -39,7 +37,7 @@
                             <x-icon :name="$meta['icon']" class="h-5 w-5 {{ $textClass }}"/>
                         </span>
                         <div class="min-w-0 flex-1">
-                            <div class="font-medium">{{ __($meta['label']) }}</div>
+                            <div class="font-medium">{{ $meta['label'] }}</div>
                             <div class="flex flex-wrap items-center gap-x-1.5 text-xs opacity-60">
                                 @if($this->isGlobal())
                                     <span class="truncate">{{ $activity->causer?->name ?? __('System') }}</span>

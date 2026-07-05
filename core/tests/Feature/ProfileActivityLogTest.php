@@ -1,8 +1,8 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Livewire\User\Profile;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 test('updating the profile logs user.profile_updated', function () {
     $user = User::factory()->create();
@@ -17,6 +17,7 @@ test('updating the profile logs user.profile_updated', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'user.profile_updated',
+        'event' => 'user.profile_updated',
         'subject_id' => $user->id,
         'causer_id' => $user->id,
     ]);
@@ -37,12 +38,14 @@ test('changing the password alongside the profile also logs user.password_change
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'user.profile_updated',
+        'event' => 'user.profile_updated',
         'subject_id' => $user->id,
         'causer_id' => $user->id,
     ]);
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'user.password_changed',
+        'event' => 'user.password_changed',
         'subject_id' => $user->id,
         'causer_id' => $user->id,
     ]);
@@ -61,6 +64,7 @@ test('revoking a token logs token.revoked', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'token.revoked',
+        'event' => 'token.revoked',
         'subject_id' => $token->accessToken->id,
         'causer_id' => $user->id,
     ]);

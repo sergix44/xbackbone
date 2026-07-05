@@ -2,41 +2,42 @@
 
 namespace XBB\Support;
 
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 class ActivityEvent
 {
     /**
-     * Presentation metadata for every activity-log event the app records, keyed by
-     * the dot-notation description passed to {@see Activity()}->log(). Colours are
-     * daisyUI semantic tokens resolved to concrete classes in the Blade view.
+     * Icon and colour for every activity-log event the app records, keyed by the
+     * dot-notation description passed to {@see Activity()}->log(). Labels live in
+     * lang/en/activity.php so they can be translated. Colours are daisyUI semantic
+     * tokens resolved to concrete classes in the Blade view.
      *
-     * @var array<string, array{label: string, icon: string, color: string}>
+     * @var array<string, array{icon: string, color: string}>
      */
     private const EVENTS = [
-        'resource.uploaded' => ['label' => 'Uploaded a file', 'icon' => 'o-arrow-up-tray', 'color' => 'success'],
-        'resource.published' => ['label' => 'Made a file public', 'icon' => 'o-eye', 'color' => 'info'],
-        'resource.hidden' => ['label' => 'Made a file private', 'icon' => 'o-eye-slash', 'color' => 'warning'],
-        'resource.updated' => ['label' => 'Updated file settings', 'icon' => 'o-cog-6-tooth', 'color' => 'info'],
-        'resource.deleted' => ['label' => 'Deleted a file', 'icon' => 'o-trash', 'color' => 'error'],
-        'user.created' => ['label' => 'Created a user', 'icon' => 'o-user-plus', 'color' => 'success'],
-        'user.updated' => ['label' => 'Updated a user', 'icon' => 'o-user', 'color' => 'info'],
-        'user.deleted' => ['label' => 'Deleted a user', 'icon' => 'o-user-minus', 'color' => 'error'],
-        'user.password_changed' => ['label' => 'Changed the password', 'icon' => 'o-key', 'color' => 'warning'],
-        'user.profile_updated' => ['label' => 'Updated the profile', 'icon' => 'o-identification', 'color' => 'info'],
-        'token.created' => ['label' => 'Created an API token', 'icon' => 'o-command-line', 'color' => 'success'],
-        'token.revoked' => ['label' => 'Revoked an API token', 'icon' => 'o-command-line', 'color' => 'error'],
-        'passkey.added' => ['label' => 'Added a passkey', 'icon' => 'o-finger-print', 'color' => 'success'],
-        'passkey.removed' => ['label' => 'Removed a passkey', 'icon' => 'o-finger-print', 'color' => 'error'],
-        'auth.login' => ['label' => 'Signed in', 'icon' => 'o-arrow-right-end-on-rectangle', 'color' => 'success'],
-        'auth.logout' => ['label' => 'Signed out', 'icon' => 'o-arrow-left-start-on-rectangle', 'color' => 'neutral'],
-        'auth.registered' => ['label' => 'Registered an account', 'icon' => 'o-user-plus', 'color' => 'success'],
-        'auth.lockout' => ['label' => 'Locked out after too many attempts', 'icon' => 'o-lock-closed', 'color' => 'warning'],
-        'auth.failed' => ['label' => 'Failed sign-in attempt', 'icon' => 'o-exclamation-triangle', 'color' => 'error'],
+        'resource.uploaded' => ['icon' => 'o-arrow-up-tray', 'color' => 'success'],
+        'resource.published' => ['icon' => 'o-eye', 'color' => 'info'],
+        'resource.hidden' => ['icon' => 'o-eye-slash', 'color' => 'warning'],
+        'resource.updated' => ['icon' => 'o-cog-6-tooth', 'color' => 'info'],
+        'resource.deleted' => ['icon' => 'o-trash', 'color' => 'error'],
+        'user.created' => ['icon' => 'o-user-plus', 'color' => 'success'],
+        'user.updated' => ['icon' => 'o-user', 'color' => 'info'],
+        'user.deleted' => ['icon' => 'o-user-minus', 'color' => 'error'],
+        'user.password_changed' => ['icon' => 'o-key', 'color' => 'warning'],
+        'user.profile_updated' => ['icon' => 'o-identification', 'color' => 'info'],
+        'token.created' => ['icon' => 'o-command-line', 'color' => 'success'],
+        'token.revoked' => ['icon' => 'o-command-line', 'color' => 'error'],
+        'passkey.added' => ['icon' => 'o-finger-print', 'color' => 'success'],
+        'passkey.removed' => ['icon' => 'o-finger-print', 'color' => 'error'],
+        'auth.login' => ['icon' => 'o-arrow-right-end-on-rectangle', 'color' => 'success'],
+        'auth.logout' => ['icon' => 'o-arrow-left-start-on-rectangle', 'color' => 'neutral'],
+        'auth.registered' => ['icon' => 'o-user-plus', 'color' => 'success'],
+        'auth.lockout' => ['icon' => 'o-lock-closed', 'color' => 'warning'],
+        'auth.failed' => ['icon' => 'o-exclamation-triangle', 'color' => 'error'],
     ];
 
     /**
@@ -47,28 +48,27 @@ class ActivityEvent
      */
     public static function describe(string $description): array
     {
-        return self::EVENTS[$description] ?? [
-            'label' => Str::headline(Str::after($description, '.') ?: $description),
-            'icon' => 'o-bolt',
-            'color' => 'neutral',
+        $meta = self::EVENTS[$description] ?? ['icon' => 'o-bolt', 'color' => 'neutral'];
+
+        return [
+            'label' => self::label($description),
+            'icon' => $meta['icon'],
+            'color' => $meta['color'],
         ];
     }
 
     /**
-     * The categories events are grouped into (the part before the dot), used to
-     * populate the feed's filter.
-     *
-     * @return array<string, string>
+     * Translated label for a given event description, falling back to a
+     * humanised version of the description when no translation exists.
      */
-    public static function categories(): array
+    private static function label(string $description): string
     {
-        return [
-            'resource' => __('Files'),
-            'user' => __('Users'),
-            'token' => __('API tokens'),
-            'passkey' => __('Passkeys'),
-            'auth' => __('Authentication'),
-        ];
+        $key = "activity.{$description}";
+        $translated = __($key);
+
+        return is_string($translated) && $translated !== $key
+            ? $translated
+            : Str::headline(Str::after($description, '.') ?: $description);
     }
 
     /**

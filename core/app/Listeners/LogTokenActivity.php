@@ -9,11 +9,13 @@ class LogTokenActivity
 {
     public function handleTokenCreated(TokenCreated $event): void
     {
-        activity()->performedOn($event->token)->causedBy($event->causer)->log('token.created');
+        activity()->performedOn($event->token)->causedBy($event->causer)
+            ->event('token.created')->log('token.created');
     }
 
     public function handleTokenRevoked(TokenRevoked $event): void
     {
-        activity()->performedOn($event->token)->causedBy($event->causer)->log('token.revoked');
+        activity()->performedOn($event->token)->causedBy($event->causer)
+            ->event('token.revoked')->log('token.revoked');
     }
 }

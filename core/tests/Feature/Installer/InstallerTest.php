@@ -1,12 +1,13 @@
 <?php
 
+use Livewire\Livewire;
+use Livewire\Mechanisms\HandleRequests\EndpointResolver;
 use XBB\Actions\Admin\CreateUser;
 use XBB\Installer\Actions\FinalizeInstallation;
 use XBB\Installer\Exceptions\InstallationException;
 use XBB\Installer\Livewire\Installer;
 use XBB\Installer\Support\InstallationState;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 /**
  * Boot the app as "not yet installed". The route guard checks the state per
@@ -37,6 +38,40 @@ describe('installer gating', function () {
         config(['app.installed' => true]);
 
         $this->get(route('installer.index'))->assertRedirect(route('login'));
+    });
+
+    it('rejects a stale installer snapshot replayed against the Livewire update endpoint after install completes', function () {
+        markNotInstalled();
+
+        $html = $this->get(route('installer.index'))->getContent();
+
+        $snapshot = htmlspecialchars_decode(
+            str($html)->betweenFirst('wire:snapshot="', '"')->toString(),
+            ENT_QUOTES | ENT_SUBSTITUTE,
+        );
+
+        config(['app.installed' => true]);
+
+        $replay = fn (string $method) => $this->postJson(EndpointResolver::updatePath(), [
+            'components' => [[
+                'snapshot' => $snapshot,
+                'updates' => [
+                    'name' => 'Attacker',
+                    'email' => 'attacker@evil.test',
+                    'password' => 'AttackerPass123!',
+                    'password_confirmation' => 'AttackerPass123!',
+                    'dbConnectionVerified' => true,
+                ],
+                'calls' => [
+                    ['path' => '', 'method' => $method, 'params' => []],
+                ],
+            ]],
+        ], ['X-Livewire' => 'true']);
+
+        $replay('testDatabase')->assertRedirect(route('login'));
+        $replay('install')->assertRedirect(route('login'));
+
+        expect(User::query()->where('email', 'attacker@evil.test')->exists())->toBeFalse();
     });
 });
 

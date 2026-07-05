@@ -1,16 +1,16 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Livewire\ActivityLog;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 /**
  * Log an activity performed on a resource by the given causer.
  */
 function logResourceActivity(string $description, User $causer, Resource $subject): void
 {
-    activity()->performedOn($subject)->causedBy($causer)->log($description);
+    activity()->performedOn($subject)->causedBy($causer)->event($description)->log($description);
 }
 
 test('the global feed shows activity from every user', function () {
@@ -49,7 +49,7 @@ test('the category filter narrows the feed to a single event namespace', functio
     $admin = User::factory()->admin()->create();
 
     logResourceActivity('resource.uploaded', $admin, Resource::factory()->for($admin)->create(['name' => 'Alpha File']));
-    activity()->causedBy($admin)->log('auth.login');
+    activity()->causedBy($admin)->event('auth.login')->log('auth.login');
 
     $this->actingAs($admin);
 

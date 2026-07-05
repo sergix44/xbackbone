@@ -1,13 +1,13 @@
 <?php
 
-use XBB\Actions\User\DeleteUserAccount;
-use XBB\Livewire\Dashboard;
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Livewire\Livewire;
+use XBB\Actions\User\DeleteUserAccount;
+use XBB\Livewire\Dashboard;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 beforeEach(function () {
     Storage::fake();
@@ -26,6 +26,7 @@ test('uploading through the dashboard logs resource.uploaded', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.uploaded',
+        'event' => 'resource.uploaded',
         'subject_type' => Resource::class,
         'subject_id' => $resource->id,
         'causer_type' => User::class,
@@ -43,6 +44,7 @@ test('toggling visibility through the dashboard logs resource.hidden and resourc
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.hidden',
+        'event' => 'resource.hidden',
         'subject_id' => $resource->id,
         'causer_id' => $user->id,
     ]);
@@ -51,6 +53,7 @@ test('toggling visibility through the dashboard logs resource.hidden and resourc
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.published',
+        'event' => 'resource.published',
         'subject_id' => $resource->id,
         'causer_id' => $user->id,
     ]);
@@ -70,6 +73,7 @@ test('updating settings through the dashboard logs resource.updated', function (
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.updated',
+        'event' => 'resource.updated',
         'subject_id' => $resource->id,
         'causer_id' => $user->id,
     ]);
@@ -87,6 +91,7 @@ test('deleting through the dashboard logs resource.deleted', function () {
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.deleted',
+        'event' => 'resource.deleted',
         'subject_id' => $resource->id,
         'causer_id' => $user->id,
     ]);
@@ -105,6 +110,7 @@ test('uploading through the API logs resource.uploaded (regression: API previous
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.uploaded',
+        'event' => 'resource.uploaded',
         'subject_id' => $resource->id,
         'causer_id' => $user->id,
     ]);
@@ -121,6 +127,7 @@ test('deleting through the API as the owner logs resource.deleted (regression: A
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.deleted',
+        'event' => 'resource.deleted',
         'subject_id' => $resource->id,
         'causer_id' => $user->id,
     ]);
@@ -138,6 +145,7 @@ test('deleting through the API as an admin on another users resource logs the ad
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.deleted',
+        'event' => 'resource.deleted',
         'subject_id' => $resource->id,
         'causer_id' => $admin->id,
     ]);
@@ -152,6 +160,7 @@ test('deleting through the signed ShareX deletion URL logs resource.deleted with
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.deleted',
+        'event' => 'resource.deleted',
         'subject_id' => $resource->id,
         'causer_id' => null,
     ]);
@@ -166,12 +175,14 @@ test('deleting a user account cascades resource.deleted rows attributed to the d
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'resource.deleted',
+        'event' => 'resource.deleted',
         'subject_id' => $resource->id,
         'causer_id' => $admin->id,
     ]);
 
     $this->assertDatabaseHas('activity_log', [
         'description' => 'user.deleted',
+        'event' => 'user.deleted',
         'subject_id' => $victim->id,
         'causer_id' => $admin->id,
     ]);
