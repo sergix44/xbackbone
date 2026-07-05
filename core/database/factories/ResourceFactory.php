@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceFactory extends Factory
 {

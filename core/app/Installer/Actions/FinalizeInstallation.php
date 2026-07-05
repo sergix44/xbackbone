@@ -2,6 +2,10 @@
 
 namespace XBB\Installer\Actions;
 
+use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 use XBB\Actions\Admin\CreateUser;
 use XBB\Installer\Exceptions\InstallationException;
 use XBB\Installer\Support\DatabaseConfig;
@@ -9,10 +13,6 @@ use XBB\Installer\Support\InstallationState;
 use XBB\Installer\Support\StorageConfig;
 use XBB\Models\Properties\UserStatus;
 use XBB\Models\User;
-use Illuminate\Support\Env;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Throwable;
 
 /**
  * Applies the wizard's choices in an ordered, idempotent sequence. The
@@ -29,6 +29,7 @@ class FinalizeInstallation
      *     database: array<string, mixed>,
      *     storage: array<string, mixed>,
      *     admin: array{name: string, email: string, password: string},
+     *     queue: array{sync: bool},
      *     import: array<string, mixed>|null
      * }  $payload
      */
@@ -57,12 +58,13 @@ class FinalizeInstallation
         }
 
         // 6. Restore database-backed runtime services and mark installed
-        //    (effective on the next request).
+        //    (effective on the next request). The queue stays synchronous when
+        //    the operator opted out of running a worker.
         $this->writeEnv([
             'APP_INSTALLED' => true,
             'SESSION_DRIVER' => 'database',
             'CACHE_STORE' => 'database',
-            'QUEUE_CONNECTION' => 'database',
+            'QUEUE_CONNECTION' => $payload['queue']['sync'] ? 'sync' : 'database',
         ]);
 
         // 7. Drop cached config/routes/views so the new env is honoured.

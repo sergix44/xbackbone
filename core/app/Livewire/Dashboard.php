@@ -2,13 +2,6 @@
 
 namespace XBB\Livewire;
 
-use XBB\Actions\Resource\DeleteResource;
-use XBB\Actions\Resource\ListResources;
-use XBB\Actions\Resource\StoreResource;
-use XBB\Actions\Resource\ToggleResourceVisibility;
-use XBB\Actions\Resource\UpdateResourceSettings;
-use XBB\Exceptions\QuotaExceededException;
-use XBB\Models\Resource;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -16,6 +9,13 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Actions\Resource\ListResources;
+use XBB\Actions\Resource\StoreResource;
+use XBB\Actions\Resource\ToggleResourceVisibility;
+use XBB\Actions\Resource\UpdateResourceSettings;
+use XBB\Exceptions\QuotaExceededException;
+use XBB\Models\Resource;
 
 class Dashboard extends Component
 {

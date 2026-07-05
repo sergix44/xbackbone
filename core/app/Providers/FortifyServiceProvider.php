@@ -2,6 +2,12 @@
 
 namespace XBB\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Laravel\Fortify\Fortify;
 use XBB\Actions\Fortify\CreateNewUser;
 use XBB\Actions\Fortify\ResetUserPassword;
 use XBB\Actions\Fortify\UpdateUserPassword;
@@ -12,12 +18,6 @@ use XBB\Livewire\Auth\Login;
 use XBB\Livewire\Auth\Register;
 use XBB\Livewire\Auth\ResetPassword;
 use XBB\Livewire\Auth\VerifyEmail;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {

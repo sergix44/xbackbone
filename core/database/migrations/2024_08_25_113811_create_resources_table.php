@@ -1,10 +1,10 @@
 <?php
 
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 return new class extends Migration
 {

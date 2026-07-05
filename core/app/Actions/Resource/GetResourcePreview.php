@@ -2,14 +2,14 @@
 
 namespace XBB\Actions\Resource;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
 use SergiX44\ImageZen\Draws\Constraint;
 use SergiX44\ImageZen\Draws\Position;
 use SergiX44\ImageZen\Format;
 use SergiX44\ImageZen\Image;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 class GetResourcePreview
 {

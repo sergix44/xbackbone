@@ -2,8 +2,8 @@
 
 namespace XBB\Events\Token;
 
-use XBB\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
+use XBB\Models\User;
 
 class TokenRevoked
 {

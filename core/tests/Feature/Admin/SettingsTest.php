@@ -1,11 +1,11 @@
 <?php
 
+use Laravel\Pennant\Feature;
+use Livewire\Livewire;
 use XBB\Livewire\Admin\Settings;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Laravel\Pennant\Feature;
-use Livewire\Livewire;
 
 test('guests are redirected away from the settings page', function () {
     $this->get(route('admin.settings'))->assertRedirect(route('login'));
@@ -35,6 +35,22 @@ test('the settings page defaults to the general tab', function () {
         ->assertSee('Enable user sign up')
         ->assertSee('Default theme')
         ->assertSee('Make API documentation public');
+});
+
+test('the general tab warns when the queue runs synchronously', function () {
+    config(['queue.default' => 'sync']);
+
+    $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+    Livewire::test(Settings::class)->assertSee('Queue running synchronously');
+});
+
+test('the general tab hides the synchronous queue warning when a real queue is configured', function () {
+    config(['queue.default' => 'database']);
+
+    $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+    Livewire::test(Settings::class)->assertDontSee('Queue running synchronously');
 });
 
 test('the general tab reflects the current feature values', function () {

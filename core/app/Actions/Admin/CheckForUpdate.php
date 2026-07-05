@@ -2,10 +2,10 @@
 
 namespace XBB\Actions\Admin;
 
-use XBB\Support\Updater;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Throwable;
+use XBB\Support\Updater;
 
 class CheckForUpdate
 {

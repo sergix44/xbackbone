@@ -132,7 +132,7 @@ describe('installer step validation', function () {
 
     it('validates the administrator account', function () {
         Livewire::test(Installer::class)
-            ->set('step', 4)
+            ->set('step', 5)
             ->set('name', '')
             ->set('email', 'not-an-email')
             ->set('password', 'short')
@@ -143,7 +143,7 @@ describe('installer step validation', function () {
 
     it('requires matching password confirmation', function () {
         Livewire::test(Installer::class)
-            ->set('step', 4)
+            ->set('step', 5)
             ->set('name', 'Admin')
             ->set('email', 'admin@example.com')
             ->set('password', 'password123')
@@ -154,7 +154,7 @@ describe('installer step validation', function () {
 
     it('skips legacy validation when import is disabled', function () {
         Livewire::test(Installer::class)
-            ->set('step', 5)
+            ->set('step', 6)
             ->set('importLegacy', false)
             ->call('nextStep')
             ->assertHasNoErrors();
@@ -162,11 +162,30 @@ describe('installer step validation', function () {
 
     it('requires legacy fields when import is enabled', function () {
         Livewire::test(Installer::class)
-            ->set('step', 5)
+            ->set('step', 6)
             ->set('importLegacy', true)
             ->set('legacyDriver', 'mysql')
             ->call('nextStep')
             ->assertHasErrors(['legacyStoragePath', 'legacyDbDatabase', 'legacyDbUsername']);
+    });
+
+    it('advances past the queue step and defaults to a background worker', function () {
+        Livewire::test(Installer::class)
+            ->set('step', 4)
+            ->assertSet('useSyncQueue', false)
+            ->assertSee('queue:work')
+            ->assertSee('xbackbone-worker')
+            ->assertDontSee('Synchronous processing enabled')
+            ->call('nextStep')
+            ->assertHasNoErrors()
+            ->assertSet('step', 5);
+    });
+
+    it('shows a warning when the operator opts out of a queue worker', function () {
+        Livewire::test(Installer::class)
+            ->set('step', 4)
+            ->set('useSyncQueue', true)
+            ->assertSee('Synchronous processing enabled');
     });
 });
 
@@ -229,7 +248,43 @@ describe('installer finalize wiring', function () {
         expect($spy->received['appUrl'])->toBe('https://files.example.com')
             ->and($spy->received['database']['driver'])->toBe('sqlite')
             ->and($spy->received['admin']['email'])->toBe('admin@example.com')
+            ->and($spy->received['queue']['sync'])->toBeFalse()
             ->and($spy->received['import'])->toBeNull();
+    });
+
+    it('passes the synchronous queue choice through to finalize', function () {
+        $spy = new class(app(CreateUser::class)) extends FinalizeInstallation
+        {
+            /** @var array<string, mixed> */
+            public array $received = [];
+
+            public function __invoke(array $payload): User
+            {
+                $this->received = $payload;
+
+                return User::factory()->create();
+            }
+        };
+
+        app()->instance(FinalizeInstallation::class, $spy);
+
+        Livewire::test(Installer::class)
+            ->set('appUrl', 'https://files.example.com')
+            ->set('dbDriver', 'sqlite')
+            ->set('dbSqlitePath', '/tmp/xbb.db')
+            ->set('dbConnectionVerified', true)
+            ->set('storageDriver', 'local')
+            ->set('localRoot', storage_path('app'))
+            ->set('useSyncQueue', true)
+            ->set('name', 'Admin')
+            ->set('email', 'admin@example.com')
+            ->set('password', 'password123')
+            ->set('password_confirmation', 'password123')
+            ->set('importLegacy', false)
+            ->call('install')
+            ->assertRedirect(route('login'));
+
+        expect($spy->received['queue']['sync'])->toBeTrue();
     });
 
     it('jumps back to the offending step when finalize fails', function () {

@@ -1,14 +1,14 @@
 <?php
 
+use Illuminate\Hashing\Argon2IdHasher;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\PendingCommand;
 use XBB\Jobs\GenerateResourcePreview;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Properties\UserStatus;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Hashing\Argon2IdHasher;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Testing\PendingCommand;
 
 // A minimal 1x1 PNG so mime detection resolves to image/png from real bytes.
 const LEGACY_PNG = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';

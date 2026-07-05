@@ -2,12 +2,12 @@
 
 namespace XBB\Livewire;
 
-use XBB\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Activitylog\Models\Activity;
+use XBB\Models\User;
 
 class ActivityLog extends Component
 {

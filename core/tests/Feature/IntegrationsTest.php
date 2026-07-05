@@ -1,7 +1,7 @@
 <?php
 
-use XBB\Models\User;
 use Illuminate\Support\Facades\URL;
+use XBB\Models\User;
 
 test('integrations page renders all available integrations', function () {
     $this->actingAs(User::factory()->create())

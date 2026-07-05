@@ -2,10 +2,10 @@
 
 namespace XBB\Actions\Integration;
 
-use XBB\Actions\Token\IssueIntegrationToken;
-use XBB\Models\User;
 use Illuminate\Support\Str;
 use RuntimeException;
+use XBB\Actions\Token\IssueIntegrationToken;
+use XBB\Models\User;
 use ZipArchive;
 
 class GenerateScreenCloudPlugin

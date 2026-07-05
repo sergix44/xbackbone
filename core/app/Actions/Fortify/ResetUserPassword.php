@@ -2,11 +2,11 @@
 
 namespace XBB\Actions\Fortify;
 
-use XBB\Events\User\UserPasswordChanged;
-use XBB\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
+use XBB\Events\User\UserPasswordChanged;
+use XBB\Models\User;
 
 class ResetUserPassword implements ResetsUserPasswords
 {

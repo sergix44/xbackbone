@@ -1,15 +1,15 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 use XBB\Actions\Resource\StoreResource;
 use XBB\Exceptions\QuotaExceededException;
 use XBB\Livewire\Dashboard;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Livewire;
 
 beforeEach(function () {
     Storage::fake();

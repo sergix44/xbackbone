@@ -2,12 +2,6 @@
 
 namespace XBB\Livewire\Admin;
 
-use XBB\Actions\Admin\CreateUser;
-use XBB\Actions\Admin\UpdateUser;
-use XBB\Actions\User\DeleteUserAccount;
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Properties\UserStatus;
-use XBB\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -16,6 +10,12 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
+use XBB\Actions\Admin\CreateUser;
+use XBB\Actions\Admin\UpdateUser;
+use XBB\Actions\User\DeleteUserAccount;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Properties\UserStatus;
+use XBB\Models\User;
 
 class UserManagement extends Component
 {

@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Storage;
 
 test('an expired resource preview returns 404 for a guest', function () {
     $resource = Resource::factory()->image()->expired()->create();

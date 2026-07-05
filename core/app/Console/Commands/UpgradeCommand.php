@@ -2,11 +2,11 @@
 
 namespace XBB\Console\Commands;
 
+use Illuminate\Console\Command;
+use Throwable;
 use XBB\Actions\Admin\CheckForUpdate;
 use XBB\Actions\Admin\UpgradeApplication;
 use XBB\Support\Updater;
-use Illuminate\Console\Command;
-use Throwable;
 
 class UpgradeCommand extends Command
 {

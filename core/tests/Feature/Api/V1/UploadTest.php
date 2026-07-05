@@ -1,8 +1,8 @@
 <?php
 
-use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use XBB\Models\User;
 
 beforeEach(function () {
     Storage::fake();

@@ -2,12 +2,12 @@
 
 namespace XBB\Providers;
 
-use XBB\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Pennant\Feature;
 use Sqids\Sqids;
+use XBB\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {

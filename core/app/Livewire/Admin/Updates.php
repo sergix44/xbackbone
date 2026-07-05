@@ -2,12 +2,12 @@
 
 namespace XBB\Livewire\Admin;
 
-use XBB\Actions\Admin\CheckForUpdate;
-use XBB\Support\Updater;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Process;
 use Livewire\Component;
 use Mary\Traits\Toast;
+use XBB\Actions\Admin\CheckForUpdate;
+use XBB\Support\Updater;
 
 use function Illuminate\Support\php_binary;
 

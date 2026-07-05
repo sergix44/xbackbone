@@ -1,7 +1,7 @@
 <?php
 
-use XBB\Models\User;
 use Laravel\Pennant\Feature;
+use XBB\Models\User;
 
 test('guests cannot view the api docs while they are restricted', function () {
     Feature::deactivate('public-api-docs');

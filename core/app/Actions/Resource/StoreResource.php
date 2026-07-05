@@ -2,18 +2,18 @@
 
 namespace XBB\Actions\Resource;
 
-use XBB\Events\Resource\ResourceUploaded;
-use XBB\Exceptions\QuotaExceededException;
-use XBB\Jobs\GenerateResourcePreview;
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 use RuntimeException;
 use Sqids\Sqids;
+use XBB\Events\Resource\ResourceUploaded;
+use XBB\Exceptions\QuotaExceededException;
+use XBB\Jobs\GenerateResourcePreview;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 class StoreResource
 {

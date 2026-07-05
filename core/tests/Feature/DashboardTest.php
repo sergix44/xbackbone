@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
+use Livewire\Livewire;
 use XBB\Actions\Resource\ListResources;
 use XBB\Livewire\Dashboard;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Http\Request;
-use Livewire\Livewire;
 
 test('the dashboard lists the users resources and hides other users resources', function () {
     $user = User::factory()->create();

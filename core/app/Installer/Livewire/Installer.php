@@ -2,6 +2,11 @@
 
 namespace XBB\Installer\Livewire;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Mary\Traits\Toast;
 use XBB\Installer\Actions\CountLegacyRecords;
 use XBB\Installer\Actions\FinalizeInstallation;
 use XBB\Installer\Actions\TestDatabaseConnection;
@@ -9,11 +14,6 @@ use XBB\Installer\Actions\TestStorageDisk;
 use XBB\Installer\Exceptions\InstallationException;
 use XBB\Installer\Support\DatabaseDriver;
 use XBB\Installer\Support\StorageDriver;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
-use Livewire\Attributes\Computed;
-use Livewire\Component;
-use Mary\Traits\Toast;
 
 class Installer extends Component
 {
@@ -70,7 +70,10 @@ class Installer extends Component
 
     public string $ftpRoot = '';
 
-    /* Step 4: admin */
+    /* Step 4: queue & scheduler */
+    public bool $useSyncQueue = false;
+
+    /* Step 5: admin */
     public string $name = '';
 
     public string $email = '';
@@ -79,7 +82,7 @@ class Installer extends Component
 
     public string $password_confirmation = '';
 
-    /* Step 5: legacy import */
+    /* Step 6: legacy import */
     public bool $importLegacy = false;
 
     public string $legacyDriver = 'mysql';
@@ -193,6 +196,77 @@ class Installer extends Component
         ];
     }
 
+    /**
+     * The recommended `queue:work` invocation for a persistent worker. Built
+     * from the deployed console entry point (`xbb`) so the operator can paste
+     * it as-is; `php` may need to be an absolute path to the CLI binary.
+     */
+    #[Computed]
+    public function queueWorkerCommand(): string
+    {
+        return $this->workerCommand();
+    }
+
+    /**
+     * A ready-to-use systemd service unit that keeps the queue worker running.
+     */
+    #[Computed]
+    public function systemdUnit(): string
+    {
+        return implode("\n", [
+            '[Unit]',
+            'Description=XBackBone queue worker',
+            'After=network.target',
+            '',
+            '[Service]',
+            'User=www-data',
+            'Group=www-data',
+            'Restart=always',
+            'RestartSec=5',
+            'WorkingDirectory='.base_path(),
+            'ExecStart='.$this->workerCommand(),
+            '',
+            '[Install]',
+            'WantedBy=multi-user.target',
+        ]);
+    }
+
+    /**
+     * An equivalent Supervisor program definition for the queue worker.
+     */
+    #[Computed]
+    public function supervisorConfig(): string
+    {
+        return implode("\n", [
+            '[program:xbackbone-worker]',
+            'process_name=%(program_name)s_%(process_num)02d',
+            'command='.$this->workerCommand(),
+            'autostart=true',
+            'autorestart=true',
+            'stopasgroup=true',
+            'killasgroup=true',
+            'user=www-data',
+            'numprocs=1',
+            'redirect_stderr=true',
+            'stdout_logfile='.base_path('storage/logs/worker.log'),
+            'stopwaitsecs=3600',
+        ]);
+    }
+
+    /**
+     * The crontab entry that drives Laravel's scheduler once a minute.
+     */
+    #[Computed]
+    public function schedulerCronLine(): string
+    {
+        return sprintf('* * * * * cd %s && php xbb schedule:run >> /dev/null 2>&1', base_path());
+    }
+
+    private function workerCommand(): string
+    {
+        return sprintf('php %s queue:work --queue=default --sleep=3 --tries=2 --max-time=3600', base_path('xbb'));
+    }
+
     public function nextStep(): void
     {
         $this->validateStep($this->step);
@@ -203,7 +277,7 @@ class Installer extends Component
             return;
         }
 
-        $this->step = min($this->step + 1, 5);
+        $this->step = min($this->step + 1, 6);
     }
 
     public function previousStep(): void
@@ -248,7 +322,7 @@ class Installer extends Component
 
     public function previewLegacy(CountLegacyRecords $count): void
     {
-        $this->validateStep(5);
+        $this->validateStep(6);
 
         $result = $count($this->legacyPayload());
 
@@ -265,7 +339,7 @@ class Installer extends Component
 
     public function install(FinalizeInstallation $finalize)
     {
-        foreach ([1, 2, 3, 4, 5] as $step) {
+        foreach ([1, 2, 3, 4, 5, 6] as $step) {
             $this->validateStep($step);
         }
 
@@ -361,11 +435,14 @@ class Installer extends Component
                 ],
             },
             4 => [
+                'useSyncQueue' => ['boolean'],
+            ],
+            5 => [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'password' => ['required', 'string', 'confirmed', Password::default()],
             ],
-            5 => $this->importLegacy
+            6 => $this->importLegacy
                 ? [
                     'legacyDriver' => ['required', Rule::in(['mysql', 'sqlite'])],
                     'legacyStoragePath' => ['required', 'string'],
@@ -464,6 +541,9 @@ class Installer extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => $this->password,
+            ],
+            'queue' => [
+                'sync' => $this->useSyncQueue,
             ],
             'import' => $this->importLegacy ? $this->legacyPayload() : null,
         ];

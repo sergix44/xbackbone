@@ -2,10 +2,10 @@
 
 namespace XBB\Http\Middleware;
 
-use XBB\Models\Resource;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use XBB\Models\Resource;
 
 /**
  * Guards the public resource routes (preview, raw, download, thumbnail). Private

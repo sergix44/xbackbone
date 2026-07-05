@@ -2,10 +2,10 @@
 
 namespace XBB\Installer\Http\Middleware;
 
-use XBB\Installer\Support\InstallationState;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use XBB\Installer\Support\InstallationState;
 
 /**
  * Guards the installer route so it cannot be reopened once setup is complete.

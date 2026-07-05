@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,6 +24,12 @@ return Application::configure(basePath: dirname(__DIR__))
             Request::HEADER_X_FORWARDED_AWS_ELB |
             Request::HEADER_X_FORWARDED_TRAEFIK
         )->trustProxies(at: '*');
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        // Recurring maintenance so the operator-configured cron has work to do
+        // and background tables do not grow without bound.
+        $schedule->command('queue:prune-batches')->daily();
+        $schedule->command('queue:prune-failed')->daily();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

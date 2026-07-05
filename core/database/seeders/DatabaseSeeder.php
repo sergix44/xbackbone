@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use XBB\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use XBB\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 

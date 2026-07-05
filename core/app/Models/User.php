@@ -2,8 +2,6 @@
 
 namespace XBB\Models;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Properties\UserStatus;
 use Illuminate\Auth\MustVerifyEmail as ImplementMustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passkeys\Contracts\PasskeyUser;
 use Laravel\Passkeys\PasskeyAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Properties\UserStatus;
 
 /**
  * @property UserStatus $status

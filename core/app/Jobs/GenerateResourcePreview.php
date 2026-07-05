@@ -2,14 +2,6 @@
 
 namespace XBB\Jobs;
 
-use XBB\Actions\Resource\Previews\PdfPreviewGenerator;
-use XBB\Actions\Resource\Previews\PreviewGenerator;
-use XBB\Actions\Resource\Previews\RasterImagePreviewGenerator;
-use XBB\Actions\Resource\Previews\ResourceFile;
-use XBB\Actions\Resource\Previews\SvgPreviewGenerator;
-use XBB\Actions\Resource\Previews\VideoFramePreviewGenerator;
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -19,6 +11,14 @@ use SergiX44\ImageZen\Draws\Color;
 use SergiX44\ImageZen\Draws\Constraint;
 use SergiX44\ImageZen\Format;
 use Throwable;
+use XBB\Actions\Resource\Previews\PdfPreviewGenerator;
+use XBB\Actions\Resource\Previews\PreviewGenerator;
+use XBB\Actions\Resource\Previews\RasterImagePreviewGenerator;
+use XBB\Actions\Resource\Previews\ResourceFile;
+use XBB\Actions\Resource\Previews\SvgPreviewGenerator;
+use XBB\Actions\Resource\Previews\VideoFramePreviewGenerator;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 class GenerateResourcePreview implements ShouldQueueAfterCommit
 {

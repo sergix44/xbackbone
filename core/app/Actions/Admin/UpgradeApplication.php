@@ -2,9 +2,9 @@
 
 namespace XBB\Actions\Admin;
 
-use XBB\Support\Updater;
 use Illuminate\Support\Facades\Process;
 use RuntimeException;
+use XBB\Support\Updater;
 
 use function Illuminate\Support\php_binary;
 

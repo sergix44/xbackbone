@@ -2,10 +2,10 @@
 
 namespace XBB\Http\Controllers;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 /**
  * Serves oEmbed (https://oembed.com) responses for resource preview URLs, which

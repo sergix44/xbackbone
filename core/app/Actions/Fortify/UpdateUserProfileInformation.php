@@ -2,11 +2,11 @@
 
 namespace XBB\Actions\Fortify;
 
-use XBB\Events\User\UserProfileUpdated;
-use XBB\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
+use XBB\Events\User\UserProfileUpdated;
+use XBB\Models\User;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {

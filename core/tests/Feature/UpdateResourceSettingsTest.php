@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
+use Livewire\Livewire;
 use XBB\Actions\Resource\UpdateResourceSettings;
 use XBB\Livewire\Dashboard;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Livewire\Livewire;
 
 test('the action sets and clears the expiration', function () {
     $resource = Resource::factory()->create();

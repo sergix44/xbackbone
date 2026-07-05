@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
-use XBB\Livewire\User\Profile;
-use XBB\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
+use XBB\Livewire\User\Profile;
+use XBB\Models\User;
 
 test('password can be updated', function () {
     $user = User::factory()->create();

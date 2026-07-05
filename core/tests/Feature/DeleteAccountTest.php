@@ -1,11 +1,11 @@
 <?php
 
-use XBB\Livewire\User\Profile;
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
 use Livewire\Livewire;
+use XBB\Livewire\User\Profile;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 beforeEach(function () {
     Storage::fake();

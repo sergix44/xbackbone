@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use XBB\Http\Controllers\ExportController;
 use XBB\Http\Controllers\IntegrationController;
 use XBB\Http\Controllers\OembedController;
@@ -12,8 +14,6 @@ use XBB\Livewire\Integrations;
 use XBB\Livewire\Preview;
 use XBB\Livewire\User\Profile;
 use XBB\Models\Resource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

@@ -1,10 +1,10 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Livewire\Dashboard;
 use XBB\Models\Resource;
 use XBB\Models\User;
 use XBB\Support\Helpers;
-use Livewire\Livewire;
 
 test('the upload drawer shows the maximum upload size', function () {
     $this->actingAs(User::factory()->create());

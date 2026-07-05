@@ -1,13 +1,13 @@
 <?php
 
-use XBB\Actions\Admin\CheckForUpdate;
-use XBB\Livewire\Admin\Updates;
-use XBB\Models\User;
-use XBB\Support\Updater;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Livewire\Livewire;
+use XBB\Actions\Admin\CheckForUpdate;
+use XBB\Livewire\Admin\Updates;
+use XBB\Models\User;
+use XBB\Support\Updater;
 
 /**
  * Fake the Packagist metadata endpoint with the given list of version strings.

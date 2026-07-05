@@ -2,11 +2,11 @@
 
 namespace XBB\Http\Controllers;
 
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use XBB\Models\Resource;
+use XBB\Models\User;
 use ZipStream\ZipStream;
 
 class ExportController extends Controller

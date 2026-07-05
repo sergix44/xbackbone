@@ -1,10 +1,10 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Livewire\User\Profile;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 test('the profile header aggregates real statistics for the authenticated user', function () {
     $user = User::factory()->create();

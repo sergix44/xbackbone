@@ -2,10 +2,10 @@
 
 namespace XBB\Livewire\Auth;
 
-use XBB\Livewire\Forms\LoginForm;
 use Laravel\Fortify\Fortify;
 use Livewire\Component;
 use Mary\Traits\Toast;
+use XBB\Livewire\Forms\LoginForm;
 
 class Login extends Component
 {

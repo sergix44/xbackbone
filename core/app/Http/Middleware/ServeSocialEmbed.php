@@ -2,11 +2,11 @@
 
 namespace XBB\Http\Middleware;
 
-use XBB\Models\Resource;
-use XBB\Support\SocialEmbed;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use XBB\Models\Resource;
+use XBB\Support\SocialEmbed;
 
 /**
  * Fast-path for social/link-preview crawlers (Discord, Telegram, Slack, ...).

@@ -1,13 +1,13 @@
 <?php
 
-use XBB\Livewire\User\Profile;
-use XBB\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
 use Laravel\Passkeys\Contracts\PasskeyUser;
 use Laravel\Passkeys\Events\PasskeyRegistered;
 use Laravel\Passkeys\Passkey;
 use Livewire\Livewire;
+use XBB\Livewire\User\Profile;
+use XBB\Models\User;
 
 /**
  * Persist a passkey for the given user. The cryptographic credential is opaque

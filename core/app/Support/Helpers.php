@@ -2,8 +2,8 @@
 
 namespace XBB\Support;
 
-use XBB\Models\User;
 use Laravel\Pennant\Feature;
+use XBB\Models\User;
 
 class Helpers
 {

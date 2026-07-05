@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Storage;
 
 test('preview page displays an image resource with its metadata', function () {
     $resource = Resource::factory()->image()->create();

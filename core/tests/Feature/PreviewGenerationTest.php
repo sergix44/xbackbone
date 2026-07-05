@@ -1,14 +1,14 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use XBB\Actions\Resource\Previews\VideoFramePreviewGenerator;
 use XBB\Jobs\GenerateResourcePreview;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Process;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     Storage::fake();

@@ -2,8 +2,8 @@
 
 namespace XBB\Exceptions;
 
-use XBB\Support\Helpers;
 use RuntimeException;
+use XBB\Support\Helpers;
 
 class QuotaExceededException extends RuntimeException
 {

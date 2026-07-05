@@ -2,13 +2,6 @@
 
 namespace XBB\Livewire\User;
 
-use XBB\Actions\Fortify\UpdateUserPassword;
-use XBB\Actions\Fortify\UpdateUserProfileInformation;
-use XBB\Actions\Token\RevokeToken;
-use XBB\Actions\User\DeleteUserAccount;
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\User;
-use XBB\Support\Helpers;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -18,6 +11,13 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Mary\Traits\Toast;
+use XBB\Actions\Fortify\UpdateUserPassword;
+use XBB\Actions\Fortify\UpdateUserProfileInformation;
+use XBB\Actions\Token\RevokeToken;
+use XBB\Actions\User\DeleteUserAccount;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\User;
+use XBB\Support\Helpers;
 
 class Profile extends Component
 {

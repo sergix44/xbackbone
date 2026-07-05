@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 use XBB\Livewire\User\Profile;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Livewire;
 
 beforeEach(function () {
     Storage::fake();

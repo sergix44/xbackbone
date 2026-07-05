@@ -2,14 +2,14 @@
 
 namespace XBB\Console\Commands;
 
-use XBB\Actions\Import\ImportLegacyResource;
-use XBB\Actions\Import\ImportLegacyUser;
-use XBB\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 use Throwable;
+use XBB\Actions\Import\ImportLegacyResource;
+use XBB\Actions\Import\ImportLegacyUser;
+use XBB\Models\User;
 
 class ImportLegacyCommand extends Command
 {

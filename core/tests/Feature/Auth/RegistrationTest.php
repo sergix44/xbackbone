@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
-use XBB\Livewire\Auth\Register;
-use XBB\Models\User;
 use Laravel\Pennant\Feature;
 use Livewire\Livewire;
+use XBB\Livewire\Auth\Register;
+use XBB\Models\User;
 
 beforeEach(function () {
     Feature::activate('signup');

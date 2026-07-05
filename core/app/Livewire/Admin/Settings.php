@@ -2,15 +2,15 @@
 
 namespace XBB\Livewire\Admin;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
-use XBB\Models\User;
-use XBB\Support\Helpers;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mary\Traits\Toast;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
+use XBB\Models\User;
+use XBB\Support\Helpers;
 
 class Settings extends Component
 {

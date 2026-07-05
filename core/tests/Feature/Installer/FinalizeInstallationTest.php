@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use XBB\Installer\Actions\FinalizeInstallation;
 use XBB\Installer\Support\InstallationState;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 
 beforeEach(function () {
     $this->originalConnection = config('database.default');
@@ -61,6 +61,7 @@ it('performs a full install with sqlite and local storage', function () {
             'email' => 'admin@example.com',
             'password' => 'password123',
         ],
+        'queue' => ['sync' => false],
         'import' => null,
     ];
 
@@ -85,7 +86,23 @@ it('performs a full install with sqlite and local storage', function () {
         ->toContain('APP_INSTALLED=true')
         ->toContain('APP_URL="https://files.example.com"')
         ->toContain('DB_CONNECTION=sqlite')
-        ->toContain('SESSION_DRIVER=database');
+        ->toContain('SESSION_DRIVER=database')
+        ->toContain('QUEUE_CONNECTION=database');
+});
+
+it('writes the synchronous queue connection when the operator opts out of a worker', function () {
+    $payload = [
+        'appUrl' => 'https://files.example.com',
+        'database' => ['driver' => 'sqlite', 'sqlitePath' => $this->tempDir.'/xbb.db'],
+        'storage' => ['driver' => 'local', 'root' => $this->tempDir.'/uploads'],
+        'admin' => ['name' => 'First Admin', 'email' => 'admin@example.com', 'password' => 'password123'],
+        'queue' => ['sync' => true],
+        'import' => null,
+    ];
+
+    app(FinalizeInstallation::class)($payload);
+
+    expect(file_get_contents($this->tempDir.'/.env'))->toContain('QUEUE_CONNECTION=sync');
 });
 
 it('is idempotent when re-run with the same administrator email', function () {
@@ -94,6 +111,7 @@ it('is idempotent when re-run with the same administrator email', function () {
         'database' => ['driver' => 'sqlite', 'sqlitePath' => $this->tempDir.'/xbb.db'],
         'storage' => ['driver' => 'local', 'root' => $this->tempDir.'/uploads'],
         'admin' => ['name' => 'First Admin', 'email' => 'admin@example.com', 'password' => 'password123'],
+        'queue' => ['sync' => false],
         'import' => null,
     ];
 

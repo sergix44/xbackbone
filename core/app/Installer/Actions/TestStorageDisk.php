@@ -2,10 +2,10 @@
 
 namespace XBB\Installer\Actions;
 
-use XBB\Installer\Support\StorageConfig;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
+use XBB\Installer\Support\StorageConfig;
 
 /**
  * Verifies a candidate storage configuration with a write/read/delete probe

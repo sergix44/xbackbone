@@ -1,8 +1,8 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Livewire\Dashboard;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 test('the upload drawer wires a clipboard paste handler that opens the drawer and uploads', function () {
     $this->actingAs(User::factory()->create());

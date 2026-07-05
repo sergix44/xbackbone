@@ -2,12 +2,12 @@
 
 namespace XBB\Actions\Resource;
 
-use XBB\Models\Resource;
-use XBB\Models\User;
 use Illuminate\Pagination\AbstractPaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
+use XBB\Models\Resource;
+use XBB\Models\User;
 
 class ListResources
 {

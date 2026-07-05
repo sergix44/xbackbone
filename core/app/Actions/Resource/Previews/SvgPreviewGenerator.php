@@ -2,12 +2,12 @@
 
 namespace XBB\Actions\Resource\Previews;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use Imagick;
 use ImagickPixel;
 use SergiX44\ImageZen\Backend;
 use SergiX44\ImageZen\Image;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 class SvgPreviewGenerator implements PreviewGenerator
 {

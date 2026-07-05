@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
+use Livewire\Livewire;
 use XBB\Livewire\Admin\UserManagement;
 use XBB\Models\Properties\UserStatus;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Livewire\Livewire;
 
 test('non-admin users cannot mount the user management component', function () {
     $this->actingAs(User::factory()->create());

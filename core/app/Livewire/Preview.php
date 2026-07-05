@@ -2,14 +2,14 @@
 
 namespace XBB\Livewire;
 
-use XBB\Actions\Resource\RecordResourceView;
-use XBB\Models\Resource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mary\Traits\Toast;
+use XBB\Actions\Resource\RecordResourceView;
+use XBB\Models\Resource;
 
 class Preview extends Component
 {

@@ -2,9 +2,9 @@
 
 namespace XBB\Actions\Resource;
 
+use Illuminate\Support\Carbon;
 use XBB\Events\Resource\ResourceSettingsUpdated;
 use XBB\Models\Resource;
-use Illuminate\Support\Carbon;
 
 class UpdateResourceSettings
 {

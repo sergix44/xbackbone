@@ -2,6 +2,8 @@
 
 namespace XBB\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use XBB\Actions\Integration\GenerateCliScript;
 use XBB\Actions\Integration\GenerateIshareConfig;
 use XBB\Actions\Integration\GenerateKdePlugin;
@@ -9,8 +11,6 @@ use XBB\Actions\Integration\GenerateMacosShortcut;
 use XBB\Actions\Integration\GenerateScreenCloudPlugin;
 use XBB\Actions\Integration\GenerateSharexConfig;
 use XBB\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class IntegrationController extends Controller
 {

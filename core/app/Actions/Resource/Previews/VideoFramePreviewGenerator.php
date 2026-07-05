@@ -2,13 +2,13 @@
 
 namespace XBB\Actions\Resource\Previews;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Exception\ExecutableNotFoundException;
 use FFMpeg\FFMpeg;
 use FFMpeg\Media\Video;
 use SergiX44\ImageZen\Image;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 class VideoFramePreviewGenerator implements PreviewGenerator
 {

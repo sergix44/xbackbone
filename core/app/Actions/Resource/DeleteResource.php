@@ -2,11 +2,11 @@
 
 namespace XBB\Actions\Resource;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use XBB\Events\Resource\ResourceDeleted;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class DeleteResource
 {

@@ -2,16 +2,16 @@
 
 namespace XBB\Actions\Import;
 
-use XBB\Actions\Resource\StoreResource;
-use XBB\Jobs\GenerateResourcePreview;
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 use Sqids\Sqids;
 use Throwable;
+use XBB\Actions\Resource\StoreResource;
+use XBB\Jobs\GenerateResourcePreview;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 class ImportLegacyResource
 {

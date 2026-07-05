@@ -2,10 +2,10 @@
 
 namespace XBB\Installer\Actions;
 
-use XBB\Console\Commands\ImportLegacyCommand;
-use XBB\Installer\Support\DatabaseConfig;
 use Illuminate\Support\Facades\DB;
 use Throwable;
+use XBB\Console\Commands\ImportLegacyCommand;
+use XBB\Installer\Support\DatabaseConfig;
 
 /**
  * Verifies a candidate database configuration by opening a throwaway

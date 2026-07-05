@@ -2,8 +2,8 @@
 
 namespace XBB\Actions\Resource\Previews;
 
-use XBB\Models\Resource;
 use SergiX44\ImageZen\Image;
+use XBB\Models\Resource;
 
 interface PreviewGenerator
 {

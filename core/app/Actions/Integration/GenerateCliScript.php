@@ -2,9 +2,9 @@
 
 namespace XBB\Actions\Integration;
 
+use Illuminate\Support\Str;
 use XBB\Actions\Token\IssueIntegrationToken;
 use XBB\Models\User;
-use Illuminate\Support\Str;
 
 class GenerateCliScript
 {

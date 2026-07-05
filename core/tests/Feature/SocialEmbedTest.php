@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use XBB\Http\Middleware\ServeSocialEmbed;
 use XBB\Models\Properties\ResourceType;
 use XBB\Models\Resource;
 use XBB\Support\SocialEmbed;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------

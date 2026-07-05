@@ -1,10 +1,10 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Actions\Resource\ToggleResourceVisibility;
 use XBB\Livewire\Dashboard;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 test('the action toggles the private flag', function () {
     $resource = Resource::factory()->create(['is_private' => false]);

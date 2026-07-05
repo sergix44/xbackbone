@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use XBB\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use XBB\Models\User;
 
 /**
  * @extends Factory<User>

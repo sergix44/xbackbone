@@ -2,9 +2,9 @@
 
 namespace XBB\Actions\Token;
 
+use Laravel\Sanctum\NewAccessToken;
 use XBB\Events\Token\TokenCreated;
 use XBB\Models\User;
-use Laravel\Sanctum\NewAccessToken;
 
 class IssueIntegrationToken
 {

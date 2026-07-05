@@ -1,7 +1,7 @@
 <?php
 
-use XBB\Models\Resource;
 use Illuminate\Http\Request;
+use XBB\Models\Resource;
 
 it('redirects a legacy two-segment URL to the current preview URL', function () {
     $resource = Resource::factory()->create(['legacy_code' => 'oldcode']);

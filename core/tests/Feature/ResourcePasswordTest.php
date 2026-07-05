@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 use XBB\Livewire\Preview;
 use XBB\Models\Resource;
 use XBB\Models\User;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Livewire;
 
 test('a locked download is denied to a guest with 403', function () {
     Storage::fake();

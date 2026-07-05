@@ -1,8 +1,8 @@
 <?php
 
+use Laravel\Pennant\Feature;
 use XBB\Models\User;
 use XBB\Support\Helpers;
-use Laravel\Pennant\Feature;
 
 test('a guest falls back to the global default theme', function () {
     Feature::activate('default-theme', 'aqua');

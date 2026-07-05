@@ -1,7 +1,7 @@
 <?php
 
-use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
+use XBB\Models\Resource;
 
 test('a signed deletion url deletes the resource', function () {
     $resource = Resource::factory()->link()->create();

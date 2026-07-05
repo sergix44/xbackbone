@@ -1,7 +1,7 @@
 <?php
 
-use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
+use XBB\Models\Resource;
 
 beforeEach(function () {
     Storage::fake();

@@ -2,8 +2,6 @@
 
 namespace XBB\Models;
 
-use XBB\Models\Properties\ResourceType;
-use XBB\Support\Helpers;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use XBB\Models\Properties\ResourceType;
+use XBB\Support\Helpers;
 
 /**
  * @property ResourceType $type

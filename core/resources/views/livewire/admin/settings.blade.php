@@ -69,6 +69,12 @@
                 <div class="card-body">
                     <h1 class="card-title">{{ __('General Settings') }}</h1>
 
+                    @if(config('queue.default') === 'sync')
+                        <x-alert class="alert-warning" icon="o-exclamation-triangle"
+                                 :title="__('Queue running synchronously')"
+                                 :description="__('Previews are generated during the upload request, which slows uploads down and may fail for large files or videos. Configure a queue worker and set QUEUE_CONNECTION=database to process them in the background.')"/>
+                    @endif
+
                     <div class="divider">{{ __('Registration') }}</div>
                     <x-toggle :label="__('Enable user sign up')"
                               :hint="__('Allow new visitors to create an account.')"

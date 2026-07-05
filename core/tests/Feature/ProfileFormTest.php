@@ -1,8 +1,8 @@
 <?php
 
+use Livewire\Livewire;
 use XBB\Livewire\User\Profile;
 use XBB\Models\User;
-use Livewire\Livewire;
 
 test('an invalid email surfaces a validation error', function () {
     $user = User::factory()->create();

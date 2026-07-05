@@ -2,16 +2,16 @@
 
 namespace XBB\Http\Controllers;
 
-use XBB\Actions\Resource\DeleteResource;
-use XBB\Actions\Resource\GetResourcePreview;
-use XBB\Actions\Resource\RecordResourceDownload;
-use XBB\Models\Properties\ResourceType;
-use XBB\Models\Resource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use XBB\Actions\Resource\DeleteResource;
+use XBB\Actions\Resource\GetResourcePreview;
+use XBB\Actions\Resource\RecordResourceDownload;
+use XBB\Models\Properties\ResourceType;
+use XBB\Models\Resource;
 
 class ResourceController extends Controller
 {

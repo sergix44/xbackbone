@@ -2,11 +2,11 @@
 
 namespace XBB\Installer\Http\Middleware;
 
-use XBB\Installer\Support\InstallationState;
 use Closure;
 use Illuminate\Http\Request;
 use Livewire\Mechanisms\HandleRequests\EndpointResolver;
 use Symfony\Component\HttpFoundation\Response;
+use XBB\Installer\Support\InstallationState;
 
 /**
  * Redirects every web request to the installer until setup is complete.

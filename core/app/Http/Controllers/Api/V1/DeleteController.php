@@ -2,10 +2,10 @@
 
 namespace XBB\Http\Controllers\Api\V1;
 
+use Illuminate\Http\Response;
 use XBB\Actions\Resource\DeleteResource;
 use XBB\Http\Controllers\Controller;
 use XBB\Models\Resource;
-use Illuminate\Http\Response;
 
 class DeleteController extends Controller
 {

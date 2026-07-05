@@ -1,7 +1,7 @@
 <?php
 
-use XBB\Models\Resource;
 use Illuminate\Support\Facades\Storage;
+use XBB\Models\Resource;
 
 test('visiting the preview page records a view', function () {
     $resource = Resource::factory()->image()->create();
