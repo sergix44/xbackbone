@@ -100,6 +100,31 @@ MAIL_FROM_ADDRESS="files@example.com"
 MAIL_FROM_NAME="XBackBone"
 ```
 
+### Activity log
+
+XBackBone records notable events (uploads, user and token changes, logins, …) to an activity feed.
+It is enabled by default and needs no configuration.
+
+```dotenv
+ACTIVITY_LOGGER_ENABLED=true
+```
+
+| Variable | Description |
+| -------- | ----------- |
+| `ACTIVITY_LOGGER_ENABLED` | Set to `false` to stop recording activity entirely. |
+
+Entries older than a year are pruned when you run `php xbb activitylog:clean` (schedule it if you
+want automatic housekeeping).
+
+### Updates
+
+The [in-app updater](/guide/upgrading#from-the-admin-area) auto-detects Composer. Only set this if
+it lives at a non-standard path:
+
+```dotenv
+XBB_COMPOSER_BINARY=/usr/local/bin/composer
+```
+
 ## Runtime settings
 
 The admin **Settings** page controls behaviour you can change live, including:
@@ -107,6 +132,10 @@ The admin **Settings** page controls behaviour you can change live, including:
 - **Sign-ups** — allow or block public registration.
 - **Default theme** — the daisyUI theme new visitors get.
 - **User management** — roles, per-user disk quotas and usage statistics.
+- **Activity** — a searchable, category-filterable feed of instance-wide activity. Each user also
+  sees their own activity under their profile.
+- **Updates** — check for new releases and upgrade the instance from the browser. See
+  [Upgrading](/guide/upgrading#from-the-admin-area).
 
 Some of these are evaluated per user as well as globally — for example a user can pick their own
 theme, falling back to the global default when they haven't.

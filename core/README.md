@@ -22,6 +22,7 @@ can be installed, upgraded and downgraded independently from the deployment skel
 - **Laravel Fortify** for authentication, **Sanctum** for API tokens, **Pennant** for feature
   flags
 - **Scramble** for auto-generated OpenAPI documentation
+- **Spatie Activitylog** for the account and admin activity feed
 - **Flysystem** adapters for FTP/SFTP, **php-ffmpeg** and **ImageMagick/GD** for media previews
 - **Vite 8** for asset bundling
 - Tested with **Pest 4**, analyzed with **Larastan**, formatted with **Pint**
@@ -50,9 +51,12 @@ User-facing pages are Livewire components under [`app/Livewire/`](app/Livewire):
 
 - **Dashboard** — upload files, create pastes and links, manage and search your resources.
 - **Preview** — the public viewer for a shared resource, with media players and social embeds.
-- **Integrations** — generate a ShareX uploader configuration.
-- **Profile** — manage account info, API tokens, passkeys, data export, and account deletion.
-- **Admin settings** — sign-up toggle and default theme, user management, and statistics.
+- **Integrations** — generate uploader configurations for ShareX, ScreenCloud, ishare, Spectacle
+  (KDE), the macOS Share sheet, Xerahs, and a CLI script.
+- **Profile** — manage account info, API tokens, passkeys, your activity log, data export, and
+  account deletion.
+- **Admin settings** — sign-up toggle and default theme, user management, statistics, the global
+  activity feed, and in-app updates.
 
 ### REST API
 
@@ -81,6 +85,25 @@ and passkeys (WebAuthn).
 
 Global and per-user settings are managed with Laravel Pennant (see [`app/Features/`](app/Features)):
 `SignUp`, `DefaultTheme`, and `AlphabetForIds`.
+
+### Activity log
+
+Notable events — resource uploads and changes, user and token management, passkey changes, and
+authentication (logins, registrations, lockouts, failures) — are recorded with
+[Spatie Activitylog](https://spatie.be/docs/laravel-activitylog) via the listeners in
+[`app/Listeners/`](app/Listeners). The `ActivityLog` Livewire component renders the feed: users
+see their own activity under **Profile → Activity**, while admins get a global, searchable feed
+filterable by category (`ActivityCategory`) under **Admin → Activity**. Event presentation
+(labels, icons, colours) is centralised in `app/Support/ActivityEvent.php`.
+
+### In-app updates
+
+Admins can check for new releases and upgrade the instance from **Admin → Updates**. `CheckForUpdate`
+compares the installed `xbackbone/core` version against the latest stable release on Packagist, and
+`UpgradeApplication` rewrites the skeleton's Composer requirement and runs the post-upgrade
+migrations and cache steps in a detached process. The feature is only available on real skeleton
+deployments (`app/Support/Updater.php` gates it on production plus an `APP_ROOT`); see
+[`config/updater.php`](config/updater.php).
 
 ### Media previews
 

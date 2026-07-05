@@ -17,7 +17,9 @@ This is the next-generation XBackBone, rebuilt from the ground up on **Laravel 1
 
 ## Features
 
-- **ShareX ready** — generate a ready-to-use ShareX uploader config in one click.
+- **One-click integrations** — generate ready-to-use uploader configs for ShareX, ScreenCloud,
+  ishare, Spectacle (KDE), the macOS Share sheet, Xerahs, and a CLI script, all pre-filled with
+  your instance URL and a personal token.
 - **Wide media support** — inline previews for images, video, audio (waveform), PDFs, and
   syntax-highlighted code, plus pastes and link shortening.
 - **Multiple storage backends** — Local disk, Amazon S3 (and S3-compatible), FTP, and SFTP.
@@ -25,11 +27,16 @@ This is the next-generation XBackBone, rebuilt from the ground up on **Laravel 1
 - **Private & public uploads** — per-resource visibility, optional password protection and
   expiration.
 - **REST API** — versioned API with token authentication and auto-generated OpenAPI docs.
-- **Modern authentication** — registration, email verification, password reset, and passkeys (WebAuthn).
+- **Modern authentication** — registration, email verification, password reset, two-factor
+  authentication (TOTP), and passkeys (WebAuthn).
 - **User management** — admin roles, per-user disk quotas, and usage statistics.
+- **Activity log** — a searchable, filterable timeline of account and admin activity, for both
+  your own actions and (for admins) the whole instance.
 - **Feature flags** — toggle sign-ups, default theme and more without redeploying.
 - **Theming** — switchable daisyUI themes, localization-ready UI.
 - **Guided web installer** — set up the database, storage, and admin account from the browser.
+- **In-app updates** — admins can check for new releases and upgrade the instance from the
+  browser, with no shell access required.
 - **Legacy import** — migrate users and uploads from a legacy XBackBone instance, with old
   links transparently redirected.
 

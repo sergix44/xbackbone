@@ -9,7 +9,33 @@ Because the core is a package, your configuration, environment and customisation
 are untouched by an upgrade. You can also **downgrade** the same way if a release misbehaves.
 :::
 
-## Before you start
+## From the admin area
+
+The easiest way to upgrade is from the browser — no shell access required. As an admin, open
+**Settings → Updates**:
+
+1. XBackBone shows your **current version** and, if one exists, the **latest release**. Use
+   **Check now** to bypass the cache and re-query Packagist.
+2. Click **Upgrade** to update to the latest version. XBackBone rewrites the `xbackbone/core`
+   requirement in the skeleton's `composer.json`, runs Composer, and then applies the new
+   migrations and rebuilds the caches for you. Progress is streamed live on the page.
+
+::: warning Requirements
+The in-app updater only appears on a real deployment installed through the `app` skeleton and
+running in production. The web server user must be able to run Composer and write to the skeleton
+(`vendor/`, `composer.json`, `composer.lock`). If Composer lives at a non-standard path, set
+`XBB_COMPOSER_BINARY` in your `.env`. When these conditions aren't met, use the manual process
+below.
+:::
+
+Take a **backup** first (see below) — an in-app upgrade runs the same migrations as the manual
+process, and those are not always reversible.
+
+## Manual upgrade
+
+Prefer the command line, or the in-app updater isn't available? Upgrade by hand instead.
+
+### Before you start
 
 - Take a **backup** of your database and your uploaded files.
 - Note your **current version** so you can roll back: `composer show xbackbone/core`.
@@ -19,7 +45,7 @@ are untouched by an upgrade. You can also **downgrade** the same way if a releas
 php xbb down
 ```
 
-## Upgrade
+### Steps
 
 1. Bump the constraint in the skeleton's `composer.json`, e.g.:
 

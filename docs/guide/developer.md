@@ -30,6 +30,7 @@ deployed `app` instance you use `php xbb <command>`.
   [Mary UI](https://mary-ui.com/) components
 - **Laravel Fortify** for authentication, **Sanctum** for API tokens, **Pennant** for feature flags
 - **Scramble** for auto-generated OpenAPI documentation
+- **Spatie Activitylog** for the account and admin activity feed
 - **Flysystem** adapters for FTP/SFTP, **ffmpeg** and **ImageMagick/GD** for media previews
 - **Vite** for asset bundling; tested with **Pest**, analyzed with **Larastan**, formatted with **Pint**
 

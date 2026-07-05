@@ -18,6 +18,8 @@ screenshot and getting a shareable link can be a single keypress.
 - **Keep things private.** Make uploads public or private, protect them with a password, or set
   them to expire automatically.
 - **Stay organized.** Browse, search and manage everything you've shared from your dashboard.
+- **Keep an eye on activity.** A timeline records your account activity — uploads, logins, token
+  and passkey changes — and admins get an instance-wide feed.
 - **Own your data.** Run XBackBone on your own server, with the storage backend of your choice.
 
 ## Your first upload
