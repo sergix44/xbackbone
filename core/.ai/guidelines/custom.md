@@ -15,7 +15,11 @@
 # Tools
 - Phpstan, Pint and Pest test suites must pass.
 
-# Tips during development on `next` branch
+# Documentation
+- The main website also act as documentation is in the docs/ folder, its a static site generated with Vitepress.
+- Keep the documentation up to date, for relevant changes to features described in the docs.
+
+# Development Tips
 - The Vite development server is usually already running, so its not necessary to run build commands.
-- The next branch is the next written from scratch app with the above structure, the master branch contains the legacy app.
-- The next branch is acting as a monorepo, in the root has the app/ and core/ folders.
+- The master branch is the next written from scratch app with the above structure, the 3.x branch contains the legacy app.
+- The master branch is acting as a monorepo, in the root has the app/ and core/ folders.

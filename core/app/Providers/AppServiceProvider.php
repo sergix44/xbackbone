@@ -26,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Feature::resolveScopeUsing(static fn () => null);
+        Feature::resolveScopeUsing(static fn () => 'global');
+        Feature::discover('XBB\\Features', app_path('Features'));
 
         Gate::define('administrate', static fn (User $user) => $user->is_admin);
 

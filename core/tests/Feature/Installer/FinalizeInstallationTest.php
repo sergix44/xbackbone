@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Sqids\Sqids;
 use XBB\Installer\Actions\FinalizeInstallation;
 use XBB\Installer\Support\InstallationState;
 use XBB\Models\User;
@@ -88,6 +89,40 @@ it('performs a full install with sqlite and local storage', function () {
         ->toContain('DB_CONNECTION=sqlite')
         ->toContain('SESSION_DRIVER=database')
         ->toContain('QUEUE_CONNECTION=database');
+
+    // Every feature default is materialised into the database under the
+    // "global" scope, so the null sentinel never reaches the scope column.
+    $features = DB::table('features')->pluck('scope', 'name')->all();
+
+    expect($features)->toHaveKeys(['id-alphabet', 'signup', 'default-theme', 'public-api-docs'])
+        ->and(array_values(array_unique($features)))->toBe(['global']);
+
+    // The Sqids alphabet is locked to a permutation of the default alphabet, so
+    // resource codes stay collision-free for the life of the install.
+    $alphabet = json_decode(DB::table('features')->where('name', 'id-alphabet')->value('value'));
+
+    expect(mb_strlen($alphabet))->toBe(mb_strlen(Sqids::DEFAULT_ALPHABET))
+        ->and(str_split($alphabet))->toEqualCanonicalizing(str_split(Sqids::DEFAULT_ALPHABET));
+});
+
+it('locks the id-alphabet on the first install and never changes it on re-run', function () {
+    $payload = [
+        'appUrl' => 'https://files.example.com',
+        'database' => ['driver' => 'sqlite', 'sqlitePath' => $this->tempDir.'/xbb.db'],
+        'storage' => ['driver' => 'local', 'root' => $this->tempDir.'/uploads'],
+        'admin' => ['name' => 'First Admin', 'email' => 'admin@example.com', 'password' => 'password123'],
+        'queue' => ['sync' => false],
+        'import' => null,
+    ];
+
+    app(FinalizeInstallation::class)($payload);
+    $first = DB::table('features')->where('name', 'id-alphabet')->value('value');
+
+    app(FinalizeInstallation::class)($payload);
+    $second = DB::table('features')->where('name', 'id-alphabet')->value('value');
+
+    expect($first)->not->toBeNull()
+        ->and($second)->toBe($first);
 });
 
 it('writes the synchronous queue connection when the operator opts out of a worker', function () {

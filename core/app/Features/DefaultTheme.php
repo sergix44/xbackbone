@@ -11,6 +11,6 @@ class DefaultTheme
      */
     public function resolve(mixed $scope): mixed
     {
-        return '';
+        return null;
     }
 }
