@@ -106,7 +106,7 @@
                         @php($lineCount = max(1, substr_count($text, "\n") + (str_ends_with($text, "\n") ? 0 : 1)))
                         <div x-ref="media"
                              class="w-full rounded-box shadow-sm overflow-hidden bg-base-100">
-                            <div x-data="codeHighlighter('{{ $resource->extension }}')"
+                            <div x-data="codeHighlighter(@js($resource->extension))"
                                  class="flex items-start overflow-y-auto max-h-[calc(100dvh-8rem)] font-mono text-sm leading-relaxed">
                                 <div aria-hidden="true"
                                      class="shrink-0 select-none py-4 pl-4 pr-3 text-right tabular-nums opacity-40 border-r border-base-content/10">

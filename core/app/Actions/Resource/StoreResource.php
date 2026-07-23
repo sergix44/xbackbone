@@ -61,7 +61,7 @@ class StoreResource
                 'filename' => $file?->getClientOriginalName() ?? ($isLink ? null : $name),
                 'size' => $isLink ? null : ($file?->getSize() ?? strlen($data)),
                 'mime' => $isLink ? null : ($file?->getMimeType() ?: $mime ?: 'text/plain'),
-                'extension' => $isLink ? null : ($this->fromFilename($file) ?? $file?->extension() ?? $this->fromName($name) ?? 'txt'),
+                'extension' => $isLink ? null : $this->resolveExtension($file, $name),
                 'name' => $name,
                 'data' => $data,
                 'fingerprint' => $fingerprint,
@@ -124,6 +124,26 @@ class StoreResource
         }
 
         return ResourceType::FILE;
+    }
+
+    private function resolveExtension(?UploadedFile $file, ?string $name): string
+    {
+        $extension = $this->fromFilename($file) ?? $file?->extension() ?? $this->fromName($name) ?? 'txt';
+
+        return $this->sanitizeExtension($extension);
+    }
+
+    /**
+     * Keep only plain alphanumerics so a crafted filename cannot smuggle characters
+     * (quotes, parentheses, angle brackets) that break out of a JS or HTML context
+     * where the extension is later rendered. Falls back to a neutral default when
+     * nothing usable remains.
+     */
+    private function sanitizeExtension(string $extension): string
+    {
+        $sanitized = preg_replace('/[^a-z0-9]/', '', strtolower($extension));
+
+        return $sanitized !== '' ? $sanitized : 'txt';
     }
 
     private function fromFilename(?UploadedFile $file): ?string

@@ -50,6 +50,24 @@ test('a paste is stored in the data column as a displayable text resource', func
     expect(Storage::get($resource->storage_path))->toBeNull();
 });
 
+test('a crafted filename cannot persist a non-alphanumeric extension', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    // The reporter's vector: the extension is derived from the (user-controlled) name.
+    // A literal '/' is avoided on purpose, exactly as the report did, so pathinfo()
+    // keeps the payload as the extension instead of treating it as a path separator.
+    $malicious = "loader.');alert(document);('";
+
+    Livewire::test(Dashboard::class)
+        ->call('createPaste', "content\n", $malicious)
+        ->assertHasNoErrors();
+
+    $resource = Resource::query()->latest('id')->first();
+
+    expect($resource->extension)->toMatch('/^[a-z0-9]+$/');
+});
+
 test('createPaste requires non-empty content', function () {
     $this->actingAs(User::factory()->create());
 

@@ -68,6 +68,31 @@ test('preview page renders highlighted text for textual resources', function () 
         ->assertDontSee('No preview available');
 });
 
+test('preview page does not let a resource extension break out of the highlighter script', function () {
+    Storage::fake();
+
+    // A low-privileged uploader controls the extension. The reporter smuggled JavaScript
+    // into it, breaking out of the codeHighlighter('...') argument in the x-data expression.
+    $breakout = "');fetch('/x')['then'](eval);('";
+
+    $content = "harmless\n";
+    $resource = Resource::factory()->text()->create([
+        'extension' => $breakout,
+        'size' => strlen($content),
+    ]);
+    Storage::put($resource->storage_path, $content);
+
+    $response = $this->get(route('preview', ['resource' => $resource->code]));
+    $response->assertOk();
+
+    // A browser HTML-decodes an attribute value before Alpine evaluates it as JavaScript,
+    // so a safe encoding must still not yield a string breakout after that decoding step.
+    $decoded = html_entity_decode($response->getContent(), ENT_QUOTES);
+
+    expect($decoded)->toContain('codeHighlighter(')  // the text-highlighting branch rendered
+        ->and($decoded)->not->toContain("');fetch"); // ...but the payload cannot escape the JS string
+});
+
 test('preview page offers a download instead of inlining oversized text', function () {
     Storage::fake();
 
