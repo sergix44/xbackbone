@@ -203,7 +203,14 @@ class MediaController extends Controller
      */
     public function createVanity(Request $request, Response $response, int $id): Response
     {
-        $media = $this->database->query('SELECT * FROM `uploads` WHERE `id` = ? LIMIT 1', $id)->fetch();
+        if ($this->session->get('admin')) {
+            $media = $this->database->query('SELECT * FROM `uploads` WHERE `id` = ? LIMIT 1', $id)->fetch();
+        } else {
+            $media = $this->database->query(
+                'SELECT * FROM `uploads` WHERE `id` = ? AND `user_id` = ? LIMIT 1',
+                [$id, $this->session->get('user_id')]
+            )->fetch();
+        }
 
         $vanity = param($request, 'vanity');
         $vanity = preg_replace('/[^a-z0-9]+/', '-', strtolower($vanity));
