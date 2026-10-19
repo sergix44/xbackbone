@@ -122,6 +122,11 @@ class MediaController extends Controller
             throw new HttpNotFoundException($request);
         }
 
+        if (must_be_escaped($this->storage->getMimetype($media->storage_path))) {
+            $response = $this->streamMedia($request, $response, $this->storage, $media);
+            return $response->withHeader('Content-Type', 'text/plain');
+        }
+
         return $this->streamMedia($request, $response, $this->storage, $media);
     }
 
