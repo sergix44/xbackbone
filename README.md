@@ -11,7 +11,7 @@ XBackBone is a simple, self-hosted, lightweight PHP file manager that support th
 ## Documentation
 All the installations, configuration, and usage instructions are available in the GitHub Pages:
 
-[XBackBone Documentation](https://sergix44.github.io/XBackBone/)
+[XBackBone Documentation](https://xbackbone.app/v3/)
 
 ## Main Features
 
