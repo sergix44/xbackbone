@@ -209,6 +209,7 @@ class MediaRepository
 
         $params = [];
         $queryPagesParams = [];
+        $filterByPaths = false;
 
         if ($this->text !== null) {
             if ($this->isAdmin) {
@@ -231,7 +232,9 @@ class MediaRepository
 
             $paths = array_column($files, 'path');
             $ids = $this->getMediaIdsByTagId($this->tagId);
-            $queryMedia = 'SELECT `uploads`.*, `users`.`user_code`, `users`.`username` FROM `uploads` LEFT JOIN `users` ON `uploads`.`user_id` = `users`.`id` WHERE `uploads`.`storage_path` IN ("'.implode('","', $paths).'") AND `uploads`.`id` IN ('.implode(',', $ids).')';
+            $queryMedia = 'SELECT `uploads`.*, `users`.`user_code`, `users`.`username` FROM `uploads` LEFT JOIN `users` ON `uploads`.`user_id` = `users`.`id` WHERE `uploads`.`storage_path` IN ('.$this->buildPlaceholders($paths).') AND `uploads`.`id` IN ('.$this->buildPlaceholders($ids).')';
+            $params = array_merge($params, $paths, $ids);
+            $filterByPaths = true;
         } else {
             if ($this->isAdmin) {
                 [, $queryPages] = $this->buildAdminQueries();
@@ -242,10 +245,15 @@ class MediaRepository
 
             $files = array_slice($files, $offset, $limit, true);
             $paths = array_column($files, 'path');
-            $queryMedia = 'SELECT `uploads`.*, `users`.`user_code`, `users`.`username` FROM `uploads` LEFT JOIN `users` ON `uploads`.`user_id` = `users`.`id` WHERE `uploads`.`storage_path` IN ("'.implode('","', $paths).'")';
+            $queryMedia = 'SELECT `uploads`.*, `users`.`user_code`, `users`.`username` FROM `uploads` LEFT JOIN `users` ON `uploads`.`user_id` = `users`.`id` WHERE `uploads`.`storage_path` IN ('.$this->buildPlaceholders($paths).')';
+            $params = array_merge($params, $paths);
+            $filterByPaths = true;
         }
 
-        $medias = $this->db->query($queryMedia, $params)->fetchAll();
+        $medias = [];
+        if (!$filterByPaths || count($paths) > 0) {
+            $medias = $this->db->query($queryMedia, $params)->fetchAll();
+        }
 
         $paths = array_flip($paths);
         foreach ($medias as $media) {
@@ -342,12 +350,28 @@ class MediaRepository
     }
 
     /**
+     * Build the placeholders of an IN clause, so that the values can be bound
+     * as query parameters instead of being concatenated into the statement.
+     *
+     * @param  array  $values
+     * @return string
+     */
+    protected function buildPlaceholders(array $values): string
+    {
+        return implode(',', array_fill(0, count($values), '?'));
+    }
+
+    /**
      * @param  array  $mediaIds
      * @return array
      */
     protected function getTags(array $mediaIds)
     {
-        $allTags = $this->db->query('SELECT `uploads_tags`.`upload_id`,`tags`.`id`, `tags`.`name` FROM `uploads_tags` INNER JOIN `tags` ON `uploads_tags`.`tag_id` = `tags`.`id` WHERE `uploads_tags`.`upload_id` IN ("'.implode('","', $mediaIds).'") ORDER BY `tags`.`timestamp`')->fetchAll();
+        if (count($mediaIds) === 0) {
+            return [];
+        }
+
+        $allTags = $this->db->query('SELECT `uploads_tags`.`upload_id`,`tags`.`id`, `tags`.`name` FROM `uploads_tags` INNER JOIN `tags` ON `uploads_tags`.`tag_id` = `tags`.`id` WHERE `uploads_tags`.`upload_id` IN ('.$this->buildPlaceholders($mediaIds).') ORDER BY `tags`.`timestamp`', $mediaIds)->fetchAll();
         $tags = [];
         foreach ($allTags as $tag) {
             $tags[$tag->upload_id][$tag->id] = $tag->name;
