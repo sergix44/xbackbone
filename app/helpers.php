@@ -275,6 +275,49 @@ if (!function_exists('route')) {
         return urlFor($uri, $append);
     }
 }
+if (!function_exists('referer_redirect_path')) {
+    /**
+     * Return a safe redirect target derived from the Referer header, or the
+     * given fallback when the header is missing or points outside of the
+     * configured base URL. Redirecting to the raw Referer value is an open
+     * redirect primitive (CWE-601), because the header is fully controlled
+     * by the caller; only same-site targets are honoured.
+     *
+     * @param  Request  $request
+     * @param  string  $fallbackPath
+     * @return string
+     */
+    function referer_redirect_path(Request $request, string $fallbackPath = '/'): string
+    {
+        $referer = $request->getHeaderLine('Referer');
+        if ($referer === '' || filter_var($referer, FILTER_VALIDATE_URL) === false) {
+            return $fallbackPath;
+        }
+
+        $baseComponents = parse_url(resolve('config')['base_url']);
+        $refComponents = parse_url($referer);
+
+        if (
+            !isset($baseComponents['host'], $refComponents['host'])
+            || strtolower($refComponents['host']) !== strtolower($baseComponents['host'])
+        ) {
+            return $fallbackPath;
+        }
+
+        $path = ($refComponents['path'] ?? '').(isset($refComponents['query']) ? '?'.$refComponents['query'] : '');
+
+        if (
+            $path !== ''
+            && $path[0] === '/'
+            && ($path[1] ?? '') !== '/'
+            && strpos($path, '\\') === false
+        ) {
+            return $path;
+        }
+
+        return $fallbackPath;
+    }
+}
 
 if (!function_exists('param')) {
     /**

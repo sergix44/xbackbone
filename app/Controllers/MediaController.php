@@ -333,13 +333,13 @@ class MediaController extends Controller
         if (!$user) {
             $this->session->alert(lang('token_not_found'), 'danger');
 
-            return redirect($response, $request->getHeaderLine('Referer'));
+            return redirect($response, referer_redirect_path($request, route('home')));
         }
 
         if (!$user->active) {
             $this->session->alert(lang('account_disabled'), 'danger');
 
-            return redirect($response, $request->getHeaderLine('Referer'));
+            return redirect($response, referer_redirect_path($request, route('home')));
         }
 
         if ($this->session->get('admin', false) || $user->id === $media->user_id) {
