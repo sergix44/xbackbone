@@ -25,7 +25,7 @@ class ClientController extends Controller
         if (!$user->token) {
             $this->session->alert(lang('no_upload_token'), 'danger');
     
-            return redirect($response, $request->getHeaderLine('Referer'));
+            return redirect($response, referer_redirect_path($request, route('home')));
         }
     
         $fileBaseName = $user->username . '-ShareX'; // Base file name without extension
@@ -109,7 +109,7 @@ class ClientController extends Controller
         if (!$user->token) {
             $this->session->alert(lang('no_upload_token'), 'danger');
 
-            return redirect($response, $request->getHeaderLine('Referer'));
+            return redirect($response, referer_redirect_path($request, route('home')));
         }
 
         return view()->render(
@@ -140,7 +140,7 @@ class ClientController extends Controller
         if (!$user->token) {
             $this->session->alert(lang('no_upload_token'), 'danger');
 
-            return redirect($response, $request->getHeaderLine('Referer'));
+            return redirect($response, referer_redirect_path($request, route('home')));
         }
 
         return view()->render(
