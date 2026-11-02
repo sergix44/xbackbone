@@ -89,6 +89,11 @@ class MediaController extends Controller
                     $size >= (8 * 1024 * 1024))
             )
         ) {
+            if (must_be_escaped($mime)) {
+                return $this->streamMedia($request, $response, $filesystem, $media)
+                    ->withHeader('Content-Type', 'text/plain');
+            }
+
             return $this->streamMedia($request, $response, $filesystem, $media);
         }
 
@@ -120,6 +125,11 @@ class MediaController extends Controller
 
         if (!$media) {
             throw new HttpNotFoundException($request);
+        }
+
+        if (must_be_escaped($this->storage->getMimetype($media->storage_path))) {
+            $response = $this->streamMedia($request, $response, $this->storage, $media);
+            return $response->withHeader('Content-Type', 'text/plain');
         }
 
         return $this->streamMedia($request, $response, $this->storage, $media);

@@ -500,6 +500,10 @@ if (!function_exists('must_be_escaped')) {
     {
         $mimes = [
             'text/htm',
+            'text/xml',
+            'text/xsl',
+            'application/xml',
+            'application/xhtml',
             'image/svg',
         ];
 
