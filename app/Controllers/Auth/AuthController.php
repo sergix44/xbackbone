@@ -13,9 +13,11 @@ abstract class AuthController extends Controller
     protected function checkRecaptcha(ValidationHelper $validator, Request $request)
     {
         $validator->callIf($this->getSetting('recaptcha_enabled') === 'on', function (Session $session) use (&$request) {
-            $recaptcha = json_decode(file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$this->getSetting('recaptcha_secret_key').'&response='.param($request, 'recaptcha_token')));
+            $recaptcha = json_decode((string) file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.urlencode((string) $this->getSetting('recaptcha_secret_key')).'&response='.urlencode((string) param($request, 'recaptcha_token'))));
 
-            if ($recaptcha->success && $recaptcha->score < 0.5) {
+            // A failed verification must always be refused, an unreachable or
+            // unparsable answer of the endpoint as well.
+            if (!$recaptcha || !$recaptcha->success || (isset($recaptcha->score) && $recaptcha->score < 0.5)) {
                 $session->alert(lang('recaptcha_failed'), 'danger');
                 return false;
             }
