@@ -190,6 +190,16 @@ class UploadController extends Controller
                 $code = humanRandomString();
             } while ($this->database->query('SELECT COUNT(*) AS `count` FROM `uploads` WHERE `code` = ?', $code)->fetch()->count > 0);
         } else {
+            $code = (string) $code;
+
+            // The code ends up in the storage path and in the public url, so
+            // only a restricted set of characters is allowed.
+            if (!preg_match('/^[A-Za-z0-9_-]{1,64}$/', $code)) {
+                $this->json['message'] = 'Invalid code.';
+
+                return json($response, $this->json, 400);
+            }
+
             $existingCodeCount = $this->database->query('SELECT COUNT(*) AS `count` FROM `uploads` WHERE `code` = ?', $code)->fetch()->count;
             if ($existingCodeCount > 0) {
                 $this->json['message'] = 'Custom url code already exists.';
@@ -198,7 +208,17 @@ class UploadController extends Controller
         }
 
         $fileInfo = pathinfo($file->getClientFilename());
-        $storagePath = "$user->user_code/$code.$fileInfo[extension]";
+        $extension = $fileInfo['extension'] ?? '';
+
+        // The extension is taken from the client supplied file name and is
+        // used to build the storage path, so it has to be restricted too.
+        if (!preg_match('/^[A-Za-z0-9]{0,32}$/', $extension)) {
+            $this->json['message'] = 'Invalid file name.';
+
+            return json($response, $this->json, 400);
+        }
+
+        $storagePath = "$user->user_code/$code.$extension";
 
         $this->storage->writeStream($storagePath, $file->getStream()->detach());
 
@@ -216,8 +236,8 @@ class UploadController extends Controller
         }
 
         $this->json['message'] = 'OK';
-        $this->json['url'] = urlFor("/{$user->user_code}/{$code}.{$fileInfo['extension']}");
-        $this->json['raw_url'] = urlFor("/{$user->user_code}/{$code}/raw.{$fileInfo['extension']}");
+        $this->json['url'] = urlFor("/{$user->user_code}/{$code}.{$extension}");
+        $this->json['raw_url'] = urlFor("/{$user->user_code}/{$code}/raw.{$extension}");
 
         $this->logger->info("User $user->username uploaded new media.", [$mediaId]);
 
