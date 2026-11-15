@@ -491,7 +491,9 @@ if (!function_exists('platform_mail')) {
 
 if (!function_exists('must_be_escaped')) {
     /**
-     * Return the system no-reply mail.
+     * Whether the given MIME type must not be served inline, because the
+     * browser would render it as an active document and execute embedded
+     * scripts (e.g. HTML, SVG or XHTML served as XML).
      *
      * @param $mime
      * @return bool
@@ -500,7 +502,13 @@ if (!function_exists('must_be_escaped')) {
     {
         $mimes = [
             'text/htm',
+            'text/xml',
+            'application/xml',
+            'text/xsl',
             'image/svg',
+            // Any other XML-based type (e.g. application/xhtml+xml,
+            // application/rss+xml) may carry XHTML with embedded scripts.
+            '+xml',
         ];
 
         foreach ($mimes as $m) {
