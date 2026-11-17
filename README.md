@@ -63,7 +63,7 @@ Full installation, configuration and usage instructions are available in the doc
 
 ## Documentation
 
-[XBackBone Documentation](https://xbackbone.app/)
+[XBackBone Documentation](https://xbackbone.app/guide/getting-started)
 
 ## Contributing
 
