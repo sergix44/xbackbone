@@ -38,7 +38,7 @@
                     'description' => 'A clean, unbloated screen capture and file sharing utility for macOS with custom uploader support.',
                     'action' => 'Download config',
                     'route' => route('integrations.ishare'),
-                    'link' => 'https://isharemac.app/',
+                    'link' => 'https://ishare.itoolio.dev/',
                 ],
             ],
         ],

@@ -20,7 +20,7 @@ test('integrations page renders all available integrations', function () {
         ->assertSee('https://getsharex.com/')
         ->assertSee('https://xerahs.com')
         ->assertSee('https://screencloud.net')
-        ->assertSee('https://isharemac.app/')
+        ->assertSee('https://ishare.itoolio.dev/')
         ->assertSee('https://apps.kde.org/spectacle/')
         ->assertSee('Copy install link')
         ->assertSee('Download package')
