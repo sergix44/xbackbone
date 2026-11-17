@@ -2,7 +2,7 @@
 
 <Badge type="tip" text="macOS" /> <Badge type="tip" text="Available" />
 
-[ishare](https://isharemac.app/) is a clean, unbloated screen capture and file sharing utility for
+[ishare](https://ishare.itoolio.dev/) is a clean, unbloated screen capture and file sharing utility for
 macOS. It's the macOS counterpart to ShareX: one downloaded file configures ishare to upload
 straight to your instance.
 
